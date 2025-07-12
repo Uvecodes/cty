@@ -1,10 +1,131 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Little Hearts - Daily Morals & Bible Verses</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>hello world</h1>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="./assets/working logos.png" alt="catch them young">
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#stories">Stories</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating 3D Elements -->
+    <div class="floating-elements">
+        <div class="floating-element">🎈</div>
+        <div class="floating-element">⭐</div>
+        <div class="floating-element">🌈</div>
+        <div class="floating-element">🦋</div>
+       
+      
+        
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="hero-section">
+            <h1 class="hero-title rainbow-text">JESUS LOVES YOU!</h1>
+            <p class="hero-subtitle">Discover daily morals and Bible verses that make your heart shine! ✨</p>
+            
+            <div class="cta-buttons">
+                <a href="#get-started" class="btn btn-primary">🚀 Get Started</a>
+                <a href="#login" class="btn btn-secondary">🔑 Login</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3 class="feature-title">Daily Bible Verses</h3>
+                <p class="feature-description">Start each day with a special Bible verse that teaches love, kindness, and faith in a way that's easy to understand!</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💝</div>
+                <h3 class="feature-title">Moral Lessons</h3>
+                <p class="feature-description">Learn important life lessons through fun stories and activities that help you become the best version of yourself!</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">Fun Activities</h3>
+                <p class="feature-description">Color, draw, and play games while learning about God's love and how to be kind to others!</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>🌟 Made with love for little hearts everywhere 🌟</p>
+            <p>© 2024 Little Hearts - Daily Morals & Bible Verses</p>
+            <p>Teaching children to love, learn, and grow in faith! 💚</p>
+        </div>
+    </footer>
+
+        <script>
+        // Add interactive 3D effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar shadow on scroll
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 10) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Parallax effect for floating elements
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelectorAll('.floating-element');
+                
+                parallax.forEach((element, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    element.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+                });
+            });
+
+            // Button click effects
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+ 
+        });
+    </script>
 </body>
 </html>
