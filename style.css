@@ -993,7 +993,7 @@ body {
 .moral-card { border-left: 4px solid #feca57; }
 .leaderboard-card { border-left: 4px solid #48dbfb; }
 .profile-card { border-left: 4px solid #ff9ff3; }
-
+.games-card { border-left: 4px solid #54a0ff; }
 /* Floating Sparkles */
 .sparkles {
   position: fixed;

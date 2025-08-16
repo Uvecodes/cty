@@ -4,19 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Catch Them Young</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
+  
+  <!-- Firebase v8 CDN (compat, no modules) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
   <!-- Fixed Top Navbar -->
-  <nav class="dashboard-navbar">
+  <nav  class="dashboard-navbar">
     <div class="navbar-left">
       <div class="app-logo">Catch Them Young</div>
     </div>
     <div class="navbar-right">
       <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
-      <div class="user-avatar">
-        <img src="assets/images/avatar-placeholder.png" alt="User Avatar">
-      </div>
+      <!-- we will implement 3d avatar later as a new feature to excite users-->
+      <!-- <div class="user-avatar"> -->
+        <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
+      <!-- </div> -->
     </div>
   </nav>
 
@@ -25,10 +31,10 @@
     <!-- Welcome Section -->
     <section class="welcome-section">
       <div class="greeting">
-        <h1>Good Morning, Victor! 👋</h1>
+        <h1 id="greeting-text">Good Morning! 👋</h1>
         <div class="streak-display">
           <span class="streak-icon">🔥</span>
-          <span class="streak-count">7 Day Streak!</span>
+          <span class="streak-count" id="streak-count">Loading...</span>
         </div>
       </div>
     </section>
@@ -50,7 +56,7 @@
         <div class="card-icon">📖</div>
         <h3>Today's Verse</h3>
         <p>"For I know the plans I have for you..."</p>
-        <span class="card-action">Read More →</span>
+        <a href="./todaysverse.html" class="card-action">Read More →</a>
       </div>
 
       <div class="dashboard-card moral-card">
@@ -71,7 +77,14 @@
         <div class="card-icon">👤</div>
         <h3>My Profile</h3>
         <p>Update your settings and progress</p>
-        <span class="card-action">Edit Profile →</span>
+        <a href="./profile.html" class="card-action" >Edit Profile →</a>
+      </div>
+
+       <div class="dashboard-card games-card">
+        <div class="card-icon">🎮</div>
+        <h3>Fun Games</h3>
+        <p>Enjoy Fun Games</p>
+        <a href="#" class="card-action" >Play Game →</a>
       </div>
     </section>
   </main>
@@ -83,5 +96,11 @@
     <span class="sparkle">💫</span>
     <span class="sparkle">🌟</span>
   </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <script src="./dashboard.js"></script>
+  <script src="../authentication/auth.js"></script>
 </body>
 </html> 

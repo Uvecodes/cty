@@ -113,7 +113,7 @@ async function register(event) {
       });
 
     showToast("Registered and logged in!", "success");
-    window.location.href = "../dashboard.html";
+    window.location.href = "../dashboard-files/dashboard.html";
   } catch (error) {
     console.error("Signup error:", error);
     showToast(error.message, "error");
@@ -177,7 +177,7 @@ async function login(event) {
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     await auth.signInWithEmailAndPassword(email, password);
     showToast("Logged in!", "success");
-    window.location.href = "../dashboard.html";
+    window.location.href = "../dashboard-files/dashboard.html";
   } catch (error) {
     console.error("Login error:", error);
     showToast(error.message, "error");
@@ -203,7 +203,7 @@ async function logout() {
   try {
     await auth.signOut();
     showToast("Logged out!", "success");
-    window.location.href = "./index.html";
+    window.location.href = "../index.html";
   } catch (error) {
     console.error("Logout error:", error);
     showToast(error.message, "error");
@@ -227,7 +227,7 @@ firebase.auth().onAuthStateChanged((user) => {
     if (status) status.innerText = `Logged in as: ${user.email}`;
   } else {
     if (window.location.pathname.includes("dashboard")) {
-      window.location.href = "index.html";
+      window.location.href = "../index.html";
     }
   }
 });

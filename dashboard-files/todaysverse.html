@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today's Verse | Catch Them Young</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Firebase v8 CDN (compat, no modules) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <!-- Fixed Top Navbar -->
+  <nav class="dashboard-navbar">
+    <div class="navbar-left">
+      <div class="app-logo">Catch Them Young</div>
+    </div>
+    <div class="navbar-right">
+      <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
+      <a href="./dashboard.html" class="back-btn" aria-label="Back to Dashboard">← Back</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="verse-content">
+    <!-- Header Section -->
+    <section class="verse-header">
+      <div class="verse-title">
+        <h1>📖 Today's Bible Verse</h1>
+        <p class="verse-date" id="verse-date">Loading...</p>
+      </div>
+    </section>
+
+    <!-- Verse Display Section -->
+    <section class="verse-display">
+      <div class="verse-card">
+        <div class="verse-icon">📜</div>
+        <h2 id="verse-text">Loading verse...</h2>
+        <p class="verse-reference" id="verse-reference">Loading reference...</p>
+      </div>
+    </section>
+
+    <!-- Moral Lesson Section -->
+    <section class="moral-section">
+      <div class="moral-card">
+        <div class="moral-icon">💖</div>
+        <h3>Moral of the Day</h3>
+        <p id="moral-text">Loading moral lesson...</p>
+      </div>
+    </section>
+
+    <!-- Reflection Section -->
+    <section class="reflection-section">
+      <div class="reflection-card">
+        <h3>🤔 Think About It</h3>
+        <div class="reflection-questions">
+          <p class="question">• How can you apply this verse in your life today?</p>
+          <p class="question">• What does this teach you about God's love?</p>
+          <p class="question">• How can you share this message with others?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Section -->
+    <section class="action-section">
+      <div class="action-buttons">
+        <button class="action-btn primary" id="mark-complete">✅ Mark as Complete</button>
+        <button class="action-btn secondary" id="share-verse">📤 Share Verse</button>
+        <button class="action-btn secondary" id="save-verse">💾 Save for Later</button>
+      </div>
+    </section>
+
+    <!-- Navigation Section -->
+    <section class="navigation-section">
+      <div class="nav-cards">
+        <a href="./dashboard.html" class="nav-card">
+          <div class="nav-icon">🏠</div>
+          <h4>Dashboard</h4>
+          <p>Return to main dashboard</p>
+        </a>
+        <a href="./profile.html" class="nav-card">
+          <div class="nav-icon">👤</div>
+          <h4>My Profile</h4>
+          <p>View your progress</p>
+        </a>
+        <a href="#" class="nav-card">
+          <div class="nav-icon">🎮</div>
+          <h4>Games</h4>
+          <p>Play fun games</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <script src="./js/todaysverse.js"></script>
+</body>
+</html>
