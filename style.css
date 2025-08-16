@@ -1562,4 +1562,316 @@ body {
   .toast.hidden {
     transform: translateY(-100px);
   }
+}
+
+/* Today's Verse Page Styles */
+.verse-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 10rem;
+  padding-bottom: 2rem;
+  padding-left:2rem ;
+  padding-right: 2rem;
+  min-height: calc(100vh - 80px);
+}
+
+/* Verse Header Section */
+.verse-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.verse-title h1 {
+  font-size: 3rem;
+  color: var(--color-green);
+  margin-bottom: 1rem;
+  font-weight: 900;
+}
+
+.verse-date {
+  font-size: 1.2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Verse Display Section */
+.verse-display {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.verse-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-left: 4px solid #ff6b6b;
+  transition: all 0.3s ease;
+}
+
+.verse-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.verse-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+.verse-card h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+.verse-reference {
+  font-size: 1.1rem;
+  color: #666;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Moral Section */
+.moral-section {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.moral-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #feca57;
+  transition: all 0.3s ease;
+}
+
+.moral-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.moral-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.moral-card h3 {
+  font-size: 1.5rem;
+  color: var(--color-green);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.moral-card p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Reflection Section */
+.reflection-section {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.reflection-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #48dbfb;
+}
+
+.reflection-card h3 {
+  font-size: 1.5rem;
+  color: var(--color-green);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.reflection-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.question {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.5;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.question:last-child {
+  border-bottom: none;
+}
+
+/* Action Section */
+.action-section {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 160px;
+}
+
+.action-btn.primary {
+  background: linear-gradient(45deg, var(--color-green), #4caf50);
+  color: white;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+.action-btn.secondary {
+  background: white;
+  color: var(--color-green);
+  border: 2px solid var(--color-green);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn.primary:hover {
+  box-shadow: 0 12px 30px rgba(76, 175, 80, 0.4);
+}
+
+.action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Navigation Section */
+.navigation-section {
+  animation: fadeInUp 0.8s ease-out 1s both;
+}
+
+.nav-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.nav-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.nav-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-green);
+}
+
+.nav-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite;
+}
+
+.nav-card h4 {
+  font-size: 1.3rem;
+  color: var(--color-green);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.nav-card p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .verse-content {
+    padding: 1rem;
+  }
+  
+  .verse-title h1 {
+    font-size: 2.5rem;
+  }
+  
+  .verse-card {
+    padding: 2rem;
+  }
+  
+  .verse-card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .nav-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .verse-title h1 {
+    font-size: 2rem;
+  }
+  
+  .verse-card {
+    padding: 1.5rem;
+  }
+  
+  .moral-card,
+  .reflection-card {
+    padding: 1.5rem;
+  }
+  
+  .verse-card h2 {
+    font-size: 1.3rem;
+  }
+  
+  .moral-card p,
+  .reflection-card p {
+    font-size: 1rem;
+  }
 } 

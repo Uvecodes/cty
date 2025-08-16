@@ -75,6 +75,19 @@
         
         showToast(`Welcome back, ${userData.name}!`, "success");
         
+        // Load daily content after user data is fetched
+        const groupId = window.getGroupIdFromProfile(userData);
+        if (groupId) {
+          try {
+            const item = await ContentService.getToday(groupId);
+            if (item) {
+              renderDailyCard(document.querySelector('#daily-card'), item, groupId);
+            }
+          } catch (error) {
+            console.error('Error loading daily content:', error);
+          }
+        }
+        
       } else {
         console.log('No user document found');
         showToast("User profile not found", "error");
@@ -83,6 +96,66 @@
     } catch (error) {
       console.error('Error fetching user data:', error);
       showToast("Error loading user data", "error");
+    }
+  }
+
+  // Function to get group ID from user profile
+  window.getGroupIdFromProfile = function(userData) {
+    if (userData.age) {
+      if (userData.age >= 4 && userData.age <= 6) return "4-6";
+      if (userData.age >= 7 && userData.age <= 10) return "7-10";
+      if (userData.age >= 11 && userData.age <= 13) return "11-13";
+      if (userData.age >= 14 && userData.age <= 17) return "14-17";
+    }
+    return "7-10"; // Default fallback
+  };
+
+  // Function to render daily card
+  function renderDailyCard(cardElement, item, groupId) {
+    if (!cardElement) return;
+    
+    try {
+      // Update date
+      const dateElement = cardElement.querySelector('#daily-date');
+      if (dateElement) {
+        const today = new Date();
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+      }
+      
+      // Update verse text
+      const verseElement = cardElement.querySelector('#daily-verse-text');
+      if (verseElement && item.verse_web) {
+        verseElement.textContent = item.verse_web;
+      }
+      
+      // Update verse reference
+      const refElement = cardElement.querySelector('#daily-verse-ref');
+      if (refElement && item.ref) {
+        refElement.textContent = item.ref;
+      }
+      
+      // Update moral text
+      const moralElement = cardElement.querySelector('#daily-moral-text');
+      if (moralElement && item.moral) {
+        moralElement.textContent = item.moral;
+      }
+      
+      // Update challenge text
+      const challengeElement = cardElement.querySelector('#daily-challenge-text');
+      if (challengeElement && item.challenge) {
+        challengeElement.textContent = item.challenge;
+      }
+      
+      console.log('Daily card rendered for group:', groupId);
+      
+    } catch (error) {
+      console.error('Error rendering daily card:', error);
     }
   }
 

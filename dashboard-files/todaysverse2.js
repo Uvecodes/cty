@@ -84,73 +84,8 @@
     return today.toLocaleDateString('en-US', options);
   }
 
-  // Function to get age group string from age
-  function getAgeGroupFromAge(age) {
-    if (age >= 4 && age <= 6) return "4-6";
-    if (age >= 7 && age <= 10) return "7-10";
-    if (age >= 11 && age <= 13) return "11-13";
-    if (age >= 14 && age <= 17) return "14-17";
-    return "7-10"; // Default fallback
-  }
-
-  // Mulberry32 deterministic random number generator
-  function mulberry32(a) {
-    return function() {
-      a = a + 0x6D2B79F5 | 0;
-      var t = Math.imul(a ^ a >>> 15, 1 | a);
-      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-      return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    };
-  }
-
-  // ContentService object for managing daily content
-  const ContentService = {
-    async getToday(groupId) {
-      try {
-        const today = new Date();
-        const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
-        
-        // Try to read from Firestore first
-        const docRef = window.fb.db.collection("todaysbibleverse").doc(dateString).collection("groups").doc(groupId);
-        const doc = await docRef.get();
-        
-        if (doc.exists) {
-          // Return existing content from Firestore
-          return doc.data();
-        } else {
-          // Load from local array and return picked item (but don't write)
-          if (window.CTY_CONTENT && window.CTY_CONTENT[groupId]) {
-            const contentArray = window.CTY_CONTENT[groupId];
-            if (contentArray && contentArray.length > 0) {
-              // Create seed from date and groupId
-              const seed = `${dateString}|${groupId}`;
-              let hash = 0;
-              for (let i = 0; i < seed.length; i++) {
-                const char = seed.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32-bit integer
-              }
-              
-              // Use mulberry32 with the hash to get deterministic random
-              const random = mulberry32(hash);
-              const randomIndex = Math.floor(random() * contentArray.length);
-              
-              return contentArray[randomIndex];
-            }
-          }
-          
-          // Return null if no content available
-          return null;
-        }
-      } catch (error) {
-        console.error('Error in ContentService.getToday:', error);
-        return null;
-      }
-    }
-  };
-
   // Function to display verse content
-  async function displayVerseContent(userData) {
+  function displayVerseContent(userData) {
     try {
       // Update date
       const dateElement = document.getElementById("verse-date");
@@ -158,22 +93,22 @@
         dateElement.textContent = getTodayDate();
       }
 
-      // Get age-appropriate content using ContentService
+      // Get age-appropriate content
       if (userData.age) {
-        const ageGroupString = getAgeGroupFromAge(userData.age);
-        const content = await ContentService.getToday(ageGroupString);
+        const ageGroup = getAgeGroup(userData.age);
+        const content = contentMap[ageGroup];
         
         if (content) {
           // Update verse text
           const verseElement = document.getElementById("verse-text");
           if (verseElement) {
-            verseElement.textContent = content.verse_web;
+            verseElement.textContent = content.verse;
           }
 
           // Update verse reference
           const referenceElement = document.getElementById("verse-reference");
           if (referenceElement) {
-            referenceElement.textContent = content.ref;
+            referenceElement.textContent = content.reference;
           }
 
           // Update moral text
@@ -182,39 +117,7 @@
             moralElement.textContent = content.moral;
           }
 
-          // Update reflection question
-          const reflectionElement = document.getElementById("reflection-question");
-          if (reflectionElement) {
-            reflectionElement.textContent = `• ${content.reflectionQ}`;
-          }
-
-          // Update challenge
-          const challengeElement = document.getElementById("challenge-text");
-          if (challengeElement) {
-            challengeElement.textContent = content.challenge;
-          }
-
-          // Show/hide dig deeper section for 14-17 age group
-          const digDeeperSection = document.getElementById("dig-deeper-section");
-          if (digDeeperSection) {
-            if (ageGroupString === "14-17") {
-              digDeeperSection.style.display = "block";
-            } else {
-              digDeeperSection.style.display = "none";
-            }
-          }
-
-          // Add age group class to body for styling
-          document.body.className = `age-group-${ageGroupString.replace('-', '-')}`;
-
-          console.log(`Content displayed for age group ${ageGroupString}:`, content);
-        } else {
-          // Fallback to default content if ContentService returns null
-          showToast("Using fallback content", "info");
-          const defaultContent = contentMap['B'];
-          document.getElementById("verse-text").textContent = defaultContent.verse;
-          document.getElementById("verse-reference").textContent = defaultContent.reference;
-          document.getElementById("moral-text").textContent = defaultContent.moral;
+          console.log(`Content displayed for age group ${ageGroup}:`, content);
         }
       } else {
         // Default content if no age data
@@ -261,9 +164,8 @@
   function shareVerse() {
     const verseText = document.getElementById("verse-text").textContent;
     const moralText = document.getElementById("moral-text").textContent;
-    const challengeText = document.getElementById("challenge-text").textContent;
     
-    const shareText = `Today's Bible Verse: ${verseText}\n\nMoral: ${moralText}\n\nChallenge: ${challengeText}\n\nShared from Catch Them Young App! 📖✨`;
+    const shareText = `Today's Bible Verse: ${verseText}\n\nMoral: ${moralText}\n\nShared from Catch Them Young App! 📖✨`;
     
     if (navigator.share) {
       navigator.share({
@@ -288,8 +190,6 @@
         verse: document.getElementById("verse-text").textContent,
         moral: document.getElementById("moral-text").textContent,
         reference: document.getElementById("verse-reference").textContent,
-        reflectionQ: document.getElementById("reflection-question").textContent,
-        challenge: document.getElementById("challenge-text").textContent,
         savedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 

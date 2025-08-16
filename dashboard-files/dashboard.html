@@ -6,6 +6,129 @@
   <title>Dashboard | Catch Them Young</title>
   <link rel="stylesheet" href="../style.css">
   
+  <!-- Inline Styles for Daily Card -->
+  <style>
+    .daily-section {
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+    
+    .daily-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .daily-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-green);
+    }
+    
+    .daily-card-header {
+      background: linear-gradient(135deg, var(--color-green), #4caf50);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .daily-card-header h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    .daily-date {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-style: italic;
+    }
+    
+    .daily-card-content {
+      padding: 2rem;
+    }
+    
+    .daily-verse,
+    .daily-moral,
+    .daily-challenge {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .daily-verse:last-child,
+    .daily-moral:last-child,
+    .daily-challenge:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .daily-verse h3,
+    .daily-moral h3,
+    .daily-challenge h3 {
+      color: var(--color-green);
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .daily-verse p,
+    .daily-moral p,
+    .daily-challenge p {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    
+    .verse-ref {
+      font-size: 0.9rem;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .daily-card-actions {
+      padding: 1.5rem 2rem;
+      background: #f8f9fa;
+      text-align: center;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, var(--color-green), #4caf50);
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+    }
+    
+    @media (max-width: 768px) {
+      .daily-card-header {
+        padding: 1.5rem;
+      }
+      
+      .daily-card-content {
+        padding: 1.5rem;
+      }
+      
+      .daily-card-actions {
+        padding: 1rem 1.5rem;
+      }
+    }
+  </style>
+  
   <!-- Firebase v8 CDN (compat, no modules) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -50,27 +173,56 @@
       </div>
     </section>
 
+    <!-- Daily Card Section -->
+    <section class="daily-section">
+      <div class="daily-card" id="daily-card">
+        <div class="daily-card-header">
+          <h2>📅 Today's Content</h2>
+          <span class="daily-date" id="verse-date">Loading...</span>
+        </div>
+        
+        <!-- <div class="daily-card-content">
+          <div class="daily-verse">
+            <h3>📖 Bible Verse</h3>
+            <p id="verse-text">Loading verse...</p>
+            <span class="verse-ref" id="verse-reference">Loading reference...</span>
+          </div>
+          <div class="daily-moral">
+            <h3>💡 Moral Lesson</h3>
+            <p id="moral-text">Loading moral...</p>
+          </div>
+          <div class="daily-challenge">
+            <h3>🎯 Today's Challenge</h3>
+            <p id="reflection-question">Loading challenge...</p>
+          </div>
+        </div>
+        <div class="daily-card-actions">
+          <a href="./todaysverse.html" class="btn btn-primary">Read Full Content →</a>
+        </div>
+      </div-->
+    </section>
+
     <!-- Main Cards Grid -->
-    <section class="cards-grid">
+    <section class="cards-grid" >
       <div class="dashboard-card verse-card">
         <div class="card-icon">📖</div>
         <h3>Today's Verse</h3>
-        <p>"For I know the plans I have for you..."</p>
+        <p id="verse-text">"Loading..."</p>
         <a href="./todaysverse.html" class="card-action">Read More →</a>
       </div>
 
       <div class="dashboard-card moral-card">
         <div class="card-icon">💖</div>
         <h3>Moral of the Day</h3>
-        <p>Kindness is like a boomerang...</p>
-        <span class="card-action">Learn More →</span>
+        <p id="daily-moral-text">Loading...</p>
+        <a href="./todaysverse.html" class="card-action">Learn More →</a>
       </div>
 
       <div class="dashboard-card leaderboard-card">
         <div class="card-icon">🏆</div>
         <h3>Leaderboard</h3>
         <p>You're in 3rd place this week!</p>
-        <span class="card-action">View Rankings →</span>
+        <a href="./leaderboard.html" class="card-action">View Rankings →</a>
       </div>
 
       <div class="dashboard-card profile-card">
@@ -100,7 +252,9 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
 
+  <script src="./seed.js"></script>
   <script src="./dashboard.js"></script>
   <script src="../authentication/auth.js"></script>
+  <script src="./todaysverse.js"></script>
 </body>
 </html> 
