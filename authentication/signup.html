@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | Catch Them Young</title>
+  <link rel="stylesheet" href="../style.css"/>
+
+  <!-- Firebase v8 CDN (compat, no modules) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+
+<body>
+<!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="../assets/images/working logos.png" alt="catch them young">
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="#about">About Us</a>
+                <!-- <a href="#stories">Stories</a> -->
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+
+  <section id="signup-page">
+    <div class="signup-container">
+      <header>
+        <h1>🎉 Join Catch Them Young!</h1>
+        <p>Let's get started on your adventure 🚀</p>
+      </header>
+
+      <form id="signupForm" autocomplete="on">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullname" required autocomplete="name"/>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" min="4" max="17" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="username"/>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="new-password"/>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required autocomplete="new-password"/>
+        </div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <nav class="signup-links">
+        <a href="./login.html" class="login-link">Already have an account? Login</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <!-- Your auth logic (external) -->
+  <script src="./auth.js"></script>
+</body>
+</html> 

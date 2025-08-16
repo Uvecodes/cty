@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Catch Them Young</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Fixed Top Navbar -->
+  <nav class="dashboard-navbar">
+    <div class="navbar-left">
+      <div class="app-logo">Catch Them Young</div>
+    </div>
+    <div class="navbar-right">
+      <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
+      <div class="user-avatar">
+        <img src="assets/images/avatar-placeholder.png" alt="User Avatar">
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard Content -->
+  <main class="dashboard-content">
+    <!-- Welcome Section -->
+    <section class="welcome-section">
+      <div class="greeting">
+        <h1>Good Morning, Victor! 👋</h1>
+        <div class="streak-display">
+          <span class="streak-icon">🔥</span>
+          <span class="streak-count">7 Day Streak!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress Bar -->
+    <section class="progress-section">
+      <div class="progress-header">
+        <h2>Today's Goal</h2>
+        <span class="progress-percentage">70%</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 70%"></div>
+      </div>
+    </section>
+
+    <!-- Main Cards Grid -->
+    <section class="cards-grid">
+      <div class="dashboard-card verse-card">
+        <div class="card-icon">📖</div>
+        <h3>Today's Verse</h3>
+        <p>"For I know the plans I have for you..."</p>
+        <span class="card-action">Read More →</span>
+      </div>
+
+      <div class="dashboard-card moral-card">
+        <div class="card-icon">💖</div>
+        <h3>Moral of the Day</h3>
+        <p>Kindness is like a boomerang...</p>
+        <span class="card-action">Learn More →</span>
+      </div>
+
+      <div class="dashboard-card leaderboard-card">
+        <div class="card-icon">🏆</div>
+        <h3>Leaderboard</h3>
+        <p>You're in 3rd place this week!</p>
+        <span class="card-action">View Rankings →</span>
+      </div>
+
+      <div class="dashboard-card profile-card">
+        <div class="card-icon">👤</div>
+        <h3>My Profile</h3>
+        <p>Update your settings and progress</p>
+        <span class="card-action">Edit Profile →</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating Confetti/Sparkles -->
+  <div class="sparkles">
+    <span class="sparkle">✨</span>
+    <span class="sparkle">⭐</span>
+    <span class="sparkle">💫</span>
+    <span class="sparkle">🌟</span>
+  </div>
+</body>
+</html> 
