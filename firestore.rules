@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow authenticated users to read daily content
+    match /dailyContent/{date}/groups/{groupId} {
+      allow read: if request.auth != null;
+      allow write: if false; // Only functions can write
+    }
+    
+    // Allow authenticated users to read/write their own user data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read/write their saved verses
+    match /users/{userId}/savedVerses/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
