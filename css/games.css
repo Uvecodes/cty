@@ -1,0 +1,343 @@
+  .games-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .games-header {
+      text-align: center;
+      margin-bottom: 4rem;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    .games-title {
+      font-size: 3.5rem;
+      color: var(--color-green);
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .games-subtitle {
+      font-size: 1.4rem;
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .coming-soon-section {
+      text-align: center;
+      margin-bottom: 4rem;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    
+    .coming-soon-badge {
+      background: linear-gradient(135deg, var(--color-yellow), #ff9800);
+      color: var(--color-dark);
+      padding: 0.5rem 2rem;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin-bottom: 2rem;
+      animation: pulse 2s infinite;
+      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+    }
+    
+    .coming-soon-title {
+      font-size: 2.5rem;
+      color: var(--color-dark);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .coming-soon-description {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    
+    .cta-button {
+      background: linear-gradient(135deg, var(--color-green), #4caf50);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(88, 204, 2, 0.3);
+      animation: bounce 2s infinite;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(88, 204, 2, 0.4);
+    }
+    
+    .games-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    
+    .game-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .game-card:hover::before {
+      left: 100%;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-green);
+    }
+    
+    .game-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .game-card:nth-child(1) .game-icon {
+      animation-delay: 0s;
+    }
+    
+    .game-card:nth-child(2) .game-icon {
+      animation-delay: 0.5s;
+    }
+    
+    .game-card:nth-child(3) .game-icon {
+      animation-delay: 1s;
+    }
+    
+    .game-title {
+      font-size: 1.5rem;
+      color: var(--color-dark);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .game-description {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .game-status {
+      background: #f0f0f0;
+      color: #666;
+      padding: 0.5rem 1rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .floating-element {
+      position: absolute;
+      opacity: 0.1;
+      animation: float-around 20s linear infinite;
+    }
+    
+    .floating-element:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      font-size: 3rem;
+      animation-delay: 0s;
+    }
+    
+    .floating-element:nth-child(2) {
+      top: 20%;
+      right: 15%;
+      font-size: 2.5rem;
+      animation-delay: 5s;
+    }
+    
+    .floating-element:nth-child(3) {
+      bottom: 30%;
+      left: 20%;
+      font-size: 2rem;
+      animation-delay: 10s;
+    }
+    
+    .floating-element:nth-child(4) {
+      bottom: 20%;
+      right: 10%;
+      font-size: 3.5rem;
+      animation-delay: 15s;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      margin: 2rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-green), var(--color-yellow));
+      border-radius: 4px;
+      width: 0%;
+      animation: progressFill 3s ease-out 1s forwards;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    @keyframes float-around {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(100px, -50px) rotate(90deg);
+      }
+      50% {
+        transform: translate(50px, -100px) rotate(180deg);
+      }
+      75% {
+        transform: translate(-50px, -50px) rotate(270deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
+    }
+    
+    @keyframes progressFill {
+      from {
+        width: 0%;
+      }
+      to {
+        width: 75%;
+      }
+    }
+    
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .games-container {
+        padding: 1rem;
+      }
+      
+      .games-title {
+        font-size: 2.5rem;
+      }
+      
+      .coming-soon-title {
+        font-size: 2rem;
+      }
+      
+      .games-preview {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .floating-elements {
+        display: none;
+      }
+    }

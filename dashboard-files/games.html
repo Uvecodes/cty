@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Games | Catch Them Young</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/games.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  
+  <!-- Inline Styles for Games Page -->
+  
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="dashboard-navbar">
+    <div class="navbar-left">
+      <a href="dashboard.html" class="app-logo">Catch Them Young</a>
+    </div>
+    <div class="navbar-right">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <div class="user-avatar">
+        <img src="../assets/icons/default-avatar.png" alt="User Avatar" id="user-avatar-img">
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Floating Background Elements -->
+  <div class="floating-elements">
+    <div class="floating-element">🎮</div>
+    <div class="floating-element">🎯</div>
+    <div class="floating-element">🏆</div>
+    <div class="floating-element">⭐</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="games-container">
+    <!-- Header Section -->
+    <div class="games-header">
+      <h1 class="games-title">🎮 Fun Games Zone</h1>
+      <p class="games-subtitle">Get ready for exciting educational games that make learning fun and engaging!</p>
+    </div>
+
+    <!-- Coming Soon Section -->
+    <div class="coming-soon-section">
+      <div class="coming-soon-badge">🚀 Coming Soon!</div>
+      <h2 class="coming-soon-title">Something Amazing is Brewing!</h2>
+      <p class="coming-soon-description">
+        We're working hard to bring you the most fun and educational games ever! 
+        Get ready to challenge your mind, compete with friends, and earn amazing rewards.
+      </p>
+      
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      
+      <button class="cta-button" onclick="notifyMe()">Notify Me When Ready!</button>
+    </div>
+
+    <!-- Games Preview -->
+    <div class="games-preview">
+      <div class="game-card">
+        <div class="game-icon">🧩</div>
+        <h3 class="game-title">Bible Puzzle Challenge</h3>
+        <p class="game-description">
+          Solve interactive puzzles based on Bible stories and teachings. 
+          Test your knowledge while having fun!
+        </p>
+        <div class="game-status">In Development</div>
+      </div>
+      
+      <div class="game-card">
+        <div class="game-icon">🎯</div>
+        <h3 class="game-title">Memory Verse Master</h3>
+        <p class="game-description">
+          Challenge your memory with exciting games that help you 
+          remember Bible verses and important lessons.
+        </p>
+        <div class="game-status">Coming Soon</div>
+      </div>
+      
+      <div class="game-card">
+        <div class="game-icon">🏆</div>
+        <h3 class="game-title">Character Quest</h3>
+        <p class="game-description">
+          Embark on adventures with Bible characters and learn 
+          valuable life lessons through interactive storytelling.
+        </p>
+        <div class="game-status">Planning Phase</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="../js/firebase-config.js"></script>
+  <script>
+    // Simple notification function
+    function notifyMe() {
+      const toast = document.getElementById("toast");
+      if (toast) {
+        toast.textContent = "🎉 You'll be notified when games are ready!";
+        toast.className = "toast show success";
+        
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => {
+            toast.classList.add("hidden");
+          }, 300);
+        }, 3000);
+      }
+    }
+    
+    // Theme toggle function (placeholder)
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeBtn = document.querySelector('.theme-toggle');
+      if (themeBtn) {
+        themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      }
+    }
+    
+    // Logout function (placeholder)
+    function logout() {
+      // This would integrate with Firebase auth
+      window.location.href = '../authentication/login.html';
+    }
+  </script>
+</body>
+</html>

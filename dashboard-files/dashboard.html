@@ -4,130 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Catch Them Young</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
   
   <!-- Inline Styles for Daily Card -->
-  <style>
-    .daily-section {
-      margin-bottom: 3rem;
-      animation: fadeInUp 0.8s ease-out 0.3s both;
-    }
-    
-    .daily-card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      border: 2px solid transparent;
-      transition: all 0.3s ease;
-    }
-    
-    .daily-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
-      border-color: var(--color-green);
-    }
-    
-    .daily-card-header {
-      background: linear-gradient(135deg, var(--color-green), #4caf50);
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
-    
-    .daily-card-header h2 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
-    
-    .daily-date {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      font-style: italic;
-    }
-    
-    .daily-card-content {
-      padding: 2rem;
-    }
-    
-    .daily-verse,
-    .daily-moral,
-    .daily-challenge {
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .daily-verse:last-child,
-    .daily-moral:last-child,
-    .daily-challenge:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-    .daily-verse h3,
-    .daily-moral h3,
-    .daily-challenge h3 {
-      color: var(--color-green);
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-    
-    .daily-verse p,
-    .daily-moral p,
-    .daily-challenge p {
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 0.5rem;
-    }
-    
-    .verse-ref {
-      font-size: 0.9rem;
-      color: #666;
-      font-style: italic;
-    }
-    
-    .daily-card-actions {
-      padding: 1.5rem 2rem;
-      background: #f8f9fa;
-      text-align: center;
-      border-top: 1px solid #e9ecef;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(45deg, var(--color-green), #4caf50);
-      color: white;
-      padding: 0.8rem 2rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      display: inline-block;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
-    
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-    }
-    
-    @media (max-width: 768px) {
-      .daily-card-header {
-        padding: 1.5rem;
-      }
-      
-      .daily-card-content {
-        padding: 1.5rem;
-      }
-      
-      .daily-card-actions {
-        padding: 1rem 1.5rem;
-      }
-    }
-  </style>
+  <!-- <style>
+   
+  </style> -->
   
   <!-- Firebase v8 CDN (compat, no modules) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -239,7 +122,7 @@
         <div class="card-icon">🎮</div>
         <h3>Fun Games</h3>
         <p>Enjoy Fun Games</p>
-        <a href="#" class="card-action" >Play Game →</a>
+        <a href="./games.html" class="card-action" >Play Game →</a>
       </div>
     </section>
   </main>

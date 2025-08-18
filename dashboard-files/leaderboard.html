@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Leaderboard | Catch Them Young</title>
+ <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/leaderboard.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  
+  <!-- Inline Styles for Leaderboard -->
+  
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="dashboard-navbar">
+    <div class="navbar-left">
+      <a href="dashboard.html" class="app-logo">Catch Them Young</a>
+    </div>
+    <div class="navbar-right">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <div class="user-avatar">
+        <img src="../assets/icons/default-avatar.png" alt="User Avatar" id="user-avatar-img">
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="leaderboard-container">
+    <!-- Header Section -->
+    <div class="leaderboard-header">
+      <h1 class="leaderboard-title">🏆 Weekly Leaderboard</h1>
+      <p class="leaderboard-subtitle">See how you rank among your peers this week!</p>
+      
+      <!-- Week Navigation -->
+      <div class="week-selector">
+        <button class="week-nav-btn" id="prev-week-btn" onclick="previousWeek()">← Previous Week</button>
+        <div class="current-week" id="current-week-display">Week of Dec 16, 2024</div>
+        <button class="week-nav-btn" id="next-week-btn" onclick="nextWeek()">Next Week →</button>
+      </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="leaderboard-stats">
+      <div class="stat-card">
+        <div class="stat-number" id="total-participants">0</div>
+        <div class="stat-label">Total Participants</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="avg-score">0</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="top-score">0</div>
+        <div class="stat-label">Top Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="user-rank">-</div>
+        <div class="stat-label">Your Rank</div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="leaderboard-table">
+      <div class="leaderboard-table-header">
+        <h3>🏅 Weekly Rankings</h3>
+      </div>
+      
+      <div class="leaderboard-rows" id="leaderboard-rows">
+        <!-- Loading state -->
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Loading leaderboard data...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="../js/firebase-config.js"></script>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

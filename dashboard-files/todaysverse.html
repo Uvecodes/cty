@@ -4,113 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Today's Verse | Catch Them Young</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/todaysverse.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
   
   <!-- Inline Styles for Group-Specific Features -->
-  <style>
-    .challenge-section {
-      margin-bottom: 3rem;
-      animation: fadeInUp 0.8s ease-out 0.7s both;
-    }
-    
-    .challenge-card {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #ff9ff3;
-      transition: all 0.3s ease;
-    }
-    
-    .challenge-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    }
-    
-    .challenge-card h3 {
-      font-size: 1.5rem;
-      color: #e056fd;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    
-    .challenge-card p {
-      font-size: 1.2rem;
-      color: #555;
-      line-height: 1.6;
-      text-align: center;
-    }
-    
-    .dig-deeper-section {
-      margin-bottom: 3rem;
-      animation: fadeInUp 0.8s ease-out 0.9s both;
-    }
-    
-    .dig-deeper-card {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #5f27cd;
-    }
-    
-    .dig-deeper-card h3 {
-      font-size: 1.5rem;
-      color: #5f27cd;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    
-    .dig-deeper-card p {
-      font-size: 1.1rem;
-      color: #555;
-      line-height: 1.6;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .dig-deeper-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .dig-deeper-card li {
-      font-size: 1rem;
-      color: #666;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #f0f0f0;
-      text-align: center;
-    }
-    
-    .dig-deeper-card li:last-child {
-      border-bottom: none;
-    }
-    
-    /* Age Group Specific Styles */
-    .age-group-4-6 .verse-icon::before { content: "🌟 "; }
-    .age-group-4-6 .moral-icon::before { content: "💖 "; }
-    .age-group-4-6 .challenge-card h3::before { content: "🎯 "; }
-    
-    .age-group-7-10 .verse-icon::before { content: "📚 "; }
-    .age-group-7-10 .moral-icon::before { content: "💡 "; }
-    .age-group-7-10 .challenge-card h3::before { content: "🚀 "; }
-    
-    .age-group-11-13 .verse-icon::before { content: "🔍 "; }
-    .age-group-11-13 .moral-icon::before { content: "💭 "; }
-    .age-group-11-13 .challenge-card h3::before { content: "🎪 "; }
-    
-    .age-group-14-17 .verse-icon::before { content: "⚡ "; }
-    .age-group-14-17 .moral-icon::before { content: "🧠 "; }
-    .age-group-14-17 .challenge-card h3::before { content: "🎯 "; }
-    
-    @media (max-width: 768px) {
-      .challenge-card,
-      .dig-deeper-card {
-        padding: 1.5rem;
-      }
-    }
-  </style>
+
   
   <!-- Firebase v8 CDN (compat, no modules) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
