@@ -26,7 +26,8 @@
       </div>
     </div>
     <div class="navbar-right">
-      <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
+      <a href="#" class="btn btn-secondary" aria-label="logout">← Logout</a>
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
       <!-- we will implement 3d avatar later as a new feature to excite users-->
       <!-- <div class="user-avatar"> -->
         <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
@@ -93,14 +94,14 @@
       <div class="dashboard-card verse-card">
         <div class="card-icon">📖</div>
         <h3>Today's Verse</h3>
-        <p id="verse-text">"Loading..."</p>
+        <p id="passage">"Loading..."</p>
         <a href="./todaysverse.html" class="card-action">Read More →</a>
       </div>
 
       <div class="dashboard-card moral-card">
         <div class="card-icon">💖</div>
         <h3>Moral of the Day</h3>
-        <p id="daily-moral-text">Loading...</p>
+        <p id="moral">Loading...</p>
         <a href="./todaysverse.html" class="card-action">Learn More →</a>
       </div>
 
@@ -138,9 +139,13 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
 
-  <script src="./seed.js"></script>
-  <script src="./dashboard.js"></script>
+
+ 
   <script src="../authentication/auth.js"></script>
-  <script src="./todaysverse.js"></script>
+  <script src="./dashboard.js"></script>
+  <script src="./content.js"></script>
+  
+  
+  
 </body>
 </html> 

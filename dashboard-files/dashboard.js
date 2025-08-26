@@ -1,24 +1,24 @@
 // Dashboard Logic - Firebase v8 Compatible
 (function() {
   // Firebase Configuration (same as auth.js)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
-    authDomain: "catch-them-young-16da5.firebaseapp.com",
-    projectId: "catch-them-young-16da5",
-    storageBucket: "catch-them-young-16da5.firebasestorage.app",
-    messagingSenderId: "777589364823",
-    appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
-    measurementId: "G-H517ECEK72",
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
+  //   authDomain: "catch-them-young-16da5.firebaseapp.com",
+  //   projectId: "catch-them-young-16da5",
+  //   storageBucket: "catch-them-young-16da5.firebasestorage.app",
+  //   messagingSenderId: "777589364823",
+  //   appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
+  //   measurementId: "G-H517ECEK72",
+  // };
 
   // Initialize Firebase (only if not already initialized)
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-
+// 
   const auth = firebase.auth();
   const db = firebase.firestore();
-
+// 
   // Toast notification function (same as auth.js)
   function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
@@ -95,28 +95,28 @@
       
     } catch (error) {
       console.error('Error fetching user data:', error);
-      showToast("Error loading user data", "error");
+      // showToast("Error loading user data", "error");
     }
   }
 
   // Function to get group ID from user profile
-  window.getGroupIdFromProfile = function(userData) {
-    if (userData.age) {
-      if (userData.age >= 4 && userData.age <= 6) return "4-6";
-      if (userData.age >= 7 && userData.age <= 10) return "7-10";
-      if (userData.age >= 11 && userData.age <= 13) return "11-13";
-      if (userData.age >= 14 && userData.age <= 17) return "14-17";
-    }
-    return "7-10"; // Default fallback
-  };
+  // window.getGroupIdFromProfile = function(userData) {
+  //   if (userData.age) {
+  //     if (userData.age >= 4 && userData.age <= 6) return "4-6";
+  //     if (userData.age >= 7 && userData.age <= 10) return "7-10";
+  //     if (userData.age >= 11 && userData.age <= 13) return "11-13";
+  //     if (userData.age >= 14 && userData.age <= 17) return "14-17";
+  //   }
+  //   return "7-10"; // Default fallback
+  // };
 
   // Function to render daily card
   function renderDailyCard(cardElement, item, groupId) {
     if (!cardElement) return;
-    
+    // 
     try {
       // Update date
-      const dateElement = cardElement.querySelector('#daily-date');
+      const dateElement = cardElement.querySelector('#verse-date');
       if (dateElement) {
         const today = new Date();
         const options = { 
@@ -127,38 +127,38 @@
         };
         dateElement.textContent = today.toLocaleDateString('en-US', options);
       }
-      
+      // 
       // Update verse text
       const verseElement = cardElement.querySelector('#daily-verse-text');
       if (verseElement && item.verse_web) {
         verseElement.textContent = item.verse_web;
       }
-      
+      // 
       // Update verse reference
       const refElement = cardElement.querySelector('#daily-verse-ref');
       if (refElement && item.ref) {
         refElement.textContent = item.ref;
       }
-      
+      //
       // Update moral text
       const moralElement = cardElement.querySelector('#daily-moral-text');
       if (moralElement && item.moral) {
         moralElement.textContent = item.moral;
       }
-      
+      // 
       // Update challenge text
       const challengeElement = cardElement.querySelector('#daily-challenge-text');
       if (challengeElement && item.challenge) {
         challengeElement.textContent = item.challenge;
       }
-      
+      // 
       console.log('Daily card rendered for group:', groupId);
-      
+      // 
     } catch (error) {
       console.error('Error rendering daily card:', error);
     }
   }
-
+// 
   // Check authentication state when page loads
   auth.onAuthStateChanged(async (user) => {
     if (user) {
@@ -176,16 +176,16 @@
   });
 
   // Logout functionality
-  async function logout() {
-    try {
-      await auth.signOut();
-      showToast("Logged out successfully!", "success");
-      window.location.href = 'authentication/login.html';
-    } catch (error) {
-      console.error('Logout error:', error);
-      showToast("Error during logout", "error");
-    }
-  }
+  // async function logout() {
+  //   try {
+  //     await auth.signOut();
+  //     showToast("Logged out successfully!", "success");
+  //     window.location.href = 'authentication/login.html';
+  //   } catch (error) {
+  //     console.error('Logout error:', error);
+  //     showToast("Error during logout", "error");
+  //   }
+  // }
 
   // Add logout button functionality if it exists
   document.addEventListener("DOMContentLoaded", () => {

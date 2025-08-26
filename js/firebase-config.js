@@ -1,9 +1,9 @@
-// Firebase v9+ Modular SDK Configuration
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getAnalytics } from 'firebase/analytics';
-import { getMessaging } from 'firebase/messaging';
+// Firebase v8 Namespaced SDK
+const firebase = require('firebase/app');
+require('firebase/auth');
+require('firebase/firestore');
+require('firebase/analytics');
+require('firebase/messaging');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,13 +17,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
 // Initialize Firebase services
-const auth = getAuth(app);
-const db = getFirestore(app);
-const analytics = getAnalytics(app);
-const messaging = getMessaging(app);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const analytics = firebase.analytics();
+const messaging = firebase.messaging();
 
 // Export Firebase instances
-export { app, auth, db, analytics, messaging }; 
+module.exports = { app, auth, db, analytics, messaging };

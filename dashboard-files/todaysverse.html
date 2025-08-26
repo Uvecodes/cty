@@ -25,8 +25,8 @@
       </div>
     </div>
     <div class="navbar-right">
-      <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
-      <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">← Back</a>
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
+      <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
     </div>
   </nav>
 
@@ -44,8 +44,8 @@
     <section class="verse-display">
       <div class="verse-card">
         <div class="verse-icon">📜</div>
-        <h2 id="verse-text">Loading verse...</h2>
-        <p class="verse-reference" id="verse-reference">Loading reference...</p>
+        <h2 id="passage">Loading verse...</h2>
+        <p class="verse-reference" id="ref">Loading reference...</p>
       </div>
     </section>
 
@@ -54,7 +54,7 @@
       <div class="moral-card">
         <div class="moral-icon">💖</div>
         <h3>Moral of the Day</h3>
-        <p id="moral-text">Loading moral lesson...</p>
+        <p id="moral">Loading moral lesson...</p>
       </div>
     </section>
 
@@ -63,7 +63,7 @@
       <div class="reflection-card">
         <h3>🤔 Think About It</h3>
         <div class="reflection-questions">
-          <p class="question" id="reflection-question">Loading reflection question...</p>
+          <p class="question" id="reflectionQ">Loading reflection question...</p>
         </div>
       </div>
     </section>
@@ -72,7 +72,7 @@
     <section class="challenge-section">
       <div class="challenge-card">
         <h3>🎯 Today's Challenge</h3>
-        <p id="challenge-text">Loading challenge...</p>
+        <p id="challenge">Loading challenge...</p>
       </div>
     </section>
 
@@ -90,13 +90,13 @@
     </section>
 
     <!-- Action Section -->
-    <section class="action-section">
+    <!-- <section class="action-section">
       <div class="action-buttons">
         <button class="action-btn primary" id="mark-complete">✅ Mark as Complete</button>
         <button class="action-btn secondary" id="share-verse">📤 Share Verse</button>
         <button class="action-btn secondary" id="save-verse">💾 Save for Later</button>
       </div>
-    </section>
+    </section> -->
 
     <!-- Navigation Section -->
     <section class="navigation-section">
@@ -111,7 +111,7 @@
           <h4>My Profile</h4>
           <p>View your progress</p>
         </a>
-        <a href="#" class="nav-card">
+        <a href="./games.html" class="nav-card">
           <div class="nav-icon">🎮</div>
           <h4>Games</h4>
           <p>Play fun games</p>
@@ -123,8 +123,10 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
 
-  <script src="./seed.js"></script>
-  <script src="./todaysverse.js"></script>
-   <script src="./dashboard.js"></script>
+  <!-- scripts loaded -->
+  <script src="../authentication/auth.js"></script>
+  <script src="./content.js"></script>
+ 
+   <!-- <script src="./dashboard.js"></script> -->
 </body>
 </html>

@@ -13,21 +13,23 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   
-  <!-- Inline Styles for Leaderboard -->
+
   
 </head>
 <body>
   <!-- Navigation Bar -->
   <nav class="dashboard-navbar">
     <div class="navbar-left">
-      <a href="dashboard.html" class="app-logo">Catch Them Young</a>
+      <img src="../assets/images/working logos.png" alt="Catch Them Young" class="logo"></img>
     </div>
     <div class="navbar-right">
-      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <!-- <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
       <div class="user-avatar">
         <img src="../assets/icons/default-avatar.png" alt="User Avatar" id="user-avatar-img">
-      </div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
+      </div> -->
+      <a href="./dashboard.html">
+      <button class="btn btn-secondary" >Back</button>
+      </a>
     </div>
   </nav>
 
@@ -61,7 +63,7 @@
         <div class="stat-label">Top Score</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number" id="user-rank">-</div>
+        <div class="stat-number" id="user-rank">--</div>
         <div class="stat-label">Your Rank</div>
       </div>
     </div>
@@ -90,3 +92,9 @@
   <script src="leaderboard.js"></script>
 </body>
 </html>
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 
 /* Sign Up Page Styles */
 #signup-page {
+  margin-top: 6rem;
   min-height: 100vh;
   display: flex;
   align-items: center;
