@@ -8,6 +8,10 @@
       <link rel="stylesheet" href="./css/dashboard.css">
 
 
+      <!-- twemoji cdn link -->
+   <link href="https://cdn.jsdelivr.net/npm/@twemoji.maxcdn.com@14.0.2/72x72.css" rel="stylesheet">
+
+
       <!-- font links from google fonts -->
        <!-- In <head> -->
          <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +31,17 @@
         <meta name="apple-mobile-web-app-title" content="CTY Bible">
         <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
 </head>
+
+
+<!-- twemoji js script -->
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script>
+<script>
+  twemoji.parse(document.body, {
+    folder: 'svg',
+    ext: '.svg'
+  });
+</script>
+
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
