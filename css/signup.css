@@ -9,6 +9,8 @@
   background: var(--color-gray);
 }
 #signup-page .signup-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   background: var(--color-white);
   padding: 2.5rem 2rem 2rem 2rem;
   border-radius: 1.3rem;
@@ -104,12 +106,254 @@
   color: var(--color-yellow);
   opacity: 1;
 }
-@media (max-width: 600px) {
-  #signup-page .signup-container {
-    padding: 1.2rem 0.5rem 1rem 0.5rem;
-    max-width: 98vw;
+/* mobile responsiveness */
+
+/* ========================================
+   MOBILE RESPONSIVENESS (320px - 768px)
+   ======================================== */
+
+   @media (max-width: 414px) {
+    .signup-container {
+      margin-top: 16rem;
+     
+    }
+   }
+
+/* Mobile Portrait (320px - 480px) */
+
+@media (max-width: 480px) {
+  #signup-page {
+    margin-top: 4rem;
+    padding: 1rem;
+    min-height: calc(100vh - 2rem);
   }
+  
+  #signup-page .signup-container {
+    padding: 1.5rem 1.25rem;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(34, 34, 59, 0.08);
+  }
+  
   #signup-page header h1 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+  
+  #signup-page header p {
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  #signup-page form {
+    gap: 1rem;
+  }
+  
+  #signup-page .form-group {
+    gap: 0.3rem;
+  }
+  
+  #signup-page .form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  #signup-page .form-group input {
+    padding: 0.75em 1em;
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 0.6em;
+    min-height: 44px; /* Touch-friendly minimum */
+  }
+  
+  #signup-page button[type="submit"] {
+    padding: 0.85em 0;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 1.5em;
+    min-height: 48px; /* Touch-friendly minimum */
+    margin-top: 0.25rem;
+  }
+  
+  #signup-page .signup-links {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  
+  #signup-page .signup-links .login-link {
+    padding: 0.25rem 0.5rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Mobile Landscape (480px - 600px) */
+@media (min-width: 481px) and (max-width: 600px) {
+  #signup-page {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+  
+  #signup-page .signup-container {
+    padding: 2rem 1.5rem;
+    max-width: 90vw;
+    width: 100%;
+  }
+  
+  #signup-page header h1 {
+    font-size: 1.6rem;
+  }
+  
+  #signup-page header p {
+    font-size: 1.05rem;
+  }
+  
+  #signup-page .form-group input {
+    padding: 0.8em 1em;
+    font-size: 16px;
+    min-height: 44px;
+  }
+  
+  #signup-page button[type="submit"] {
+    padding: 0.9em 0;
+    font-size: 1.05rem;
+    min-height: 48px;
+  }
+  
+  #signup-page .signup-links {
+    font-size: 0.95rem;
+  }
+}
+
+/* Small Tablets (600px - 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+  #signup-page {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+  }
+  
+  #signup-page .signup-container {
+    margin-top: 5rem;
+    padding: 2.25rem 2rem;
+    max-width: 450px;
+    width: 100%;
+  }
+  
+  #signup-page header h1 {
+    font-size: 1.8rem;
+  }
+  
+  #signup-page header p {
+    font-size: 1.1rem;
+  }
+  
+  #signup-page .form-group input {
+    padding: 0.75em 1em;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  #signup-page button[type="submit"] {
+    padding: 0.85em 0;
+    font-size: 1.1rem;
+    min-height: 48px;
+  }
+  
+  #signup-page .signup-links {
+    font-size: 1rem;
+  }
+}
+
+/* iPad and similar devices (412px - 768px) - Reduce white space */
+@media (min-width: 412px) and (max-width: 768px) {
+  #signup-page {
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    min-height: calc(100vh - 1rem);
+  }
+  
+  #signup-page .signup-container {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    max-width: 85vw;
+    width: 100%;
+    padding: 1.8rem 1.5rem;
+  }
+}
+
+/* Portrait Tablets (768px - 1024px) - Reduce white space */
+@media (min-width: 768px) and (max-width: 1024px) {
+  #signup-page {
+    margin-top: 1rem;
+    padding: 1rem;
+    min-height: calc(100vh - 2rem);
+  }
+  
+  #signup-page .signup-container {
+    margin-top: 5rem;
+    max-width: 90vw;
+    width: 100%;
+    padding: 2.2rem 2rem;
+  }
+  
+  #signup-page header h1 {
+    font-size: 2.2rem;
+  }
+  
+  #signup-page header p {
+    font-size: 1.15rem;
+  }
+  
+  #signup-page .form-group input {
+    padding: 0.8em 1.1em;
+    font-size: 1.05rem;
+    min-height: 48px;
+  }
+  
+  #signup-page button[type="submit"] {
+    padding: 0.9em 0;
+    font-size: 1.15rem;
+    min-height: 52px;
+  }
+  
+  #signup-page .signup-links {
+    font-size: 1.05rem;
+  }
+}
+
+/* Mobile-specific enhancements */
+@media (max-width: 768px) {
+  /* Ensure proper viewport handling */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  /* Improve touch interactions */
+  #signup-page button[type="submit"]:active {
+    transform: scale(0.98);
+  }
+  
+  #signup-page .signup-links .login-link:active {
+    opacity: 0.7;
+  }
+  
+  /* Better focus states for mobile */
+  #signup-page .form-group input:focus {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Improve readability */
+  #signup-page .signup-container {
+    line-height: 1.5;
   }
 } 

@@ -128,7 +128,7 @@
 }
 
 /* Buttons */
-.btn {
+/* .btn {
     padding: 12px 24px;
     border: none;
     border-radius: 8px;
@@ -169,7 +169,7 @@
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;
-}
+} */
 
 /* Close Button */
 .modal-close {
@@ -319,6 +319,10 @@
         transform: none;
     }
 }
+
+
+
+
 
 
 

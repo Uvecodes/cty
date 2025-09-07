@@ -80,16 +80,19 @@
 
 .moral-card {
   background: white;
-  padding: 2.5rem;
+  padding: 3rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border-left: 4px solid #feca57;
   transition: all 0.3s ease;
+  text-align: center;
+  
 }
 
 .moral-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  
 }
 
 .moral-icon {
@@ -120,10 +123,16 @@
 
 .reflection-card {
   background: white;
-  padding: 2.5rem;
+  padding: 3rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border-left: 4px solid #48dbfb;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.reflection-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 .reflection-card h3 {
@@ -150,6 +159,41 @@
 .question:last-child {
   border-bottom: none;
 }
+
+/* Challenge Section */
+ .challenge-section {
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease-out 0.7s both;
+    }
+    
+    .challenge-card {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #ff9ff3;
+      transition: all 0.3s ease;
+    }
+    
+    .challenge-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .challenge-card h3 {
+      font-size: 1.5rem;
+      color: #e056fd;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .challenge-card p {
+      font-size: 1.2rem;
+      color: #555;
+      line-height: 1.6;
+      text-align: center;
+    }
 
 /* Action Section */
 .action-section {
@@ -254,14 +298,32 @@
   line-height: 1.4;
 }
 
+
+.read-checkbox-inline {
+  accent-color: #4caf50;
+  transform: scale(1.5);
+  margin-left: 8px;
+  
+}
+
+.checkbox-label-small {
+  font-size: 1.2rem;
+  color: #666;
+  margin-left: 4px;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
+  .verse-header {
+     margin-top: 6rem;
+  }
+
   .verse-content {
     padding: 1rem;
   }
   
   .verse-title h1 {
     font-size: 2.5rem;
+    text-align: center;
   }
   
   .verse-card {
@@ -312,39 +374,8 @@
 } 
 
 /* this code was copied and pasted from another file for easy readability sake so do not expect the code before and after this comment to be place well hierachically some styles may come before the other */
-  .challenge-section {
-      margin-bottom: 3rem;
-      animation: fadeInUp 0.8s ease-out 0.7s both;
-    }
-    
-    .challenge-card {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #ff9ff3;
-      transition: all 0.3s ease;
-    }
-    
-    .challenge-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    }
-    
-    .challenge-card h3 {
-      font-size: 1.5rem;
-      color: #e056fd;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    
-    .challenge-card p {
-      font-size: 1.2rem;
-      color: #555;
-      line-height: 1.6;
-      text-align: center;
-    }
-    
+ 
+    /* this dig deeper section styles will only function for age 14 to 17 */
     .dig-deeper-section {
       margin-bottom: 3rem;
       animation: fadeInUp 0.8s ease-out 0.9s both;

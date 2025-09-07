@@ -717,29 +717,6 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
   }
 }
 
-// testing date rendition logic
-function renderDateToDOM() {
-  try {
-    const dateElement = document.getElementById('verse-date');
-    if (dateElement) {
-      const today = new Date();
-      const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      };
-      const formattedDate = today.toLocaleDateString('en-US', options);
-      dateElement.textContent = formattedDate;
-      console.log('Date rendered successfully:', formattedDate);
-    } else {
-      console.warn('Date element not found: verse-date');
-    }
-  } catch (error) {
-    console.error('Error rendering date:', error);
-  }
-}
-
 // Hook up renderTodayContent on DOMContentLoaded and auth state changes
 document.addEventListener('DOMContentLoaded', () => {
   console.log('renderTodayContent: DOM loaded, setting up auth listener');
@@ -756,3 +733,42 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Update date display immediately
+// nb: this is a simple static update, not tied to user auth and also it is a quick fix due to file conflicting loads due to to preview feature as dashboard.js no longer runs in todaysvers.html. future look out and scaling would be advised
+      const dateElement = document.getElementById("verse-date");
+      if (dateElement) {
+        const today = new Date();
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+        console.log('Date updated:', dateElement.textContent);
+      } else {
+        console.warn('Date element not found in DOM');
+      }
+
+
+      // PWA: install prompt
+(function installPrompt(){
+  var deferred;
+  var btn = document.getElementById('installBtn');
+  if (!btn) return;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    btn.style.display = '';
+  });
+
+  btn.addEventListener('click', function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.finally(function(){
+      deferred = null;
+      btn.style.display = 'none';
+    });
+  });
+})();

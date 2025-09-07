@@ -69,9 +69,19 @@ const db = firebase.firestore();
 // Creates auth object for user authentication (login, signup, logout)
 // Creates db object for Firestore database operations
 
+//below are the functions for authentication
+// Import offline detection (you'll need to add this)
+// For now, we'll add the offline check directly in the functions
+
 // Register Function
 async function register(event) {
+  // Check if user is offline
   event.preventDefault(); // Prevent form submission from refreshing the page
+if (!navigator.onLine) {
+  showToast("Sorry, you are currently offline", "error");
+  return;
+}
+  
 
   const name = document.getElementById("fullName").value.trim();
   const age = document.getElementById("age").value;
@@ -168,7 +178,13 @@ async function forgotPassword() {
 
 // Login Function (if needed elsewhere)
 async function login(event) {
-  event.preventDefault(); // Prevent form submission
+    event.preventDefault(); // Prevent form submission
+  // Check if user is offline
+if (!navigator.onLine) {
+  showToast("Sorry, you are currently offline", "error");
+  return;
+}
+
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
