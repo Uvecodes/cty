@@ -15,9 +15,9 @@
 
 body {
    
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: 'Comic Relief', 'Comic Sans MS', 'cursive', sans-serif;
     background: linear-gradient(135deg, #ffffff 0%, #f8fef8 100%);
-    color: #4a7c59;
+    color: red;
     overflow-x: hidden;
 }
 
