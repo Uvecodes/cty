@@ -776,6 +776,10 @@ body {
     margin: 0.5rem 0;
 }
 
+.footer .footer-content .footer-heart {
+    filter: hue-rotate(80deg);
+}
+
 /* Animations */
 
 

@@ -26,6 +26,7 @@
   font-weight: 900;
   margin-bottom: 0.5rem;
   letter-spacing: 1px;
+  text-shadow:  3px 3px 6px rgba(0,0,0,.05);
 }
 .login-container form {
   width: 100%;
