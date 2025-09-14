@@ -281,7 +281,7 @@ async function ensureGroupState(uid, userDoc, groupKey, N) {
   const newState = {
     startIndex: startIndex,
     startDate: startDate,
-    lastServedDate: "",
+    lastServedDate: startDate, // Use startDate instead of empty string
     lastServedIndex: -1
   };
   
@@ -308,7 +308,8 @@ function computeIndex(state, todayISO, N) {
   }
   
   // Check for idempotence: if we've already served content today, return the same index
-  if (state.lastServedDate === todayISO && state.lastServedIndex >= 0) {
+  const todayDateOnly = todayISO.split('T')[0]; // Get just the date part
+  if (state.lastServedDate === todayDateOnly && state.lastServedIndex >= 0) {
     return state.lastServedIndex;
   }
   
@@ -354,13 +355,14 @@ async function persistServed(uid, groupKey, todayISO, index) {
   }
   
   // Update Firestore with served content information
+  const todayDateOnly = todayISO.split('T')[0]; // Get just the date part for consistency
   try {
     await db.collection('users').doc(uid).set({
-      [`contentState.${groupKey}.lastServedDate`]: todayISO,
+      [`contentState.${groupKey}.lastServedDate`]: todayDateOnly,
       [`contentState.${groupKey}.lastServedIndex`]: index
     }, { merge: true });
     
-    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayISO}, index=${index}`);
+    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayDateOnly}, index=${index}`);
   } catch (error) {
     console.error(`Failed to persist served content to Firestore for user ${uid} group ${groupKey}:`, error);
     return false;

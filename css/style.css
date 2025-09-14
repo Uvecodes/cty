@@ -398,7 +398,7 @@ body {
 @media (max-width: 375px) {
   .floating-element:nth-child(3) { top: 75%; } /* Love icon - moved down */
   .floating-element:nth-child(4) { top: 90%; } /* Butterfly icon - moved down */
-}
+} 
 
 /* Fix floating elements visibility for 540px */
 @media (max-width: 540px) {

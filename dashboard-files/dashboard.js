@@ -197,17 +197,31 @@
         const groupId = window.getGroupIdFromProfile(userData);
         if (groupId) {
           try {
-            // Load content for the user's age group
-            const content = await loadContentForAgeGroup(groupId);
-            if (content && content.length > 0) {
-              // Get today's content based on user ID and date
-              const item = getTodayContent(content, user.uid, groupId);
-              if (item) {
-                // Render daily card (for the commented section)
-                renderDailyCard(document.querySelector('#daily-card'), item, groupId);
+            // Load content for the user's age group using working functions
+            const items = await loadGroupData(groupId);
+            if (items && items.length > 0) {
+              // Get user's timezone
+              const tz = userData.tz || getUserTZ(userData);
+              const todayISO = localDateInTZ(new Date(), tz);
+              
+              // Ensure group state exists
+              const state = await ensureGroupState(user.uid, userData, groupId, items.length);
+              if (state) {
+                // Calculate today's content index
+                const rawIndex = computeIndex(state, todayISO, items.length);
+                const finalIndex = applyBlocklist(rawIndex, items, userData.blockedRefs || []);
+                const item = items[finalIndex];
                 
-                // Render dashboard content with previews
-                renderDashboardContent(item, groupId);
+                if (item) {
+                  // Update state after serving content
+                  await persistServed(user.uid, groupId, todayISO, finalIndex);
+                  
+                  // Render daily card (for the commented section)
+                  renderDailyCard(document.querySelector('#daily-card'), item, groupId);
+                  
+                  // Render dashboard content with previews
+                  renderDashboardContent(item, groupId);
+                }
               }
             }
           } catch (error) {
@@ -430,9 +444,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("Error updating user streak:", error);
   }
   //Update streak count
-        const streakElement = document.getElementById("streakCount");
+        const streakElement = document.getElementById("streak-count");
         if (streakElement) {
-          const streak = userData.streakCount || 0;
+          const streak = newStreak.streakCount || 0;
           streakElement.textContent = `${streak} Day Streak!`;
         }
 }
