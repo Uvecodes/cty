@@ -253,53 +253,53 @@
   };
 
   // Function to render daily card
-  function renderDailyCard(cardElement, item, groupId) {
-    if (!cardElement) return;
+  // function renderDailyCard(cardElement, item, groupId) {
+    // if (!cardElement) return;
     // 
-    try {
+    // try {
       // Update date
-      const dateElement = cardElement.querySelector('#verse-date');
-      if (dateElement) {
-        const today = new Date();
-        const options = { 
-          weekday: 'long', 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
-        };
-        dateElement.textContent = today.toLocaleDateString('en-US', options);
-      }
+      // const dateElement = cardElement.querySelector('#verse-date');
+      // if (dateElement) {
+        // const today = new Date();
+        // const options = { 
+          // weekday: 'long', 
+          // year: 'numeric', 
+          // month: 'long', 
+          // day: 'numeric' 
+        // };
+        // dateElement.textContent = today.toLocaleDateString('en-US', options);
+      // }
       // 
       // Update verse text
-      const verseElement = cardElement.querySelector('#daily-verse-text');
-      if (verseElement && item.verse_web) {
-        verseElement.textContent = item.verse_web;
-      }
+      // const verseElement = cardElement.querySelector('#daily-verse-text');
+      // if (verseElement && item.verse_web) {
+        // verseElement.textContent = item.verse_web;
+      // }
       // 
       // Update verse reference
-      const refElement = cardElement.querySelector('#daily-verse-ref');
-      if (refElement && item.ref) {
-        refElement.textContent = item.ref;
-      }
+      // const refElement = cardElement.querySelector('#daily-verse-ref');
+      // if (refElement && item.ref) {
+        // refElement.textContent = item.ref;
+      // }
       //
       // Update moral text
-      const moralElement = cardElement.querySelector('#daily-moral-text');
-      if (moralElement && item.moral) {
-        moralElement.textContent = item.moral;
-      }
+      // const moralElement = cardElement.querySelector('#daily-moral-text');
+      // if (moralElement && item.moral) {
+        // moralElement.textContent = item.moral;
+      // }
       // 
       // Update challenge text
-      const challengeElement = cardElement.querySelector('#daily-challenge-text');
-      if (challengeElement && item.challenge) {
-        challengeElement.textContent = item.challenge;
-      }
+      // const challengeElement = cardElement.querySelector('#daily-challenge-text');
+      // if (challengeElement && item.challenge) {
+        // challengeElement.textContent = item.challenge;
+      // }
       // 
-      console.log('Daily card rendered for group:', groupId);
+      // console.log('Daily card rendered for group:', groupId);
       // 
-    } catch (error) {
-      console.error('Error rendering daily card:', error);
-    }
-  }
+    // } catch (error) {
+      // console.error('Error rendering daily card:', error);
+    // }
+  // }
 
   
 // text rendition with previews
