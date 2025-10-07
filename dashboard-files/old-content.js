@@ -119,8 +119,7 @@ function derivedAge(userDoc, tz) {
     return 0;
   }
   
-  // Use consistent YYYY-MM-DD format throughout
-  const todayISO = localDateInTZ(new Date(), tz);
+  const todayISO = new Date().toISOString();
   
   // Strategy 1: Exact age from DOB if available
   if (userDoc.dob) {
@@ -133,9 +132,7 @@ function derivedAge(userDoc, tz) {
   
   // Strategy 2: Calculate from birth month/day + ageAtSet + ageSetAt
   if (userDoc.birthMonth && userDoc.birthDay && userDoc.ageAtSet && userDoc.ageSetAt) {
-    // Convert todayISO to full ISO string for countAnniversaries
-    const todayDate = new Date(todayISO);
-    const anniversaries = countAnniversaries(userDoc.ageSetAt, todayDate.toISOString(), userDoc.birthMonth, userDoc.birthDay, tz);
+    const anniversaries = countAnniversaries(userDoc.ageSetAt, todayISO, userDoc.birthMonth, userDoc.birthDay, tz);
     return userDoc.ageAtSet + anniversaries;
   }
   
@@ -331,16 +328,12 @@ function applyBlocklist(index, items, blockedRefs) {
   while (attempts < items.length) {
     const currentItem = items[current];
     if (currentItem && blockedRefs.includes(currentItem.ref)) {
-      // Log the blocked item before advancing
-      console.log(`Blocked content found at index ${current} (ref: ${currentItem.ref}), advancing to next`);
       // Skip blocked content
       current = (current + 1) % items.length;
       attempts++;
+      console.log(`Skipping blocked content at index ${current} (ref: ${currentItem.ref})`);
     } else {
       // Found non-blocked
-      if (current !== index) {
-        console.log(`Found non-blocked content at index ${current} after ${attempts} skip(s)`);
-      }
       return current;
     }
   }
@@ -356,14 +349,15 @@ async function persistServed(uid, groupKey, todayISO, index) {
     return false;
   }
   
-  // todayISO is already in YYYY-MM-DD format from localDateInTZ
+  // Update Firestore with served content information
+  const todayDateOnly = todayISO.split('T')[0]; // Get just the date part for consistency
   try {
     await db.collection('users').doc(uid).set({
-      [`contentState.${groupKey}.lastServedDate`]: todayISO,
+      [`contentState.${groupKey}.lastServedDate`]: todayDateOnly,
       [`contentState.${groupKey}.lastServedIndex`]: index
     }, { merge: true });
     
-    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayISO}, index=${index}`);
+    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayDateOnly}, index=${index}`);
   } catch (error) {
     console.error(`Failed to persist served content to Firestore for user ${uid} group ${groupKey}:`, error);
     return false;

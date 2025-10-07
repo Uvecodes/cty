@@ -1,10 +1,4 @@
-// Firebase v8 Namespaced SDK
-const firebase = require('firebase/app');
-require('firebase/auth');
-require('firebase/firestore');
-require('firebase/analytics');
-require('firebase/messaging');
-
+// Firebase v8 Namespaced SDK - Browser Compatible
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
@@ -16,14 +10,13 @@ const firebaseConfig = {
   measurementId: "G-H517ECEK72"
 };
 
-// Initialize Firebase app
-const app = firebase.initializeApp(firebaseConfig);
+// Initialize Firebase app (only if not already initialized)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // Initialize Firebase services
 const auth = firebase.auth();
 const db = firebase.firestore();
 const analytics = firebase.analytics();
 const messaging = firebase.messaging();
-
-// Export Firebase instances
-module.exports = { app, auth, db, analytics, messaging };

@@ -1,18 +1,19 @@
 // Initialize Firebase
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
-//   authDomain: "catch-them-young-16da5.firebaseapp.com",
-//   projectId: "catch-them-young-16da5",
-//   storageBucket: "catch-them-young-16da5.firebasestorage.app",
-//   messagingSenderId: "777589364823",
-//   appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
-//   measurementId: "G-H517ECEK72",
-// };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
+  //   authDomain: "catch-them-young-16da5.firebaseapp.com",
+  //   projectId: "catch-them-young-16da5",
+  //   storageBucket: "catch-them-young-16da5.firebasestorage.app",
+  //   messagingSenderId: "777589364823",
+  //   appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
+  //   measurementId: "G-H517ECEK72",
+  // };
 // Initialize Firebase
 // firebase.initializeApp(firebaseConfig);
 
 // Get Firestore instance
 // const db = firebase.firestore();
+
 
 function getUserTZ(userDoc) {
   if (userDoc && userDoc.tz) {
@@ -21,6 +22,9 @@ function getUserTZ(userDoc) {
   
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 }
+
+
+
 
 function localDateInTZ(date, tz) {
   const dateObj = new Date(date);
@@ -33,20 +37,17 @@ function localDateInTZ(date, tz) {
   }).format(dateObj);
 }
 
-function daysBetween(dateA, dateB) {
-  // Parse dateA (YYYY-MM-DD) to UTC midnight
-  const partsA = dateA.split('-');
-  const yearA = parseInt(partsA[0]);
-  const monthA = parseInt(partsA[1]) - 1;
-  const dayA = parseInt(partsA[2]);
-  const utcMidnightA = Date.UTC(yearA, monthA, dayA);
 
-  // Parse dateB (YYYY-MM-DD) to UTC midnight
-  const partsB = dateB.split('-');
-  const yearB = parseInt(partsB[0]);
-  const monthB = parseInt(partsB[1]) - 1;
-  const dayB = parseInt(partsB[2]);
-  const utcMidnightB = Date.UTC(yearB, monthB, dayB);
+
+
+
+function daysBetween(dateA, dateB) {
+  const a = new Date(dateA);
+  const b = new Date(dateB);
+  
+  // Convert both dates to UTC midnight to avoid DST drift
+  const utcMidnightA = Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
+  const utcMidnightB = Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate());
   
   // Calculate difference in milliseconds and convert to days
   const diffMs = utcMidnightB - utcMidnightA;
@@ -57,6 +58,7 @@ function daysBetween(dateA, dateB) {
   return days;
 }
 
+
 function stableHash(str) {
   let h = 5381;
   
@@ -66,6 +68,7 @@ function stableHash(str) {
   
   return (h >>> 0);
 }
+
 
 function countAnniversaries(startISO, endISO, month, day, tz) {
   const start = new Date(startISO);
@@ -114,13 +117,13 @@ function countAnniversaries(startISO, endISO, month, day, tz) {
   return Math.max(0, count);
 }
 
+
 function derivedAge(userDoc, tz) {
   if (!userDoc) {
     return 0;
   }
   
-  // Use consistent YYYY-MM-DD format throughout
-  const todayISO = localDateInTZ(new Date(), tz);
+  const todayISO = new Date().toISOString();
   
   // Strategy 1: Exact age from DOB if available
   if (userDoc.dob) {
@@ -133,9 +136,7 @@ function derivedAge(userDoc, tz) {
   
   // Strategy 2: Calculate from birth month/day + ageAtSet + ageSetAt
   if (userDoc.birthMonth && userDoc.birthDay && userDoc.ageAtSet && userDoc.ageSetAt) {
-    // Convert todayISO to full ISO string for countAnniversaries
-    const todayDate = new Date(todayISO);
-    const anniversaries = countAnniversaries(userDoc.ageSetAt, todayDate.toISOString(), userDoc.birthMonth, userDoc.birthDay, tz);
+    const anniversaries = countAnniversaries(userDoc.ageSetAt, todayISO, userDoc.birthMonth, userDoc.birthDay, tz);
     return userDoc.ageAtSet + anniversaries;
   }
   
@@ -150,6 +151,7 @@ function derivedAge(userDoc, tz) {
   return Number(userDoc.age || 0);
 }
 
+
 function ageToGroupKey(age) {
   if (age >= 4 && age <= 6) {
     return "4-6";
@@ -163,6 +165,7 @@ function ageToGroupKey(age) {
     return null;
   }
 }
+
 
 async function ensureActiveGroup(uid, userDoc, tz, initializer) {
   if (!userDoc) {
@@ -210,6 +213,7 @@ async function ensureActiveGroup(uid, userDoc, tz, initializer) {
   return currentKey;
 }
 
+
 function groupPath(groupKey) {
   switch (groupKey) {
     case "4-6":
@@ -224,6 +228,7 @@ function groupPath(groupKey) {
       return null;
   }
 }
+
 
 async function loadGroupData(groupKey) {
   // Get the file path for the group
@@ -257,6 +262,7 @@ async function loadGroupData(groupKey) {
     return [];
   }
 }
+
 
 async function ensureGroupState(uid, userDoc, groupKey, N) {
   if (!userDoc || !groupKey || !N) {
@@ -298,6 +304,7 @@ async function ensureGroupState(uid, userDoc, groupKey, N) {
   }
 }
 
+
 function computeIndex(state, todayISO, N) {
   if (!state || state.startIndex === undefined || !state.startDate || !N) {
     console.warn('Missing required parameters for computeIndex:', { state, todayISO, N });
@@ -315,6 +322,7 @@ function computeIndex(state, todayISO, N) {
   return todayIndex;
 }
 
+
 function applyBlocklist(index, items, blockedRefs) {
   // If no blocklist or empty blocklist, return original index
   if (!blockedRefs || blockedRefs.length === 0) {
@@ -326,29 +334,19 @@ function applyBlocklist(index, items, blockedRefs) {
     return index;
   }
   
-  let current = index;
-  let attempts = 0;
-  while (attempts < items.length) {
-    const currentItem = items[current];
-    if (currentItem && blockedRefs.includes(currentItem.ref)) {
-      // Log the blocked item before advancing
-      console.log(`Blocked content found at index ${current} (ref: ${currentItem.ref}), advancing to next`);
-      // Skip blocked content
-      current = (current + 1) % items.length;
-      attempts++;
-    } else {
-      // Found non-blocked
-      if (current !== index) {
-        console.log(`Found non-blocked content at index ${current} after ${attempts} skip(s)`);
-      }
-      return current;
-    }
+  // Check if current item is blocked
+  const currentItem = items[index];
+  if (currentItem && blockedRefs.includes(currentItem.ref)) {
+    // Advance once to skip blocked content
+    const nextIndex = (index + 1) % items.length;
+    console.log(`Skipping blocked content at index ${index} (ref: ${currentItem.ref}), advancing to index ${nextIndex}`);
+    return nextIndex;
   }
   
-  // All items blocked? Fall back to original index (or handle differently if needed)
-  console.warn('All items blocked, falling back to original index');
+  // No blocking needed, return original index
   return index;
 }
+
 
 async function persistServed(uid, groupKey, todayISO, index) {
   if (!uid || !groupKey || !todayISO || index === undefined) {
@@ -356,14 +354,15 @@ async function persistServed(uid, groupKey, todayISO, index) {
     return false;
   }
   
-  // todayISO is already in YYYY-MM-DD format from localDateInTZ
+  // Update Firestore with served content information
+  const todayDateOnly = todayISO.split('T')[0]; // Get just the date part for consistency
   try {
     await db.collection('users').doc(uid).set({
-      [`contentState.${groupKey}.lastServedDate`]: todayISO,
+      [`contentState.${groupKey}.lastServedDate`]: todayDateOnly,
       [`contentState.${groupKey}.lastServedIndex`]: index
     }, { merge: true });
     
-    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayISO}, index=${index}`);
+    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayDateOnly}, index=${index}`);
   } catch (error) {
     console.error(`Failed to persist served content to Firestore for user ${uid} group ${groupKey}:`, error);
     return false;
@@ -381,6 +380,7 @@ async function persistServed(uid, groupKey, todayISO, index) {
   
   return true;
 }
+
 
 function renderItemToDOM(item) {
   if (!item) {
@@ -404,6 +404,7 @@ function renderItemToDOM(item) {
     }
   });
 }
+
 
 function shouldShowMigration(userDoc, todayISO) {
   if (!userDoc || !todayISO) {
@@ -435,6 +436,7 @@ function shouldShowMigration(userDoc, todayISO) {
   return false;
 }
 
+
 async function scheduleRePrompt(uid, todayISO, days = 7) {
   if (!uid || !todayISO || days === undefined) {
     console.warn('scheduleRePrompt: Missing required parameters:', { uid, todayISO, days });
@@ -465,6 +467,7 @@ async function scheduleRePrompt(uid, todayISO, days = 7) {
   }
 }
 
+
 function openMigrationModal(onSave, onSkip) {
   if (!onSave || !onSkip) {
     console.warn('openMigrationModal: Missing required callbacks');
@@ -482,6 +485,7 @@ function openMigrationModal(onSave, onSkip) {
   // Note: onSkip() would be called if user dismisses modal
   // For testing, we're calling onSave immediately
 }
+
 
 async function submitMigration(uid, userDoc, month, day, tz) {
   if (!uid || !userDoc || month === undefined || day === undefined || !tz) {
@@ -632,6 +636,7 @@ async function renderTodayContent() {
   }
 }
 
+
 async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
   try {
     console.log(`renderContentAfterMigration: Starting for user ${uid}`);
@@ -674,16 +679,6 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
     }
     
     console.log(`renderContentAfterMigration: Group state ensured for user ${uid}, group ${groupKey}:`, state);
-    
-    // Optional: If already served today, skip re-render/persist to avoid redundant work
-    if (state.lastServedDate === todayISO && state.lastServedIndex >= 0) {
-      console.log(`renderContentAfterMigration: Content already served today for user ${uid}, skipping re-render`);
-      const selectedItem = items[state.lastServedIndex];
-      if (selectedItem) {
-        renderItemToDOM(selectedItem);
-      }
-      return;
-    }
     
     // Compute raw index
     const rawIndex = computeIndex(state, todayISO, items.length);
@@ -741,24 +736,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+
 // Update date display immediately
 // nb: this is a simple static update, not tied to user auth and also it is a quick fix due to file conflicting loads due to to preview feature as dashboard.js no longer runs in todaysvers.html. future look out and scaling would be advised
-const dateElement = document.getElementById("verse-date");
-if (dateElement) {
-  const today = new Date();
-  const options = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  };
-  dateElement.textContent = today.toLocaleDateString('en-US', options);
-  console.log('Date updated:', dateElement.textContent);
-} else {
-  console.warn('Date element not found in DOM');
-}
+      const dateElement = document.getElementById("verse-date");
+      if (dateElement) {
+        const today = new Date();
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+        console.log('Date updated:', dateElement.textContent);
+      } else {
+        console.warn('Date element not found in DOM');
+      }
 
-// PWA: install prompt
+
+      // PWA: install prompt
 (function installPrompt(){
   var deferred;
   var btn = document.getElementById('installBtn');

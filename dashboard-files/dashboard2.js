@@ -116,7 +116,7 @@
     // Update progress bar every 5 seconds
     const refreshInterval = setInterval(async () => {
       await updateProgressBar();
-    }, 5000);
+    }, 500000);
     
     // Store interval ID for cleanup
     window.progressBarRefreshInterval = refreshInterval;
@@ -185,25 +185,26 @@
           console.warn('Streak element not found in DOM');
         }
 
+
         // Set up a real-time listener
-        const unsubscribe = firebase.firestore()
-          .collection('users')
-          .doc(user.uid) // Fixed: Use user.uid
-          .onSnapshot((doc) => {
-            if (doc.exists) {
-              const userData = doc.data();
-              const streakCount = userData.streakCount || 0;
-              const streakElement = document.getElementById("streak-count");
-              if (streakElement) {
-                streakElement.textContent = `${streakCount} Day Streak!`;
-                console.log('Streak count updated in real-time:', streakCount);
-              }
-            }
-          });
+       const unsubscribe = firebase.firestore()
+       .collection('users')
+       .doc(userId) // replace with actual user ID
+       .onSnapshot((doc) => {
+       if (doc.exists) {
+          const userData = doc.data();
+          const streakCount = userData.streakCount || 0;
+          const streakElement = document.getElementById("streak-count");
+         if (streakElement) {
+        streakElement.textContent = `${streakCount} Day Streak!`;
+        console.log('Streak count updated in real-time:', streakCount);
+      }
+    }
+  });
 
-        // Don't forget to unsubscribe when component/page is destroyed to prevent memory leaks
-        // For example, add to window.addEventListener('beforeunload', unsubscribe);
-
+// Don't forget to unsubscribe when component/page is destroyed to prevent memory leaks
+// unsubscribe();
+        
         // Update progress bar
         await updateProgressBar();
         
@@ -212,8 +213,42 @@
         
         showToast(`Welcome back, ${userData.name}!`, "success");
         
-        // Removed: Duplicate content loading/rendering (let content.js handle it)
-        // If you need something specific here, call a function from content.js
+        // Load daily content after user data is fetched
+        const groupId = window.getGroupIdFromProfile(userData);
+        if (groupId) {
+          try {
+            // Load content for the user's age group using working functions
+            const items = await loadGroupData(groupId);
+            if (items && items.length > 0) {
+              // Get user's timezone
+              const tz = userData.tz || getUserTZ(userData);
+              const todayISO = localDateInTZ(new Date(), tz);
+              
+              // Ensure group state exists
+              const state = await ensureGroupState(user.uid, userData, groupId, items.length);
+              if (state) {
+                // Calculate today's content index
+                const rawIndex = computeIndex(state, todayISO, items.length);
+                const finalIndex = applyBlocklist(rawIndex, items, userData.blockedRefs || []);
+                const item = items[finalIndex];
+                
+                if (item) {
+                  // Update state after serving content
+                  await persistServed(user.uid, groupId, todayISO, finalIndex);
+                  
+                  // Render daily card (for the commented section)
+                  renderDailyCard(document.querySelector('#daily-card'), item, groupId);
+                  
+                  // Render dashboard content with previews
+                  renderDashboardContent(item, groupId);
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error loading daily content:', error);
+            // Date still shows even if content fails
+          }
+        }
         
       } else {
         console.log('No user document found');
@@ -227,63 +262,134 @@
   }
 
   // Function to get group ID from user profile
-  // window.getGroupIdFromProfile = function(userData) {
-  //   if (userData.age) {
-  //     if (userData.age >= 4 && userData.age <= 6) return "4-6";
-  //     if (userData.age >= 7 && userData.age <= 10) return "7-10";
-  //     if (userData.age >= 11 && userData.age <= 13) return "11-13";
-  //     if (userData.age >= 14 && userData.age <= 17) return "14-17";
-  //   }
-  //   return "7-10"; // Default fallback
-  // };
+  window.getGroupIdFromProfile = function(userData) {
+    if (userData.age) {
+      if (userData.age >= 4 && userData.age <= 6) return "4-6";
+      if (userData.age >= 7 && userData.age <= 10) return "7-10";
+      if (userData.age >= 11 && userData.age <= 13) return "11-13";
+      if (userData.age >= 14 && userData.age <= 17) return "14-17";
+    }
+    return "7-10"; // Default fallback
+  };
+
+  // Function to render daily card
+  // function renderDailyCard(cardElement, item, groupId) {
+    // if (!cardElement) return;
+    // 
+    // try {
+      // Update date
+      // const dateElement = cardElement.querySelector('#verse-date');
+      // if (dateElement) {
+        // const today = new Date();
+        // const options = { 
+          // weekday: 'long', 
+          // year: 'numeric', 
+          // month: 'long', 
+          // day: 'numeric' 
+        // };
+        // dateElement.textContent = today.toLocaleDateString('en-US', options);
+      // }
+      // 
+      // Update verse text
+      // const verseElement = cardElement.querySelector('#daily-verse-text');
+      // if (verseElement && item.verse_web) {
+        // verseElement.textContent = item.verse_web;
+      // }
+      // 
+      // Update verse reference
+      // const refElement = cardElement.querySelector('#daily-verse-ref');
+      // if (refElement && item.ref) {
+        // refElement.textContent = item.ref;
+      // }
+      //
+      // Update moral text
+      // const moralElement = cardElement.querySelector('#daily-moral-text');
+      // if (moralElement && item.moral) {
+        // moralElement.textContent = item.moral;
+      // }
+      // 
+      // Update challenge text
+      // const challengeElement = cardElement.querySelector('#daily-challenge-text');
+      // if (challengeElement && item.challenge) {
+        // challengeElement.textContent = item.challenge;
+      // }
+      // 
+      // console.log('Daily card rendered for group:', groupId);
+      // 
+    // } catch (error) {
+      // console.error('Error rendering daily card:', error);
+    // }
+  // }
+
+  
+// text rendition with previews
 
   // In dashboard.js - wait for content to load, then mutate it
-  function waitForContentAndApplyPreviews() {
-    // Wait for content to be rendered by content.js
-    const checkInterval = setInterval(() => {
-      const passageElement = document.getElementById('passage');
-      const moralElement = document.getElementById('moral');
+function waitForContentAndApplyPreviews() {
+  // Wait for content to be rendered by content.js
+  const checkInterval = setInterval(() => {
+    const passageElement = document.getElementById('passage');
+    const moralElement = document.getElementById('moral');
+    
+    if (passageElement && moralElement && 
+        passageElement.textContent !== 'Loading...' && 
+        moralElement.textContent !== 'Loading...') {
       
-      if (passageElement && moralElement && 
-          passageElement.textContent !== 'Loading...' && 
-          moralElement.textContent !== 'Loading...') {
-        
-        // Content is loaded, apply previews
-        clearInterval(checkInterval);
-        applyPreviews();
-      }
-    }, 100); // Check every 100ms
-    
-    // Timeout after 5 seconds
-    setTimeout(() => {
+      // Content is loaded, apply previews
       clearInterval(checkInterval);
-      console.warn('Timeout waiting for content to load');
-    }, 5000);
-  }
+      applyPreviews();
+    }
+  }, 100); // Check every 100ms
+  
+  // Timeout after 5 seconds
+  setTimeout(() => {
+    clearInterval(checkInterval);
+    console.warn('Timeout waiting for content to load');
+  }, 5000);
+}
 
-  // function applyPreviews() {
-  //   // Get the full text
-  //   const passageElement = document.getElementById('passage');
-  //   const moralElement = document.getElementById('moral');
-    
-  //   if (passageElement) {
-  //     const fullText = passageElement.textContent;
-  //     const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
-  //     passageElement.textContent = preview;
-  //   }
-    
-  //   if (moralElement) {
-  //     const fullText = moralElement.textContent;
-  //     const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
-  //     moralElement.textContent = preview;
+function applyPreviews() {
+  // Get the full text
+  const passageElement = document.getElementById('passage');
+  const moralElement = document.getElementById('moral');
+  
+  if (passageElement) {
+    const fullText = passageElement.textContent;
+    const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
+    passageElement.textContent = preview;
+  }
+  
+  if (moralElement) {
+    const fullText = moralElement.textContent;
+    const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
+    moralElement.textContent = preview;
+  }
+}
+
+// Call this after dashboard loads
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait a bit for content.js to finish
+  setTimeout(waitForContentAndApplyPreviews, 1000);
+});
+
+  
+// 
+  
+
+  // Logout functionality
+  // async function logout() {
+  //   try {
+  //     await auth.signOut();
+  //     showToast("Logged out successfully!", "success");
+  //     window.location.href = 'authentication/login.html';
+  //   } catch (error) {
+  //     console.error('Logout error:', error);
+  //     showToast("Error during logout", "error");
   //   }
   // }
 
-  // Call this after dashboard loads
-  // document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit for content.js to finish
-    // setTimeout(waitForContentAndApplyPreviews, 1000);
-  // });
+
+  
 
 /**
  * Updates the user's daily streak in Firestore
@@ -360,7 +466,7 @@
   //Update streak count
         const streakElement = document.getElementById("streak-count");
         if (streakElement) {
-          const streak = newStreak || 0;  // Fixed: newStreak is a number
+          const streak = newStreak.streakCount || 0;
           streakElement.textContent = `${streak} Day Streak!`;
         }
 }
@@ -385,6 +491,10 @@
     }
     updateUserStreak(user); // Update streak on auth state change
   });
+
+
+
+
 
   // Add logout button functionality if it exists
   document.addEventListener("DOMContentLoaded", () => {
@@ -412,4 +522,4 @@
     }
   });
 
-})();
+})(); 
