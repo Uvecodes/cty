@@ -1,4 +1,34 @@
+/* navbar */
 
+.profile-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  box-shadow: 0 2px 12px rgba(34, 34, 59, 0.08);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.navbar-left .app-logo {
+  font-family: 'Poppins', 'Nunito', Arial, Helvetica, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--color-green);
+  letter-spacing: 1px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+}
 
 /* Modern Edit Profile Styles */
 #edit-profile {
@@ -18,6 +48,7 @@
   width: 100%;
   max-width: 480px;
   animation: slideInUp 0.6s ease-out;
+  margin-top: 6rem;
 }
 
 .profile-header {
@@ -187,7 +218,7 @@
   justify-content: center;
 }
 
-.save-btn, .cancel-btn {
+.updatepasswordBtn, .savethemebtn { /*1*/
   padding: 1rem 2rem;
   border: none;
   border-radius: 2rem;
@@ -198,25 +229,25 @@
   min-width: 140px;
 }
 
-.save-btn {
+.updatepasswordBtn {
   background: linear-gradient(135deg, var(--color-green) 0%, var(--color-yellow) 100%);
   color: var(--color-dark);
   box-shadow: 0 4px 12px rgba(34, 34, 59, 0.1);
 }
 
-.save-btn:hover {
+.updatepasswordBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(34, 34, 59, 0.15);
   filter: brightness(1.05);
 }
 
-.cancel-btn {
+.savethemebtn {
   background: #f8f9fa;
   color: #666;
   border: 2px solid #e0e0e0;
 }
 
-.cancel-btn:hover {
+.savethemebtn:hover {
   background: #e9ecef;
   color: var(--color-dark);
   transform: translateY(-2px);
@@ -248,7 +279,7 @@
     flex-direction: column;
   }
   
-  .save-btn, .cancel-btn {
+  .updatepasswordBtn, .savethemebtn { /*1*/
     width: 100%;
   }
 }

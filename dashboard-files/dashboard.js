@@ -261,29 +261,34 @@
     }, 5000);
   }
 
-  // function applyPreviews() {
+
+  // apply previews to passage and moral
+ 
+    
+ 
+   function applyPreviews() {
   //   // Get the full text
-  //   const passageElement = document.getElementById('passage');
-  //   const moralElement = document.getElementById('moral');
-    
-  //   if (passageElement) {
-  //     const fullText = passageElement.textContent;
-  //     const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
-  //     passageElement.textContent = preview;
-  //   }
-    
-  //   if (moralElement) {
-  //     const fullText = moralElement.textContent;
-  //     const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
-  //     moralElement.textContent = preview;
-  //   }
-  // }
+     const passageElement = document.getElementById('passage');
+     const moralElement = document.getElementById('moral');
+     
+     if (passageElement) {
+       const fullText = passageElement.textContent;
+       const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
+       passageElement.textContent = preview;
+     }
+     
+   if (moralElement) {
+     const fullText = moralElement.textContent;
+     const preview = fullText.split(' ').slice(0, 4).join(' ') + '...';
+     moralElement.textContent = preview;
+   }
+ }
 
   // Call this after dashboard loads
-  // document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit for content.js to finish
-    // setTimeout(waitForContentAndApplyPreviews, 1000);
-  // });
+  document.addEventListener('DOMContentLoaded', () => {
+    //  Wait a bit for content.js to finish
+     setTimeout(waitForContentAndApplyPreviews, 1000);
+  });
 
 /**
  * Updates the user's daily streak in Firestore

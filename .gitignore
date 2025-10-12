@@ -3,3 +3,15 @@ auth2.js
 login.js
 signup.js
 node_modules
+# js files to ignore
+notifications.js
+leaderboard.js
+
+# content / dashboard files to ignore
+old-content.js
+old-dashboard.js
+dashboard2.js
+content2.js
+another-content,js
+proile.html
+

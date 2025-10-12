@@ -22,16 +22,58 @@
   <title>Edit Profile | Catch Them Young</title>
 </head>
 <body>
+
+  <!-- Navigation Bar -->
+   <!-- Fixed Top Navbar -->
+  <nav  class="profile-navbar">
+    <div class="navbar-left">
+      <div class="logo">
+        <!-- <img src="../assets/images/official-logo.svg" alt=""> -->
+         <!-- <div class="profile-avatar"> -->
+                    <img id="profileAvatar" src="../assets/images/official-logo.svg" alt="#">
+                    <!-- <input type="file" id="avatarUpload" accept="image/*" style="display: none;"> -->
+                    <!-- <button type="button" id="avatarUploadBtn" class="avatar-upload-btn">Change Photo</button> -->
+                <!-- </div> -->
+      </div>
+    </div>
+
+     <div class="navbar-right">
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
+      <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
+    </div>
+
+     <!-- <div class="navbar-right">
+                <a href="./dashboard.html" class="btn btn-primary">BACK TO DASHBOARD</a>
+                
+            </div> -->
+    <!-- <div class="navbar-right">
+      <a href="#" class="btn btn-secondary" aria-label="logout" onClick="logout()">← Logout</a> -->
+        
+                <!-- tooltip was implemented here -->
+    <!-- <button id="installBtn"  class="btn-install">Install App
+        <span class="tooltip">Install for a better personalized experience</span>
+    </button> -->
+
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
+      <!-- we will implement 3d avatar later as a new feature to excite users-->
+      <!-- <div class="user-avatar"> -->
+        <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
+      <!-- </div> -->
+    <!--/div -->
+  </nav>
+    
+
+
   <section id="edit-profile">
     <div class="profile-card">
       <header class="profile-header">
-        <h1>✏️ Edit Your Profile</h1>
+        <h1> <img src="../assets/icons/person-cty.svg" alt="#"> Edit Your Profile</h1>
         <p>Update your information and preferences</p>
       </header>
 
       <form class="profile-form">
         <!-- Profile Avatar Section -->
-        <!-- <div class="avatar-section">
+        <div class="avatar-section">
           <div class="avatar-container">
             <img src="assets/images/avatar-placeholder.png" alt="Profile Avatar" class="profile-avatar">
             <div class="avatar-overlay">
@@ -39,30 +81,44 @@
             </div>
           </div>
           <button type="button" class="change-photo-btn">Change Photo</button>
-        </div> -->
+        </div>
 
         <!-- first commenting -->
 
         <!-- Form Fields -->
-        <!-- <div class="form-fields">
-          <div class="form-group">
-            <label for="fullname">Full Name</label>
-            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
-          </div> -->
-          <!-- second commenting -->
-
-          <!-- <div class="form-group">
-            <label for="age">Age</label>
-            <input type="number" id="age" name="age" min="4" max="17" placeholder="Your age" required>
-          </div>
+         <div class="form-fields">
 
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+          </div> 
+
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword"  placeholder="Enter new password" minlength="6">
+          </div> 
+
+
+          
+          <!-- second commenting -->
+
+           <div class="form-group">
+                    <label for="confirmPassword">New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="6">
+                </div>
+
+           <!-- <div class="form-group"> 
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="4" max="17" placeholder="Your age" required>
           </div> -->
+
+          <div class="form-actions">
+           
+            <button type="button" id="updatePasswordBtn" class="updatepasswordBtn" disabled>Update Password</button>
+          </div>
           <!--  3rd commenting -->
 
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="theme-preference">Theme Preference</label>
             <div class="theme-toggle-container">
               <label class="theme-option">
@@ -77,28 +133,25 @@
                 <span class="theme-label">
                   <span class="theme-icon">🌙</span>
                   Dark Mode
-                </span> -->
+                </span> 
                 <!-- 4th commenting -->
-              <!-- </label>
+               </label>
             </div>
           </div>
-        </div> -->
+        </div> 
         <!-- 5th commenting -->
 
         <!-- Action Buttons -->
-        <!-- <div class="form-actions">
-          <button type="submit" class="save-btn">💾 Save Changes</button>
-          <button type="button" class="cancel-btn">❌ Cancel</button>
+        <div class="form-actions">
+         
+          <button type="button" class="savethemebtn">Save Theme</button>
         </div>
       </form>
     </div>
-  </section> -->
+  </section> 
   <!-- 6th commenting -->
    
-   <h1>COMING SOON</h1>
-   <div class="cta-buttons">
-                <a href="./dashboard.html" class="btn btn-primary">BACK TO DASHBOARD</a>
-                
-            </div>
+   <!-- <h1>COMING SOON</h1> -->
+  
 </body>
 </html> 

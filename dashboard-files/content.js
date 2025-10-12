@@ -283,18 +283,45 @@ async function ensureGroupState(uid, userDoc, groupKey, N) {
     lastServedIndex: -1
   };
   
+  // Use a transaction to atomically create the group's state only if it does not already exist.
+  const userRef = db.collection('users').doc(uid);
   try {
-    // Write the new state to Firestore using merge to preserve other groups
-    await db.collection('users').doc(uid).set({
-      [`contentState.${groupKey}`]: newState
-    }, { merge: true });
-    
-    console.log(`Initialized content state for user ${uid} group ${groupKey}:`, newState);
+    const resultState = await db.runTransaction(async (tx) => {
+      const snap = await tx.get(userRef);
+      const serverData = snap.exists ? snap.data() : {};
+      const serverState = serverData && serverData.contentState ? serverData.contentState[groupKey] : undefined;
+
+      // If server already has a valid state for this group, return it (no overwrite)
+      if (serverState && serverState.startIndex !== undefined && serverState.startDate) {
+        return serverState;
+      }
+
+      // Otherwise write our new state. Use set with merge to avoid clobbering other fields.
+      tx.set(userRef, { contentState: { [groupKey]: newState } }, { merge: true });
+
+      // Return the state we just wrote
+      return newState;
+    });
+
+    console.log(`Initialized content state for user ${uid} group ${groupKey} (transaction):`, resultState);
+    return resultState;
+
+  } catch (txError) {
+    // Transaction failed (could be permission/network). Fall back safely but do not repeatedly re-initialize.
+    console.error(`Transaction failed while initializing content state for ${uid} group ${groupKey}:`, txError);
+
+    // Local fallback: store intended initialization in localStorage so we don't reinitialize each load.
+    try {
+      const localKey = `cty_initState_${uid}_${groupKey}`;
+      const payload = { newState, createdAt: new Date().toISOString() };
+      localStorage.setItem(localKey, JSON.stringify(payload));
+      console.warn(`Saved intended state to localStorage (${localKey}) as a fallback. Will retry server write later.`);
+    } catch (lsError) {
+      console.warn('Failed to save fallback init state to localStorage:', lsError);
+    }
+
+    // Return the local newState so the UI can render consistently for this client
     return newState;
-    
-  } catch (error) {
-    console.error(`Failed to initialize content state for user ${uid} group ${groupKey}:`, error);
-    return null;
   }
 }
 
@@ -757,6 +784,84 @@ if (dateElement) {
 } else {
   console.warn('Date element not found in DOM');
 }
+
+
+
+// Retry any locally stored initialization states when network connectivity returns.
+// Call this on startup (DOMContentLoaded) or after sign-in.
+async function retryPendingInitializations() {
+  if (typeof firebase === 'undefined' || typeof db === 'undefined') {
+    console.warn('retryPendingInitializations: firebase/db not available yet.');
+    return;
+  }
+
+  try {
+    // Iterate localStorage keys to find pending init entries
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith('cty_initState_')) continue;
+
+      try {
+        const payloadRaw = localStorage.getItem(key);
+        if (!payloadRaw) continue;
+        const payload = JSON.parse(payloadRaw);
+        const [, uid, groupKey] = key.split('_'); // key format: cty_initState_<uid>_<groupKey>
+
+        // Validate payload
+        if (!uid || !groupKey || !payload || !payload.newState) {
+          // Not in expected format; remove to avoid clutter
+          localStorage.removeItem(key);
+          continue;
+        }
+
+        const userRef = db.collection('users').doc(uid);
+
+        // Use a transaction to ensure we don't overwrite an existing server state
+        try {
+          await db.runTransaction(async (tx) => {
+            const snap = await tx.get(userRef);
+            const serverData = snap.exists ? snap.data() : {};
+            const serverState = serverData && serverData.contentState ? serverData.contentState[groupKey] : undefined;
+
+            if (serverState && serverState.startIndex !== undefined && serverState.startDate) {
+              // Server already has a state; nothing to do.
+              return;
+            }
+
+            // Write the pending newState to server
+            tx.set(userRef, { contentState: { [groupKey]: payload.newState } }, { merge: true });
+          });
+
+          // If transaction succeeded, remove local fallback
+          localStorage.removeItem(key);
+          console.log(`retryPendingInitializations: Successfully wrote pending init for ${uid} / ${groupKey} and removed ${key}`);
+        } catch (txErr) {
+          console.warn(`retryPendingInitializations: Transaction failed for ${key}:`, txErr);
+          // leave the local key for future retries
+        }
+      } catch (entryErr) {
+        console.warn('retryPendingInitializations: Failed to parse local entry', key, entryErr);
+        // Remove invalid entry to avoid infinite loops
+        localStorage.removeItem(key);
+      }
+    }
+  } catch (err) {
+    console.error('retryPendingInitializations: Unexpected error', err);
+  }
+}
+
+// Optionally wire the retry to 'online' events so it runs automatically
+window.addEventListener('online', () => {
+  console.log('Network online: attempting to retry pending initializations');
+  retryPendingInitializations().catch(e => console.error('retryPendingInitializations failed:', e));
+});
+
+// Also attempt a run once after DOM is ready (but guard on firebase/db presence)
+// This is safe to call repeatedly; if firebase/db isn't ready yet, the function bails early.
+document.addEventListener('DOMContentLoaded', () => {
+  // small delay to allow firebase scripts to initialize if they are loaded just before this script
+  setTimeout(() => retryPendingInitializations(), 1000);
+});
 
 // PWA: install prompt
 (function installPrompt(){

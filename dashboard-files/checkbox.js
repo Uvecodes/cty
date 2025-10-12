@@ -16,7 +16,6 @@ async function initializeCheckboxAndProgress() {
   const db = firebase.firestore();
   const userRef = db.collection("users").doc(user.uid);
 
-  const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
   const totalDailyTasks = 4; // Fixed total daily tasks
 
   try {
@@ -46,178 +45,173 @@ async function initializeCheckboxAndProgress() {
       challengeCompleted = userData.challengeCompleted || false;
     }
 
-    // Set initial checkbox states based on today's completion
-    if (lastVisit === today) {
-      // Restore today's completed state
-      checkbox1.checked = verseCompleted;
-      checkbox2.checked = moralCompleted;
-      checkbox3.checked = reflectionCompleted;
-      checkbox4.checked = challengeCompleted;
-    } else {
-      // Reset all for new day
-      checkbox1.checked = false;
-      checkbox2.checked = false;
-      checkbox3.checked = false;
-      checkbox4.checked = false;
-      
-      // Reset individual task states
+    // Determine today's date in user's timezone (prefer stored tz)
+    const tz = (userData && userData.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const today = (typeof localDateInTZ === 'function') ? localDateInTZ(new Date(), tz) : new Date().toISOString().split('T')[0];
+
+    // If lastVisit is not today, reset server-side daily state so we don't carry over yesterday's values
+    if (lastVisit !== today) {
+      // Reset local variables
       verseCompleted = false;
       moralCompleted = false;
       reflectionCompleted = false;
       challengeCompleted = false;
+      completedCount = 0;
+
+      try {
+        await userRef.set({
+          lastVisit: today,
+          completedCount: 0,
+          verseCompleted: false,
+          moralCompleted: false,
+          reflectionCompleted: false,
+          challengeCompleted: false
+        }, { merge: true });
+        console.log('Daily progress reset on server for', today);
+      } catch (resetErr) {
+        console.warn('Failed to reset daily progress on server; proceeding with local reset:', resetErr);
+      }
+
+      // Update UI cleared state
+      if (checkbox1) checkbox1.checked = false;
+      if (checkbox2) checkbox2.checked = false;
+      if (checkbox3) checkbox3.checked = false;
+      if (checkbox4) checkbox4.checked = false;
+    } else {
+      // Restore today's completed state
+      if (checkbox1) checkbox1.checked = verseCompleted;
+      if (checkbox2) checkbox2.checked = moralCompleted;
+      if (checkbox3) checkbox3.checked = reflectionCompleted;
+      if (checkbox4) checkbox4.checked = challengeCompleted;
     }
 
     // Checkbox 1 handler (Verse)
-    checkbox1.addEventListener("change", async function () {
-      try {
-        if (checkbox1.checked) {
-          verseCompleted = true;
-          const newCompletedCount = completedCount + 1;
-          
-          await userRef.set({
-            verseCompleted: true,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Verse completed. Progress: ${completedCount}/${totalDailyTasks}`);
-          
+    if (checkbox1) {
+      checkbox1.addEventListener("change", async function () {
+        try {
+          const delta = checkbox1.checked ? 1 : -1;
+          verseCompleted = checkbox1.checked;
+
+          const payload = {
+            verseCompleted: verseCompleted,
+            lastVisit: today,
+            completedCount: firebase.firestore.FieldValue.increment(delta)
+          };
+
+          // Try update first (faster if doc exists), fallback to set with merge
+          try {
+            await userRef.update(payload);
+          } catch (updateErr) {
+            await userRef.set(payload, { merge: true });
+          }
+
+          // Update local counter in memory (clamp at zero)
+          completedCount = Math.max(0, completedCount + delta);
+
+          console.log(`Verse ${verseCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+
           // Update dashboard progress if available
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
-        } else {
-          verseCompleted = false;
-          const newCompletedCount = Math.max(0, completedCount - 1);
-          
-          await userRef.set({
-            verseCompleted: false,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Verse unchecked. Progress: ${completedCount}/${totalDailyTasks}`);
+        } catch (error) {
+          console.error('Error updating verse completion:', error);
         }
-      } catch (error) {
-        console.error('Error updating verse completion:', error);
-      }
-    });
+      });
+    }
 
     // Checkbox 2 handler (Moral)
-    checkbox2.addEventListener("change", async function () {
-      try {
-        if (checkbox2.checked) {
-          moralCompleted = true;
-          const newCompletedCount = completedCount + 1;
-          
-          await userRef.set({
-            moralCompleted: true,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Moral completed. Progress: ${completedCount}/${totalDailyTasks}`);
-          
-          // Update dashboard progress if available
+    if (checkbox2) {
+      checkbox2.addEventListener("change", async function () {
+        try {
+          const delta = checkbox2.checked ? 1 : -1;
+          moralCompleted = checkbox2.checked;
+
+          const payload = {
+            moralCompleted: moralCompleted,
+            lastVisit: today,
+            completedCount: firebase.firestore.FieldValue.increment(delta)
+          };
+
+          try {
+            await userRef.update(payload);
+          } catch (updateErr) {
+            await userRef.set(payload, { merge: true });
+          }
+
+          completedCount = Math.max(0, completedCount + delta);
+          console.log(`Moral ${moralCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
-        } else {
-          moralCompleted = false;
-          const newCompletedCount = Math.max(0, completedCount - 1);
-          
-          await userRef.set({
-            moralCompleted: false,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Moral unchecked. Progress: ${completedCount}/${totalDailyTasks}`);
+        } catch (error) {
+          console.error('Error updating moral completion:', error);
         }
-      } catch (error) {
-        console.error('Error updating moral completion:', error);
-      }
-    });
+      });
+    }
 
     // Checkbox 3 handler (Reflection)
-    checkbox3.addEventListener("change", async function () {
-      try {
-        if (checkbox3.checked) {
-          reflectionCompleted = true;
-          const newCompletedCount = completedCount + 1;
-          
-          await userRef.set({
-            reflectionCompleted: true,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Reflection completed. Progress: ${completedCount}/${totalDailyTasks}`);
-          
-          // Update dashboard progress if available
+    if (checkbox3) {
+      checkbox3.addEventListener("change", async function () {
+        try {
+          const delta = checkbox3.checked ? 1 : -1;
+          reflectionCompleted = checkbox3.checked;
+
+          const payload = {
+            reflectionCompleted: reflectionCompleted,
+            lastVisit: today,
+            completedCount: firebase.firestore.FieldValue.increment(delta)
+          };
+
+          try {
+            await userRef.update(payload);
+          } catch (updateErr) {
+            await userRef.set(payload, { merge: true });
+          }
+
+          completedCount = Math.max(0, completedCount + delta);
+          console.log(`Reflection ${reflectionCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
-        } else {
-          reflectionCompleted = false;
-          const newCompletedCount = Math.max(0, completedCount - 1);
-          
-          await userRef.set({
-            reflectionCompleted: false,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Reflection unchecked. Progress: ${completedCount}/${totalDailyTasks}`);
+        } catch (error) {
+          console.error('Error updating reflection completion:', error);
         }
-      } catch (error) {
-        console.error('Error updating reflection completion:', error);
-      }
-    });
+      });
+    }
 
     // Checkbox 4 handler (Challenge)
-    checkbox4.addEventListener("change", async function () {
-      try {
-        if (checkbox4.checked) {
-          challengeCompleted = true;
-          const newCompletedCount = completedCount + 1;
-          
-          await userRef.set({
-            challengeCompleted: true,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Challenge completed. Progress: ${completedCount}/${totalDailyTasks}`);
-          
-          // Update dashboard progress if available
+    if (checkbox4) {
+      checkbox4.addEventListener("change", async function () {
+        try {
+          const delta = checkbox4.checked ? 1 : -1;
+          challengeCompleted = checkbox4.checked;
+
+          const payload = {
+            challengeCompleted: challengeCompleted,
+            lastVisit: today,
+            completedCount: firebase.firestore.FieldValue.increment(delta)
+          };
+
+          try {
+            await userRef.update(payload);
+          } catch (updateErr) {
+            await userRef.set(payload, { merge: true });
+          }
+
+          completedCount = Math.max(0, completedCount + delta);
+          console.log(`Challenge ${challengeCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
-        } else {
-          challengeCompleted = false;
-          const newCompletedCount = Math.max(0, completedCount - 1);
-          
-          await userRef.set({
-            challengeCompleted: false,
-            completedCount: newCompletedCount,
-            lastVisit: today
-          }, { merge: true });
-          
-          completedCount = newCompletedCount;
-          console.log(`Challenge unchecked. Progress: ${completedCount}/${totalDailyTasks}`);
+        } catch (error) {
+          console.error('Error updating challenge completion:', error);
         }
-      } catch (error) {
-        console.error('Error updating challenge completion:', error);
-      }
-    });
+      });
+    }
 
     console.log(`Checkboxes initialized. Current progress: ${completedCount}/${totalDailyTasks}`);
                
