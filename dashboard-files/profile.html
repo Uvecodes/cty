@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 
                 <!-- font link -->
 
@@ -38,7 +40,6 @@
     </div>
 
      <div class="navbar-right">
-      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
       <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
     </div>
 
@@ -64,7 +65,7 @@
     
 
 
-  <section id="edit-profile">
+  <section id="edit-profile" class="edit-profile-section">
     <div class="profile-card">
       <header class="profile-header">
         <h1> <img src="../assets/icons/person-cty.svg" alt="#"> Edit Your Profile</h1>
@@ -75,12 +76,15 @@
         <!-- Profile Avatar Section -->
         <div class="avatar-section">
           <div class="avatar-container">
-            <img src="assets/images/avatar-placeholder.png" alt="Profile Avatar" class="profile-avatar">
-            <div class="avatar-overlay">
+            <img src="assets/images/avatar-placeholder.png" alt="Profile Avatar" class="profile-avatar" id="mainProfileAvatar">
+            <!-- <div class="avatar-overlay">
               <span class="camera-icon">📷</span>
-            </div>
+            </div> -->
           </div>
-          <button type="button" class="change-photo-btn">Change Photo</button>
+          <div class="avatar-buttons">
+            <button type="button" id="avatarInput" class="change-photo-btn">Change Photo</button>
+            <button type="button" id="deleteAvatarBtn" class="delete-photo-btn" style="display: none;">Delete Photo</button>
+          </div>
         </div>
 
         <!-- first commenting -->
@@ -122,29 +126,21 @@
             <label for="theme-preference">Theme Preference</label>
             <div class="theme-toggle-container">
               <label class="theme-option">
-                <input type="radio" name="theme" value="light" checked>
+                <input type="radio" name="theme" value="light" id="lightModeRadio">
                 <span class="theme-label">
                   <span class="theme-icon">☀️</span>
                   Light Mode
                 </span>
               </label>
               <label class="theme-option">
-                <input type="radio" name="theme" value="dark">
+                <input type="radio" name="theme" value="dark" id="darkModeRadio">
                 <span class="theme-label">
                   <span class="theme-icon">🌙</span>
                   Dark Mode
                 </span> 
-                <!-- 4th commenting -->
                </label>
             </div>
           </div>
-        </div> 
-        <!-- 5th commenting -->
-
-        <!-- Action Buttons -->
-        <div class="form-actions">
-         
-          <button type="button" class="savethemebtn">Save Theme</button>
         </div>
       </form>
     </div>
@@ -152,6 +148,27 @@
   <!-- 6th commenting -->
    
    <!-- <h1>COMING SOON</h1> -->
+
+   <!-- scripts -->
+   <!-- Cropper.js Library -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+   
+   <!-- Firebase SDK v8 -->
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+   
+   <!-- Firebase Configuration -->
+   <script src="../js/firebase-config.js"></script>
+   
+   <!-- Profile Script -->
+   <script src="./profile.js"></script>
+   
+   <!-- Dark Mode Script -->
+   <script src="../js/dark-mode.js"></script>
   
 </body>
 </html> 
