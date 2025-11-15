@@ -1,3 +1,10 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
 // Firebase v8 Namespaced SDK - Browser Compatible
 // Your web app's Firebase configuration
 const firebaseConfig = {

@@ -6,6 +6,7 @@ const DarkMode = {
     this.setupThemeRadioButtons();
     this.setupToggleButton();
     this.detectSystemPreference();
+    this.loadUserAvatar();
   },
 
   // Set theme (called by radio buttons or toggle)
@@ -119,6 +120,59 @@ const DarkMode = {
         }
       });
     }
+  },
+
+  // Load user avatar and replace logo
+  loadUserAvatar() {
+    // Check if Firebase is available
+    if (typeof firebase === 'undefined') {
+      console.log('Firebase not available, skipping avatar load');
+      return;
+    }
+
+    // Wait for Firebase Auth to initialize
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        console.log('No user logged in, showing default logo');
+        return;
+      }
+
+      try {
+        // Get user data from Firestore
+        const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+
+        if (userData && userData.avatarUrl) {
+          console.log('User avatar found, updating logos');
+          this.updateNavbarLogo(userData.avatarUrl);
+        } else {
+          console.log('No avatar URL found for user');
+        }
+      } catch (error) {
+        console.error('Error loading user avatar:', error);
+      }
+    });
+  },
+
+  // Update navbar logo with user avatar
+  updateNavbarLogo(avatarUrl) {
+    // Look for logo images (different IDs on different pages)
+    const logoSelectors = ['#profileAvatar', '#navbarLogo'];
+    
+    logoSelectors.forEach(selector => {
+      const logoImg = document.querySelector(selector);
+      if (logoImg) {
+        logoImg.src = avatarUrl;
+        logoImg.style.width = '50px';
+        logoImg.style.height = '50px';
+        logoImg.style.borderRadius = '50%';
+        logoImg.style.objectFit = 'cover';
+        logoImg.style.border = '2px solid var(--color-green)';
+        logoImg.style.cursor = 'pointer';
+        logoImg.title = 'Your Profile';
+        console.log(`Updated logo: ${selector}`);
+      }
+    });
   }
 };
 

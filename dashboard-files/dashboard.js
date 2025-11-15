@@ -1,3 +1,11 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
+
 // Dashboard Logic - Firebase v8 Compatible
 (function() {
   // Firebase Configuration (same as auth.js)

@@ -1,3 +1,11 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
+
 // Initialize Firebase
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
@@ -185,7 +193,7 @@ async function ensureActiveGroup(uid, userDoc, tz, initializer) {
   
   // Group has changed - log audit and update
   const oldGroup = userDoc.activeGroup || 'none';
-  console.log(`User ${uid} group change: ${oldGroup} → ${currentKey} (age: ${currentAge})`);
+  console.log(`User group changed`);
   
   // Update active group in Firestore
   try {
@@ -193,7 +201,7 @@ async function ensureActiveGroup(uid, userDoc, tz, initializer) {
       activeGroup: currentKey
     }, { merge: true });
   } catch (error) {
-    console.error(`Failed to update active group for user ${uid}:`, error);
+    console.error(`Failed to update active group for user `);
     return null;
   }
   
@@ -202,7 +210,7 @@ async function ensureActiveGroup(uid, userDoc, tz, initializer) {
     try {
       await initializer(currentKey);
     } catch (error) {
-      console.error(`Failed to initialize content state for group ${currentKey} for user ${uid}:`, error);
+      console.error(`Failed to initialize content state for group`);
       // Continue even if initialization fails
     }
   }
@@ -229,7 +237,7 @@ async function loadGroupData(groupKey) {
   // Get the file path for the group
   const path = groupPath(groupKey);
   if (!path) {
-    console.warn('Could not determine path for group:', groupKey);
+    console.warn('Could not determine path for group:');
     return [];
   }
   
@@ -238,7 +246,7 @@ async function loadGroupData(groupKey) {
     const response = await fetch(path, { cache: "no-store" });
     
     if (!response.ok) {
-      console.warn(`Failed to fetch data for group ${groupKey}:`, response.status, response.statusText);
+      console.warn(`Failed to fetch data for group`);
       return [];
     }
     
@@ -246,14 +254,14 @@ async function loadGroupData(groupKey) {
     
     // Validate that data is an array
     if (!Array.isArray(data)) {
-      console.warn(`Data for group ${groupKey} is not an array:`, typeof data);
+      console.warn(`Data for group is not an array:`);
       return [];
     }
     
     return data;
     
   } catch (error) {
-    console.warn(`Error loading data for group ${groupKey}:`, error);
+    console.warn(`Error loading data for group:`);
     return [];
   }
 }

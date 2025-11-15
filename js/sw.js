@@ -1,3 +1,11 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
+
 /* CTY Service Worker */
 const SW_VERSION = 'cty-v1.0.0';
 const PRECACHE = `precache-${SW_VERSION}`;

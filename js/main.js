@@ -1,3 +1,11 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const axios = require('axios');

@@ -4,7 +4,7 @@
     "translation": "KJV",
     "passage": "In the beginning God created the heaven and the earth.",
     "topic": "creation",
-    "moral": "God made everything. We can thank Him.",
+    "moral": "God made everything. We should thank Him.",
     "reflectionQ": "What part of God’s world do you love?",
     "challenge": "Say “Thank you, God” for one thing you see.",
     "crossRefs": ["Psalm 19:1"],
@@ -86,7 +86,7 @@
   {
     "ref": "Proverbs 15:1",
     "translation": "KJV",
-    "passage": "A soft answer turneth away wrath: but grievous words stir up anger.",
+    "passage": "A soft answer turneth away wrath, but grievous words stir up anger.",
     "topic": "kindness",
     "moral": "Kind words make peace.",
     "reflectionQ": "What gentle words can you say?",
@@ -124,9 +124,9 @@
   {
     "ref": "Genesis 1:31",
     "translation": "KJV",
-    "passage": "And God saw every thing that he had made, and, behold, it was very good.",
+    "passage": "And God saw every thing that He had made, and behold, it was very good. And the evening and the morning were the sixth day.",
     "topic": "creation",
-    "moral": "God’s world is good. Thank Him for it.",
+    "moral": "Appreciate what is good and beautiful in life.",
     "reflectionQ": "What good thing did God make that you saw today?",
     "challenge": "Point out one beautiful thing and say, “Thank you, God.”",
     "crossRefs": ["Psalm 8:3-4"],
@@ -136,7 +136,7 @@
   {
     "ref": "Psalm 139:14",
     "translation": "KJV",
-    "passage": "I will praise thee; for I am fearfully and wonderfully made:",
+    "passage": "I will praise thee; for I am fearfully and wonderfully made: marvellous are thy works; and that my soul knoweth right well.",
     "topic": "identity",
     "moral": "God made you special.",
     "reflectionQ": "What do you like about how God made you?",
@@ -256,7 +256,7 @@
   {
     "ref": "Psalm 37:4",
     "translation": "KJV",
-    "passage": "Delight thyself also in the LORD; and he shall give thee the desires of thine heart.",
+    "passage": "Delight thyself also in the LORD: and he shall give thee the desires of thine heart.",
     "topic": "joy",
     "moral": "Enjoy God, and He cares for your heart.",
     "reflectionQ": "How can you enjoy God today?",
@@ -292,7 +292,7 @@
   {
     "ref": "Isaiah 41:10",
     "translation": "KJV",
-    "passage": "Fear thou not; for I am with thee:",
+    "passage": "Fear thou not; for I am with thee: be not dismayed; for I am God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.",
     "topic": "courage",
     "moral": "God is with you. Don’t be afraid.",
     "reflectionQ": "What makes you brave with God?",
@@ -316,7 +316,7 @@
   {
     "ref": "Micah 6:8",
     "translation": "KJV",
-    "passage": "…to do justly, and to love mercy, and to walk humbly with thy God.",
+    "passage":"No, O people, the LORD has told you what is good, and this is what he requires of you: to do what is right, to love mercy, and to walk humbly with your God.",
     "topic": "kindness",
     "moral": "Do right, love kindness, walk humbly.",
     "reflectionQ": "How can you be kind today?",
@@ -352,7 +352,7 @@
   {
     "ref": "Matthew 7:12",
     "translation": "KJV",
-    "passage": "Therefore all things whatsoever ye would that men should do to you, do ye even so to them:",
+    "passage": "Do to others whatever you would like them to do to you. This is the essence of all that is taught in the law and the prophets.",
     "topic": "golden_rule",
     "moral": "Treat others how you want to be treated.",
     "reflectionQ": "How do you want others to treat you?",
@@ -364,7 +364,7 @@
   {
     "ref": "Matthew 19:14",
     "translation": "KJV",
-    "passage": "Suffer little children, and forbid them not, to come unto me: for of such is the kingdom of heaven.",
+    "passage": "But He said, 'Leave the little children alone, and do not forbid them from coming to Me; for the kingdom of heaven belongs to such as these.'",
     "topic": "welcome",
     "moral": "Jesus welcomes children.",
     "reflectionQ": "How can you come to Jesus today?",
@@ -376,7 +376,7 @@
   {
     "ref": "Mark 12:30",
     "translation": "KJV",
-    "passage": "And thou shalt love the Lord thy God with all thy heart, and with all thy soul, and with all thy mind, and with all thy strength:",
+    "passage": "And thou shalt love the Lord thy God with all thy heart, and with all thy soul, and with all thy mind, and with all thy strength: this is the first commandment.",
     "topic": "love_God",
     "moral": "Love God with everything.",
     "reflectionQ": "How can you show love to God today?",
@@ -388,7 +388,7 @@
   {
     "ref": "Mark 12:31",
     "translation": "KJV",
-    "passage": "Thou shalt love thy neighbour as thyself.",
+    "passage": "And the second is like, namely this, Thou shalt love thy neighbour as thyself. There is none other commandment greater than these.",
     "topic": "love_others",
     "moral": "Love others like you love yourself.",
     "reflectionQ": "Who can you love with kind actions?",
@@ -400,7 +400,7 @@
   {
     "ref": "Luke 6:31",
     "translation": "KJV",
-    "passage": "And as ye would that men should do to you, do ye also to them likewise.",
+    "passage": "Do to others as you would like them to do to you.",
     "topic": "golden_rule",
     "moral": "Do for others what you like done to you.",
     "reflectionQ": "What nice thing would you like someone to do for you?",
@@ -412,7 +412,7 @@
   {
     "ref": "John 8:12",
     "translation": "KJV",
-    "passage": "I am the light of the world: he that followeth me shall not walk in darkness, but shall have the light of life.",
+    "passage": "Jesus spoke to the people once more and said, 'I am the light of the world. If you follow me, you won't have to walk in darkness, because you will have the light that leads to life.'",
     "topic": "light",
     "moral": "Follow Jesus, the light.",
     "reflectionQ": "How can you follow Jesus today?",
@@ -424,7 +424,7 @@
   {
     "ref": "John 13:34",
     "translation": "KJV",
-    "passage": "A new commandment I give unto you, That ye love one another; as I have loved you,",
+    "passage": "A new commandment I give unto you, That ye love one another; as I have loved you, that ye also love one another.",
     "topic": "love",
     "moral": "Love others like Jesus loves you.",
     "reflectionQ": "Who needs your love today?",
@@ -436,7 +436,7 @@
   {
     "ref": "John 14:6",
     "translation": "KJV",
-    "passage": "Jesus saith unto him, I am the way, the truth, and the life:",
+    "passage": "Jesus told him, 'I am the way, the truth, and the life. No one can to the Father expect through me.'",
     "topic": "Jesus",
     "moral": "Jesus shows the way to life.",
     "reflectionQ": "What does it mean that Jesus is the way?",
@@ -448,7 +448,7 @@
   {
     "ref": "Acts 20:35",
     "translation": "KJV",
-    "passage": "It is more blessed to give than to receive.",
+    "passage": "In everything I did, I showed you that by working hard in this way we must help the weak, remembering the words of the Lord Jesus himself said: 'It is more blessed to give than to receive.'",
     "topic": "generosity",
     "moral": "Giving brings joy.",
     "reflectionQ": "What can you give or share today?",
@@ -460,7 +460,7 @@
   {
     "ref": "Romans 3:23",
     "translation": "KJV",
-    "passage": "For all have sinned, and come short of the glory of God;",
+    "passage": "For all have sinned, and come short of the glory of God.",
     "topic": "sin_grace",
     "moral": "Everyone needs God’s help.",
     "reflectionQ": "When do you need to say sorry to God?",
@@ -496,7 +496,7 @@
   {
     "ref": "1 Corinthians 13:4",
     "translation": "KJV",
-    "passage": "Charity suffereth long, and is kind;",
+    "passage": "Love is patient and kind; love does not envy or boast; it is not arrogant or rude.",
     "topic": "love",
     "moral": "Love is patient and kind.",
     "reflectionQ": "How can you be patient today?",
@@ -544,7 +544,7 @@
   {
     "ref": "Philippians 2:14",
     "translation": "KJV",
-    "passage": "Do all things without murmurings and disputings:",
+    "passage": "Do all things without murmurings and disputings.",
     "topic": "attitude",
     "moral": "No grumbling—do things gladly.",
     "reflectionQ": "What chore can you do without grumbling?",
@@ -570,7 +570,7 @@
     "translation": "KJV",
     "passage": "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God.",
     "topic": "prayer",
-    "moral": "Don’t worry—pray and thank God.",
+    "moral": "Don’t worry—pray and be grateful to God.",
     "reflectionQ": "What will you ask God for today?",
     "challenge": "Pray about one worry and say “thank You.”",
     "crossRefs": ["1 Peter 5:7"],
@@ -608,7 +608,7 @@
   {
     "ref": "Genesis 28:15",
     "translation": "KJV",
-    "passage": "I am with thee, and will keep thee whithersoever thou goest…",
+    "passage": "Look, I am with you and will watch over you wherever you go; I will bring you back to this land. I will not leave you until I have done what I have promised you.",
     "topic": "presence",
     "moral": "God is with you everywhere.",
     "reflectionQ": "Where did you go today that God kept you safe?",
@@ -632,9 +632,9 @@
   {
     "ref": "Exodus 20:12",
     "translation": "KJV",
-    "passage": "Honour thy father and thy mother…",
+    "passage": "Honour thy father and thy mother: that thy days may be long upon the land which the LORD thy God giveth thee.",
     "topic": "obedience",
-    "moral": "Honor your parents—it pleases God.",
+    "moral": "Honor your parents;it pleases God.",
     "reflectionQ": "How can you show honor at home today?",
     "challenge": "Do one chore the first time you’re asked.",
     "crossRefs": ["Ephesians 6:1"],
@@ -646,7 +646,7 @@
     "translation": "KJV",
     "passage": "The LORD bless thee, and keep thee:",
     "topic": "blessing",
-    "moral": "God loves to bless and keep you.",
+    "moral": "Recognize and appreciate the blessings in life; they are sources of guidance and security.",
     "reflectionQ": "What blessing can you thank God for today?",
     "challenge": "Tell someone, “God bless you!” and mean it.",
     "crossRefs": ["Psalm 121:8"],
@@ -656,7 +656,7 @@
   {
     "ref": "Deuteronomy 6:5",
     "translation": "KJV",
-    "passage": "Thou shalt love the LORD thy God with all thine heart…",
+    "passage": "And thou shalt love the LORD thy God with all thine heart, and with all thy soul, and with all thy might.",
     "topic": "love_God",
     "moral": "Love God with your whole heart.",
     "reflectionQ": "How can you show love to God today?",
@@ -668,7 +668,7 @@
   {
     "ref": "Deuteronomy 31:6",
     "translation": "KJV",
-    "passage": "Be strong and of a good courage… he will not fail thee, nor forsake thee.",
+    "passage": "Be strong and of a good courage, fear not, nor be afraid of them: for the LORD thy God, he it is that doth go with thee; he will not fail thee, nor forsake thee.",
     "topic": "courage",
     "moral": "Be brave—God won’t leave you.",
     "reflectionQ": "What brave thing can you try with God’s help?",
@@ -680,7 +680,7 @@
   {
     "ref": "Joshua 1:9",
     "translation": "KJV",
-    "passage": "Be strong and of a good courage… for the LORD thy God is with thee whithersoever thou goest.",
+    "passage": "Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.",
     "topic": "courage",
     "moral": "God is with you—be strong!",
     "reflectionQ": "Where do you need courage today?",
@@ -692,7 +692,7 @@
   {
     "ref": "Joshua 24:15",
     "translation": "KJV",
-    "passage": "…as for me and my house, we will serve the LORD.",
+    "passage": "And if it seem evil unto you to serve the LORD, choose you this day whom ye will serve; whether the gods which your fathers served that were on the other side of the flood, or the gods of the Amorites, in whose land ye dwell: but as for me and my house, we will serve the LORD.",
     "topic": "family",
     "moral": "Choose to serve God at home.",
     "reflectionQ": "How can your family serve God today?",
@@ -704,7 +704,7 @@
   {
     "ref": "1 Samuel 16:7",
     "translation": "KJV",
-    "passage": "…man looketh on the outward appearance, but the LORD looketh on the heart.",
+    "passage": "But the LORD said unto Samuel, Look not on his countenance, or on the height of his stature; because I have refused him: for the LORD seeth not as man seeth; man looketh on the outward appearance, but the LORD looketh on the heart.",
     "topic": "heart",
     "moral": "God cares about your heart.",
     "reflectionQ": "What kind of heart do you want God to see?",
@@ -716,11 +716,11 @@
   {
     "ref": "2 Samuel 22:31",
     "translation": "KJV",
-    "passage": "As for God, his way is perfect… he is a buckler to all them that trust in him.",
+    "passage": "As for God, his way is perfect; he is a buckler to all them that trust in him.",
     "topic": "trust",
     "moral": "God’s way is perfect—trust Him.",
     "reflectionQ": "What will you trust God with today?",
-    "challenge": "Say, “God, I trust Your way.”",
+    "challenge": "Say, “God, I trust your way.”",
     "crossRefs": ["Proverbs 3:5"],
     "length": "single",
     "ageHints": { "emoji": "🛡️" }
@@ -740,7 +740,7 @@
   {
     "ref": "Nehemiah 8:10",
     "translation": "KJV",
-    "passage": "…for the joy of the LORD is your strength.",
+    "passage": "Don't be dejected and sad, for the joy of the LORD is your strength.",
     "topic": "joy",
     "moral": "God’s joy makes you strong.",
     "reflectionQ": "What makes you glad in God today?",
@@ -752,7 +752,7 @@
   {
     "ref": "Psalm 4:8",
     "translation": "KJV",
-    "passage": "I will both lay me down in peace, and sleep…",
+    "passage": "In peace I will lie down and sleep, for you alone, O Lord, will keep me safe.",
     "topic": "peace",
     "moral": "God gives peaceful sleep.",
     "reflectionQ": "How can you trust God at bedtime?",
@@ -764,7 +764,7 @@
   {
     "ref": "Psalm 27:1",
     "translation": "KJV",
-    "passage": "The LORD is my light and my salvation; whom shall I fear?",
+    "passage": "The LORD is my light and my salvation; whom shall I fear? The Lord is the strength of my life; of whom shall i be afraid?",
     "topic": "courage",
     "moral": "With God, you don’t have to fear.",
     "reflectionQ": "What fear can you give to God?",
@@ -776,9 +776,9 @@
   {
     "ref": "Psalm 32:8",
     "translation": "KJV",
-    "passage": "I will instruct thee and teach thee in the way which thou shalt go…",
+    "passage": "I will instruct thee and teach thee in the way which thou shalt go: I will guide thee with mine eye.",
     "topic": "guidance",
-    "moral": "God teaches you the right way.",
+    "moral": "God teaches you the right way. Seek His wisdom rather than relying solely on your own understanding.",
     "reflectionQ": "What do you need God to teach you?",
     "challenge": "Ask God for help before starting homework.",
     "crossRefs": ["Proverbs 3:6"],
@@ -800,9 +800,9 @@
   {
     "ref": "Psalm 95:6",
     "translation": "KJV",
-    "passage": "O come, let us worship and bow down…",
+    "passage": "O come, let us worship and bow dow: let us kneel before the Lord our maker.",
     "topic": "worship",
-    "moral": "Bow your heart to God.",
+    "moral": "True worship requires humility and recognition of God's authority.",
     "reflectionQ": "How can you worship God today?",
     "challenge": "Sing one short song to God.",
     "crossRefs": ["John 4:24"],
@@ -812,7 +812,7 @@
   {
     "ref": "Psalm 103:13",
     "translation": "KJV",
-    "passage": "Like as a father pitieth his children, so the LORD pitieth them that fear him.",
+    "passage": "The Lord is like a Father to his children, tender and compassionate to those who fear him.",
     "topic": "compassion",
     "moral": "God is gentle and kind to you.",
     "reflectionQ": "When did you feel God’s kindness?",
@@ -836,7 +836,7 @@
   {
     "ref": "Proverbs 1:8",
     "translation": "KJV",
-    "passage": "My son, hear the instruction of thy father, and forsake not the law of thy mother:",
+    "passage": "My son, hear the instruction of thy father, and forsake not the law of thy mother.",
     "topic": "parents",
     "moral": "Listen to your parents’ wisdom.",
     "reflectionQ": "What did you learn from your parents today?",
@@ -848,7 +848,7 @@
   {
     "ref": "Proverbs 13:20",
     "translation": "KJV",
-    "passage": "He that walketh with wise men shall be wise…",
+    "passage": "He that walketh with wise men shall be wise: but a companion of fools shall be destroyed.",
     "topic": "friends",
     "moral": "Choose good friends who love God.",
     "reflectionQ": "Who helps you do the right thing?",
@@ -860,7 +860,7 @@
   {
     "ref": "Proverbs 16:24",
     "translation": "KJV",
-    "passage": "Pleasant words are as an honeycomb, sweet to the soul…",
+    "passage": "Pleasant words are as an honeycomb, sweet to the soul, and health to the bones.",
     "topic": "words",
     "moral": "Kind words taste sweet.",
     "reflectionQ": "What sweet words can you say today?",
@@ -872,7 +872,7 @@
   {
     "ref": "Proverbs 17:22",
     "translation": "KJV",
-    "passage": "A merry heart doeth good like a medicine…",
+    "passage": "A merry heart doeth good like a medicine: but a broken spirit drieth the bones.",
     "topic": "joy",
     "moral": "A happy heart helps others.",
     "reflectionQ": "What cheers your heart today?",
@@ -884,7 +884,7 @@
   {
     "ref": "Proverbs 19:20",
     "translation": "KJV",
-    "passage": "Hear counsel, and receive instruction, that thou mayest be wise…",
+    "passage": "Hear counsel, and receive instruction, that thou mayest be wise in thy latter end.",
     "topic": "wisdom",
     "moral": "Listening makes you wise.",
     "reflectionQ": "Who can you listen to today?",
@@ -896,7 +896,7 @@
   {
     "ref": "Ecclesiastes 3:1",
     "translation": "KJV",
-    "passage": "To every thing there is a season, and a time to every purpose…",
+    "passage": "To everything there is a season, and a time to every purpose under the heaven.",
     "topic": "time",
     "moral": "God has the right time for everything.",
     "reflectionQ": "What is it time for right now?",
@@ -908,7 +908,7 @@
   {
     "ref": "Isaiah 40:11",
     "translation": "KJV",
-    "passage": "He shall feed his flock like a shepherd…",
+    "passage": "He shall feed his flock like a shepherd: he shall gather the lambs with his arm, and carry them in his bosom, and shall gently lead those that are with young.",
     "topic": "care",
     "moral": "God carries you close to His heart.",
     "reflectionQ": "When did you feel cared for today?",
@@ -920,7 +920,7 @@
   {
     "ref": "Isaiah 43:1",
     "translation": "KJV",
-    "passage": "Fear not… I have called thee by thy name; thou art mine.",
+    "passage": "But now thus saith the LORD that created thee, O Jacob, and he that formed thee o Israel, Fear not: I have redeemed thee, I have called thee by thy name; thou art mine.",
     "topic": "identity",
     "moral": "God knows your name—you belong to Him.",
     "reflectionQ": "How does it feel that God calls you His?",
@@ -932,7 +932,7 @@
   {
     "ref": "Jeremiah 29:11",
     "translation": "KJV",
-    "passage": "For I know the thoughts that I think toward you… to give you an expected end.",
+    "passage": "For I know the thoughts that I think toward you, saith the LORD, thoughts of peace and not of evil, to give you an expected end.",
     "topic": "hope",
     "moral": "God has good plans for you.",
     "reflectionQ": "What good thing do you hope for with God?",
@@ -946,7 +946,7 @@
     "translation": "KJV",
     "passage": "They are new every morning: great is thy faithfulness.",
     "topic": "faithfulness",
-    "moral": "Every morning, God is faithful.",
+    "moral": "Rely on God's mercy rather than only on your own efforts.",
     "reflectionQ": "What new mercy did you see today?",
     "challenge": "Say, “Thank You for today’s new mercies.”",
     "crossRefs": ["Psalm 36:5"],
@@ -956,7 +956,7 @@
   {
     "ref": "Nahum 1:7",
     "translation": "KJV",
-    "passage": "The LORD is good, a strong hold in the day of trouble…",
+    "passage": "The LORD is good, a strong hold in the day of trouble; and he knoweth them that trust in him.",
     "topic": "safety",
     "moral": "God is your safe place.",
     "reflectionQ": "When do you feel safe with God?",
@@ -968,9 +968,9 @@
   {
     "ref": "Zephaniah 3:17",
     "translation": "KJV",
-    "passage": "The LORD thy God in the midst of thee is mighty… he will rejoice over thee with joy…",
+    "passage": "The LORD thy God in the midst of thee is mighty; he will save, he will rejoice over thee with joy; he will rest in his love, he will joy over thee with singing.",
     "topic": "delight",
-    "moral": "God sings over you with joy.",
+    "moral": "God delights in your life and cherishes your growth.",
     "reflectionQ": "How does it feel that God is happy about you?",
     "challenge": "Sing a tiny song to God.",
     "crossRefs": ["Psalm 149:4"],
@@ -980,7 +980,7 @@
   {
     "ref": "Zechariah 4:6",
     "translation": "KJV",
-    "passage": "Not by might, nor by power, but by my spirit, saith the LORD…",
+    "passage": "Then he said to me, 'This is the word of the LORD to Zerubbabel: it is not by force nor by strength, but by my Spirit, says the LORD Almighty.'",
     "topic": "dependence",
     "moral": "God’s Spirit helps you do right.",
     "reflectionQ": "What do you need God’s help for today?",
@@ -992,7 +992,7 @@
   {
     "ref": "Matthew 5:16",
     "translation": "KJV",
-    "passage": "Let your light so shine before men…",
+    "passage": "Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.",
     "topic": "shine",
     "moral": "Shine for Jesus with good deeds.",
     "reflectionQ": "What bright deed can you do today?",
@@ -1004,7 +1004,7 @@
   {
     "ref": "Matthew 11:28",
     "translation": "KJV",
-    "passage": "Come unto me… and I will give you rest.",
+    "passage": "Come unto me all ye that labour and are heavey laden, and I will give you rest.",
     "topic": "rest",
     "moral": "Jesus gives you real rest.",
     "reflectionQ": "When do you need Jesus’ rest?",
@@ -1016,7 +1016,7 @@
   {
     "ref": "Matthew 28:20",
     "translation": "KJV",
-    "passage": "…lo, I am with you alway, even unto the end of the world.",
+    "passage": "Teach these new disciples to obey all the commands I have given you. And be sure of this: I am with you always, even to the end of age.",
     "topic": "presence",
     "moral": "Jesus is always with you.",
     "reflectionQ": "Where did you feel Jesus close today?",
@@ -1052,7 +1052,7 @@
   {
     "ref": "Luke 11:9",
     "translation": "KJV",
-    "passage": "Ask, and it shall be given you; seek, and ye shall find…",
+    "passage": "And I say unto you, Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you.",
     "topic": "prayer",
     "moral": "Ask God—He hears you.",
     "reflectionQ": "What will you ask God for today?",
@@ -1064,7 +1064,7 @@
   {
     "ref": "John 3:16",
     "translation": "KJV",
-    "passage": "For God so loved the world, that he gave his only begotten Son…",
+    "passage": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
     "topic": "gospel",
     "moral": "God loves you so much.",
     "reflectionQ": "How can you thank God for His love?",
@@ -1076,7 +1076,7 @@
   {
     "ref": "John 10:27",
     "translation": "KJV",
-    "passage": "My sheep hear my voice, and I know them, and they follow me:",
+    "passage": "My sheep hear my voice, and I know them, and they follow me.",
     "topic": "following",
     "moral": "Listen to Jesus and follow Him.",
     "reflectionQ": "What does Jesus want you to do today?",
@@ -1088,7 +1088,7 @@
   {
     "ref": "John 15:9",
     "translation": "KJV",
-    "passage": "As the Father hath loved me, so have I loved you: continue ye in my love.",
+    "passage": "I have loved you even as the Father has loved me. Remain in my love.",
     "topic": "love",
     "moral": "Stay in Jesus’ love.",
     "reflectionQ": "How can you keep close to Jesus today?",
@@ -1100,7 +1100,7 @@
   {
     "ref": "Acts 16:31",
     "translation": "KJV",
-    "passage": "Believe on the Lord Jesus Christ, and thou shalt be saved…",
+    "passage": "And they said, Believe on the Lord Jesus Christ, and thou shalt be saved, and thy house.",
     "topic": "faith",
     "moral": "Trust Jesus to save you.",
     "reflectionQ": "What do you believe about Jesus?",
@@ -1112,7 +1112,7 @@
   {
     "ref": "Romans 8:28",
     "translation": "KJV",
-    "passage": "…all things work together for good to them that love God…",
+    "passage": "We know that in all things God works for good with those who love him, those whom he has called according to his purpose.",
     "topic": "providence",
     "moral": "God can bring good from hard things.",
     "reflectionQ": "What tough thing can you give to God?",
@@ -1124,7 +1124,7 @@
   {
     "ref": "Romans 12:10",
     "translation": "KJV",
-    "passage": "Be kindly affectioned one to another… in honour preferring one another;",
+    "passage": "Be kindly affectioned one to another with brotherly love; in honour preferring one another.",
     "topic": "kindness",
     "moral": "Put others first in love.",
     "reflectionQ": "Who can you let go first today?",
@@ -1136,9 +1136,9 @@
   {
     "ref": "1 Corinthians 10:31",
     "translation": "KJV",
-    "passage": "…whatsoever ye do, do all to the glory of God.",
+    "passage": "So whether you eat or drink, or whatever you do, do everything for the  glory of God.",
     "topic": "purpose",
-    "moral": "Do everything to make God smile.",
+    "moral": "Give your best and act with honesty in all you do.",
     "reflectionQ": "How can you do your best for God today?",
     "challenge": "Do one task carefully as a gift to God.",
     "crossRefs": ["Colossians 3:23"],
@@ -1148,7 +1148,7 @@
   {
     "ref": "2 Corinthians 12:9",
     "translation": "KJV",
-    "passage": "My grace is sufficient for thee: for my strength is made perfect in weakness.",
+    "passage": "And he said unto me, My grace is sufficient for thee: for my strength is made perfect in weakness. Most gladly therefore will I rather glory in my infirmites, that the power of Christ may rest upon me.",
     "topic": "grace",
     "moral": "God’s grace is enough for you.",
     "reflectionQ": "Where do you feel weak and need God?",
@@ -1160,9 +1160,9 @@
   {
     "ref": "Galatians 5:22",
     "translation": "KJV",
-    "passage": "But the fruit of the Spirit is love, joy, peace…",
+    "passage": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith.",
     "topic": "fruit_spirit",
-    "moral": "Let God grow good fruit in you.",
+    "moral": "Focus on inner growth to positively impact your life and others.",
     "reflectionQ": "Which fruit will you show today: love, joy, or peace?",
     "challenge": "Pick one fruit and practice it today.",
     "crossRefs": ["Galatians 5:23"],
@@ -1172,7 +1172,7 @@
   {
     "ref": "Galatians 6:9",
     "translation": "KJV",
-    "passage": "Let us not be weary in well doing… in due season we shall reap…",
+    "passage": "And let us not be weary in well doing: for in due season we shall reap, if we faint not.",
     "topic": "perseverance",
     "moral": "Don’t give up doing good.",
     "reflectionQ": "What good thing can you keep doing?",
@@ -1184,7 +1184,7 @@
   {
     "ref": "Ephesians 2:10",
     "translation": "KJV",
-    "passage": "For we are his workmanship… unto good works…",
+    "passage": "For we are his workmanship, created in Christ Jesus unto good works, which God hath before ordained that we should walk in them.",
     "topic": "purpose",
     "moral": "God made you for good works.",
     "reflectionQ": "What good work can you do today?",
@@ -1196,9 +1196,9 @@
   {
     "ref": "Colossians 3:23",
     "translation": "KJV",
-    "passage": "Whatsoever ye do, do it heartily, as to the Lord…",
+    "passage": "Work willingly at whatever you do, as though you were working for the Lord rather than for people.",
     "topic": "diligence",
-    "moral": "Work hard for God with a happy heart.",
+    "moral": "Give your best effort in every task you do. Excellence is not only about skill; it aslo depends on your attitude and effort.",
     "reflectionQ": "Which task will you do heartily today?",
     "challenge": "Do one job with your best effort and a smile.",
     "crossRefs": ["1 Corinthians 10:31"],

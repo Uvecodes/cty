@@ -1,3 +1,11 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
+
 // Overall Architecture:
 // This file creates a complete authentication system that:
 // Works on both signup and login pages using the same code
@@ -78,7 +86,7 @@ async function register(event) {
   // Check if user is offline
   event.preventDefault(); // Prevent form submission from refreshing the page
 if (!navigator.onLine) {
-  showToast("Sorry, you are currently offline", "error");
+  showToast("Sorry, you are currently offline");
   return;
 }
   
@@ -91,17 +99,17 @@ if (!navigator.onLine) {
 
   // Validation
   if (!name || !age || !email || !password || !confirmPassword) {
-    showToast("Please fill all fields.", "error");
+    showToast("Please fill all fields.");
     return;
   }
 
   if (password !== confirmPassword) {
-    showToast("Passwords do not match.", "error");
+    showToast("Passwords do not match.");
     return;
   }
 
   if (age < 4 || age > 17) {
-    showToast("Age must be between 4 and 17.", "error");
+    showToast("Age must be between 4 and 17.");
     return;
   }
 
@@ -122,11 +130,11 @@ if (!navigator.onLine) {
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-    showToast("Registered and logged in!", "success");
+    showToast("Registered and logged in!");
     window.location.href = "../dashboard-files/dashboard.html";
   } catch (error) {
-    console.error("Signup error:", error);
-    showToast(error.message, "error");
+    console.error("Signup error:");
+    showToast("error");
   }
 }
 // comment: This function handles user registration
@@ -148,22 +156,22 @@ async function forgotPassword() {
   const email = prompt("Please enter your email address to reset your password:");
 
   if (!email) {
-    showToast("Email is required", "error");
+    showToast("Email is required");
     return;
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    showToast("Please enter a valid email address", "error");
+    showToast("Please enter a valid email address");
     return;
   }
 
   try {
     await auth.sendPasswordResetEmail(email);
-    showToast("Password reset email sent!", "success");
+    showToast("Password reset email sent!");
   } catch (error) {
-    console.error("Password reset error:", error);
-    showToast(error.message, "error");
+    console.error("Password reset error:");
+    showToast("error");
   }
 }
 
@@ -181,7 +189,7 @@ async function login(event) {
     event.preventDefault(); // Prevent form submission
   // Check if user is offline
 if (!navigator.onLine) {
-  showToast("Sorry, you are currently offline", "error");
+  showToast("Sorry, you are currently offline");
   return;
 }
 
@@ -195,8 +203,8 @@ if (!navigator.onLine) {
     showToast("Logged in!", "success");
     window.location.href = "../dashboard-files/dashboard.html";
   } catch (error) {
-    console.error("Login error:", error);
-    showToast(error.message, "error");
+    console.error("Login error:");
+    showToast("error");
   }
 }
 
@@ -218,11 +226,11 @@ if (!navigator.onLine) {
 async function logout() {
   try {
     await auth.signOut();
-    showToast("Logged out!", "success");
+    showToast("Logged out!");
     window.location.href = "../index.html";
   } catch (error) {
-    console.error("Logout error:", error);
-    showToast(error.message, "error");
+    console.error("Logout error:");
+    showToast("error");
   }
 }
 // comment: This function handles user logout

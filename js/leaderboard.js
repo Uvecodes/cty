@@ -1,3 +1,10 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
 // Leaderboard Functionality
 import { db } from './firebase-config.js';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';

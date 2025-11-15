@@ -1,5 +1,19 @@
+// console.log() redec;laration to avoid errors in some environments
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
+
+
 // Call this when the page loads
 async function initializeCheckboxAndProgress() {
+  // Prevent duplicate initialization (multiple auth events or re-runs)
+  if (window.__ctyCheckboxInitialized) {
+    console.log('initializeCheckboxAndProgress: already initialized; skipping');
+    return;
+  }
+  window.__ctyCheckboxInitialized = true;
+
   const checkbox1 = document.getElementById("read-checkbox1");
   const checkbox2 = document.getElementById("read-checkbox2");
   const checkbox3 = document.getElementById("read-checkbox3");
@@ -49,9 +63,9 @@ async function initializeCheckboxAndProgress() {
     const tz = (userData && userData.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone;
     const today = (typeof localDateInTZ === 'function') ? localDateInTZ(new Date(), tz) : new Date().toISOString().split('T')[0];
 
-    // If lastVisit is not today, reset server-side daily state so we don't carry over yesterday's values
+    // If lastVisit is not today, attempt a transactional reset so we don't carry over yesterday's values
     if (lastVisit !== today) {
-      // Reset local variables
+      // Reset local variables immediately for UI
       verseCompleted = false;
       moralCompleted = false;
       reflectionCompleted = false;
@@ -59,17 +73,38 @@ async function initializeCheckboxAndProgress() {
       completedCount = 0;
 
       try {
-        await userRef.set({
-          lastVisit: today,
-          completedCount: 0,
-          verseCompleted: false,
-          moralCompleted: false,
-          reflectionCompleted: false,
-          challengeCompleted: false
-        }, { merge: true });
-        console.log('Daily progress reset on server for', today);
+        // Run a transaction to avoid races with concurrent increments
+        await db.runTransaction(async (tx) => {
+          const doc = await tx.get(userRef);
+          const serverData = doc.exists ? doc.data() : {};
+          const serverLastVisit = serverData.lastVisit || null;
+
+          // If another client already reset for today, do nothing
+          if (serverLastVisit === today) {
+            return;
+          }
+
+          tx.set(userRef, {
+            lastVisit: today,
+            completedCount: 0,
+            verseCompleted: false,
+            moralCompleted: false,
+            reflectionCompleted: false,
+            challengeCompleted: false
+          }, { merge: true });
+        });
+
+        console.log('Daily progress reset on server (transaction) for');
       } catch (resetErr) {
-        console.warn('Failed to reset daily progress on server; proceeding with local reset:', resetErr);
+        // If transaction failed (offline/permission), persist a pending reset and continue with local reset
+        console.warn('Failed transactional reset; saving pending reset and proceeding with local reset:');
+        try {
+          const key = `cty_daily_reset_${user.uid}_${today}`;
+          localStorage.setItem(key, JSON.stringify({ uid: user.uid, date: today, createdAt: new Date().toISOString() }));
+          console.log('Saved pending daily reset to localStorage:');
+        } catch (lsErr) {
+          console.warn('Failed to save pending daily reset to localStorage:');
+        }
       }
 
       // Update UI cleared state
@@ -108,14 +143,14 @@ async function initializeCheckboxAndProgress() {
           // Update local counter in memory (clamp at zero)
           completedCount = Math.max(0, completedCount + delta);
 
-          console.log(`Verse ${verseCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+          console.log(`read`);
 
           // Update dashboard progress if available
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating verse completion:', error);
+          console.error('Error updating verse completion:');
         }
       });
     }
@@ -140,13 +175,13 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Moral ${moralCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+          console.log(`Moral read`);
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating moral completion:', error);
+          console.error('Error updating moral completion:');
         }
       });
     }
@@ -171,13 +206,13 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Reflection ${reflectionCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+          console.log(`Reflection read`);
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating reflection completion:', error);
+          console.error('Error updating reflection completion:');
         }
       });
     }
@@ -202,21 +237,21 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Challenge ${challengeCompleted ? 'completed' : 'unchecked'}. Progress: ${completedCount}/${totalDailyTasks}`);
+          console.log(`Challenge read`);
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating challenge completion:', error);
+          console.error('Error updating challenge completion:');
         }
       });
     }
 
-    console.log(`Checkboxes initialized. Current progress: ${completedCount}/${totalDailyTasks}`);
+    console.log(`Checkboxes initialized.`);
                
   } catch (error) {
-    console.error("Error loading or saving checkbox state:", error);
+    console.error("Error loading or saving checkbox state:");
   }
 }
 
@@ -225,4 +260,67 @@ firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     initializeCheckboxAndProgress();
   }
+});
+
+// Retry pending daily resets stored in localStorage when online
+async function retryPendingDailyResets() {
+  if (typeof firebase === 'undefined' || typeof db === 'undefined') {
+    console.warn('retryPendingDailyResets');
+    return;
+  }
+
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith('cty_daily_reset_')) continue;
+
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) { localStorage.removeItem(key); continue; }
+        const payload = JSON.parse(raw);
+        if (!payload || !payload.uid || !payload.date) { localStorage.removeItem(key); continue; }
+
+        const userRef = db.collection('users').doc(payload.uid);
+
+        try {
+          await db.runTransaction(async (tx) => {
+            const doc = await tx.get(userRef);
+            const serverData = doc.exists ? doc.data() : {};
+            const serverLastVisit = serverData.lastVisit || null;
+
+            if (serverLastVisit === payload.date) {
+              // already applied
+              return;
+            }
+
+            tx.set(userRef, {
+              lastVisit: payload.date,
+              completedCount: 0,
+              verseCompleted: false,
+              moralCompleted: false,
+              reflectionCompleted: false,
+              challengeCompleted: false
+            }, { merge: true });
+          });
+
+          // success -> remove key
+          localStorage.removeItem(key);
+          console.log('retryPendingDailyResets: applied pending reset:');
+        } catch (txErr) {
+          console.warn('retryPendingDailyResets: transaction failed for');
+          // keep the key for future retries
+        }
+      } catch (parseErr) {
+        console.warn('retryPendingDailyResets: failed to parse pending reset');
+        localStorage.removeItem(key);
+      }
+    }
+  } catch (err) {
+    console.error('retryPendingDailyResets: unexpected error');
+  }
+}
+
+window.addEventListener('online', () => {
+  console.log('Network online: attempting to apply pending daily resets');
+  retryPendingDailyResets().catch(e => console.error('retryPendingDailyResets failed:'));
 });

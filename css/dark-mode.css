@@ -3,6 +3,18 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Navbar Logo Avatar Styles */
+#navbarLogo,
+#profileAvatar {
+  transition: all 0.3s ease;
+  max-height: 50px;
+}
+
+#navbarLogo:hover,
+#profileAvatar:hover {
+  transform: scale(1.05);
+}
+
 .dark-mode {
   background: #121212 !important;
   color: #ffffff !important;
@@ -318,16 +330,80 @@ body {
   background: white !important;
 }
 
+/* verse date */
+.dark-mode .verse-date {
+  color: #ffffff ;
+}
 
 /* todays verse dark mode */
-.dark-mode .verse-card {
+.dark-mode .verse-card,
+.dark-mode .moral-card,
+.dark-mode .reflection-card,
+.dark-mode .challenge-card {
   background: #1e1e1e !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
 }
 
 
+.dark-mode .moral-card h3{
+  color: #feca57;
+}
+
+.dark-mode .reflection-card h3{
+  color: #48dbfb;
+}
+
+
+
+
+.dark-mode .verse-card h2,
+.dark-mode .moral-card p,
+.dark-mode .reflection-card p,
+.dark-mode .challenge-card p
+ {
+  color: #ffffff !important;
+}
+
+
+/* navcard dark mode */
+
+.dark-mode .nav-card {
+  background: #1e1e1e !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+
+.dark-mode .nav-card p{
+  color: #fff;
+}
 /* games dark mode */
 .dark-mode .game-card {
   background: #1e1e1e !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
 }
+
+
+/* leaderboard dark mode styles */
+
+ .dark-mode .stat-card {
+  background: #1e1e1e !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .stat-label {
+  color: #fff;
+}
+
+
+.dark-mode .leaderboard-table{
+  background: #1e1e1e;
+  
+  border: 2px solid #fff;
+}
+
+.dark-mode .leaderboard-table p{
+  color: #fff;
+}
+/* .dark-mode .spinner {
+  border: 4px solid #4caf50;
+} */
