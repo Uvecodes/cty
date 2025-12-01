@@ -1,0 +1,291 @@
+[
+    {
+        "character": "david",
+        "name": "David",
+        "avatar": "👑",
+        "bio": "Shepherd, Poet, King - A man after God's own heart",
+        "unlocked": true,
+        "quests": [
+            {
+                "id": "david_1",
+                "title": "Goliath's Challenge",
+                "description": "The Philistine giant Goliath challenges the Israelites. The entire army is terrified. What do you do?",
+                "choices": [
+                    {
+                        "text": "Run away like the other soldiers",
+                        "correct": false
+                    },
+                    {
+                        "text": "Trust God and face him with a sling",
+                        "correct": true
+                    },
+                    {
+                        "text": "Wait for someone else to fight",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "1 Samuel 17:45-47",
+                "scriptureText": "David said to the Philistine, 'You come against me with sword and spear and javelin, but I come against you in the name of the Lord Almighty... This day the Lord will deliver you into my hands... and the whole world will know that there is a God in Israel.'"
+            },
+            {
+                "id": "david_2",
+                "title": "Saul's Jealousy",
+                "description": "King Saul becomes jealous of your victories and popularity. He wants to kill you. How do you respond?",
+                "choices": [
+                    {
+                        "text": "Attack Saul first before he attacks you",
+                        "correct": false
+                    },
+                    {
+                        "text": "Show mercy and spare his life when you have the chance",
+                        "correct": true
+                    },
+                    {
+                        "text": "Gather an army to overthrow him",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "1 Samuel 24:10",
+                "scriptureText": "This day you have seen with your own eyes how the Lord delivered you into my hands in the cave. Some urged me to kill you, but I spared you; I said, 'I will not lay my hand on my lord, because he is the Lord's anointed.'"
+            },
+            {
+                "id": "david_3",
+                "title": "The Sin and Repentance",
+                "description": "You have committed a terrible sin with Bathsheba and Uriah. The prophet Nathan confronts you. What is your response?",
+                "choices": [
+                    {
+                        "text": "Deny what you did and make excuses",
+                        "correct": false
+                    },
+                    {
+                        "text": "Humbly admit your sin and repent",
+                        "correct": true
+                    },
+                    {
+                        "text": "Get angry at Nathan for confronting you",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Psalm 51:1-2",
+                "scriptureText": "Have mercy on me, O God, according to your unfailing love; according to your great compassion blot out my transgressions. Wash away all my iniquity and cleanse me from my sin."
+            }
+        ]
+    },
+    {
+        "character": "esther",
+        "name": "Esther",
+        "avatar": "👸",
+        "bio": "Queen and Courageous Heroine - Risked everything to save her people",
+        "unlocked": true,
+        "quests": [
+            {
+                "id": "esther_1",
+                "title": "The King's Decree",
+                "description": "You discover a plot to destroy all the Jews. The only way to stop it is to approach the king, but doing so without invitation means death. What do you do?",
+                "choices": [
+                    {
+                        "text": "Stay safe in the palace and do nothing",
+                        "correct": false
+                    },
+                    {
+                        "text": "Fast and pray, then risk your life for your people",
+                        "correct": true
+                    },
+                    {
+                        "text": "Send someone else to speak to the king",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Esther 4:16",
+                "scriptureText": "'Go, gather together all the Jews who are in Susa, and fast for me. Do not eat or drink for three days, night or day. I and my attendants will fast as you do. When this is done, I will go to the king, even though it is against the law. And if I perish, I perish.'"
+            },
+            {
+                "id": "esther_2",
+                "title": "The Banquet",
+                "description": "You plan to reveal Haman's evil plot. Do you confront him directly or use wisdom and timing?",
+                "choices": [
+                    {
+                        "text": "Publicly accuse him at the first banquet",
+                        "correct": false
+                    },
+                    {
+                        "text": "Wait for the right moment and use a second banquet to reveal the truth",
+                        "correct": true
+                    },
+                    {
+                        "text": "Try to blackmail him secretly",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Esther 7:3-4",
+                "scriptureText": "Then Queen Esther answered, 'If I have found favor with you, Your Majesty, and if it pleases you, grant me my life—this is my petition. And spare my people—this is my request. For I and my people have been sold to be destroyed, killed and annihilated.'"
+            },
+            {
+                "id": "esther_3",
+                "title": "Saving Your People",
+                "description": "The king has granted you favor, but the original decree to destroy the Jews cannot be revoked. What solution do you propose?",
+                "choices": [
+                    {
+                        "text": "Accept that nothing can be done",
+                        "correct": false
+                    },
+                    {
+                        "text": "Ask the king to issue a new decree allowing the Jews to defend themselves",
+                        "correct": true
+                    },
+                    {
+                        "text": "Beg the king to break the law just this once",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Esther 8:11",
+                "scriptureText": "The king's edict granted the Jews in every city the right to assemble and protect themselves; to destroy, kill and annihilate the armed men of any nationality or province who might attack them and their women and children."
+            }
+        ]
+    },
+    {
+        "character": "ruth",
+        "name": "Ruth",
+        "avatar": "🌾",
+        "bio": "Faithful Daughter-in-Law - Chose loyalty and faith over comfort",
+        "unlocked": true,
+        "quests": [
+            {
+                "id": "ruth_1",
+                "title": "The Choice",
+                "description": "Your husband has died. Naomi, your mother-in-law, is returning to her homeland and urges you to go back to your own people. What do you decide?",
+                "choices": [
+                    {
+                        "text": "Go back to your own family as Naomi suggests",
+                        "correct": false
+                    },
+                    {
+                        "text": "Stay with Naomi and commit to her people and her God",
+                        "correct": true
+                    },
+                    {
+                        "text": "Ask Naomi to stay with you instead",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Ruth 1:16-17",
+                "scriptureText": "But Ruth replied, 'Don't urge me to leave you or to turn back from you. Where you go I will go, and where you stay I will stay. Your people will be my people and your God my God. Where you die I will die, and there I will be buried.'"
+            },
+            {
+                "id": "ruth_2",
+                "title": "Gleaning in the Fields",
+                "description": "You need to provide for yourself and Naomi. You decide to glean grain in the fields. How do you approach this?",
+                "choices": [
+                    {
+                        "text": "Take grain from any field without permission",
+                        "correct": false
+                    },
+                    {
+                        "text": "Work hard and humbly, gleaning only what is rightfully yours",
+                        "correct": true
+                    },
+                    {
+                        "text": "Beg people for food instead of working",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Ruth 2:7",
+                "scriptureText": "She said, 'Please let me glean and gather among the sheaves behind the harvesters.' She came into the field and has remained here from morning till now, except for a short rest in the shelter."
+            },
+            {
+                "id": "ruth_3",
+                "title": "At the Threshing Floor",
+                "description": "Naomi suggests you go to Boaz at the threshing floor. This is a risky and potentially misunderstood action. How do you proceed?",
+                "choices": [
+                    {
+                        "text": "Follow Naomi's plan and approach Boaz with respect and integrity",
+                        "correct": true
+                    },
+                    {
+                        "text": "Refuse to go because it's too risky",
+                        "correct": false
+                    },
+                    {
+                        "text": "Go but try to manipulate the situation",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Ruth 3:10-11",
+                "scriptureText": "'The Lord bless you, my daughter,' he replied. 'This kindness is greater than that which you showed earlier: You have not run after the younger men, whether rich or poor. And now, my daughter, don't be afraid. I will do for you all you ask.'"
+            }
+        ]
+    },
+    {
+        "character": "paul",
+        "name": "Paul",
+        "avatar": "📜",
+        "bio": "Apostle and Missionary - From persecutor to passionate preacher",
+        "unlocked": true,
+        "quests": [
+            {
+                "id": "paul_1",
+                "title": "The Damascus Road",
+                "description": "You are on your way to persecute Christians when a blinding light stops you. Jesus speaks to you. How do you respond?",
+                "choices": [
+                    {
+                        "text": "Ignore the experience and continue your mission",
+                        "correct": false
+                    },
+                    {
+                        "text": "Submit to Jesus and ask 'What shall I do, Lord?'",
+                        "correct": true
+                    },
+                    {
+                        "text": "Pretend nothing happened",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Acts 9:6",
+                "scriptureText": "'Now get up and go into the city, and you will be told what you must do.'"
+            },
+            {
+                "id": "paul_2",
+                "title": "Preaching in Prison",
+                "description": "You and Silas are beaten and thrown into prison for preaching. An earthquake opens all the doors. What do you do?",
+                "choices": [
+                    {
+                        "text": "Escape immediately while you have the chance",
+                        "correct": false
+                    },
+                    {
+                        "text": "Stay and lead the jailer to faith in Christ",
+                        "correct": true
+                    },
+                    {
+                        "text": "Wait for someone to rescue you",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Acts 16:31-32",
+                "scriptureText": "They replied, 'Believe in the Lord Jesus, and you will be saved—you and your household.' Then they spoke the word of the Lord to him and to all the others in his house."
+            },
+            {
+                "id": "paul_3",
+                "title": "Content in All Circumstances",
+                "description": "You face hardships, shipwrecks, beatings, and imprisonment. Yet you write about being content. What is the secret?",
+                "choices": [
+                    {
+                        "text": "Pretend to be happy even when you're not",
+                        "correct": false
+                    },
+                    {
+                        "text": "Find strength in Christ who gives you the power to endure",
+                        "correct": true
+                    },
+                    {
+                        "text": "Avoid all difficult situations",
+                        "correct": false
+                    }
+                ],
+                "scriptureRef": "Philippians 4:12-13",
+                "scriptureText": "I know what it is to be in need, and I know what it is to have plenty. I have learned the secret of being content in any and every situation... I can do all this through him who gives me strength."
+            }
+        ]
+    }
+]
+

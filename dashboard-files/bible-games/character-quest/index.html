@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Quest - Bible Adventure 🗡️</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Particle Background -->
+        <div class="particles" id="particles"></div>
+
+        <!-- Welcome Screen -->
+        <section class="screen welcome-screen active" id="welcomeScreen">
+            <div class="welcome-content">
+                <h1 class="game-title animate-title">⚔️ Character Quest ⚔️</h1>
+                <p class="game-subtitle animate-subtitle">Embark on Epic Bible Adventures</p>
+                <div class="welcome-animation">
+                    <div class="sword-icon">🗡️</div>
+                    <div class="shield-icon">🛡️</div>
+                </div>
+                <button class="btn btn-primary btn-large animate-btn" id="startBtn">
+                    Begin Your Journey
+                </button>
+            </div>
+        </section>
+
+        <!-- Character Selection Screen -->
+        <section class="screen character-screen" id="characterScreen">
+            <div class="screen-header">
+                <h2 class="screen-title">Choose Your Hero</h2>
+                <div class="faith-points-display">
+                    <span class="fp-icon">✨</span>
+                    <span class="fp-label">Faith Points:</span>
+                    <span class="fp-value" id="totalFP">0</span>
+                </div>
+            </div>
+            <div class="characters-grid" id="charactersGrid">
+                <!-- Character cards will be generated here -->
+            </div>
+            <button class="btn btn-secondary" id="backToWelcomeBtn">Back</button>
+        </section>
+
+        <!-- Quest Screen -->
+        <section class="screen quest-screen" id="questScreen">
+            <div class="quest-header">
+                <div class="character-info">
+                    <div class="character-avatar" id="questCharacterAvatar">👤</div>
+                    <div class="character-name" id="questCharacterName">Hero</div>
+                </div>
+                <div class="quest-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="questProgressFill"></div>
+                    </div>
+                    <span class="progress-text" id="questProgressText">Quest 1 of 3</span>
+                </div>
+            </div>
+
+            <div class="quest-content">
+                <div class="quest-card">
+                    <h3 class="quest-title" id="questTitle">Quest Title</h3>
+                    <p class="quest-description" id="questDescription">Quest description goes here...</p>
+                    <div class="quest-choices" id="questChoices">
+                        <!-- Choice buttons will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="quest-footer">
+                <div class="fp-display">
+                    <span class="fp-icon">✨</span>
+                    <span class="fp-label">Faith Points:</span>
+                    <span class="fp-value" id="currentFP">0</span>
+                </div>
+                <button class="btn btn-secondary hidden" id="continueQuestBtn">Continue →</button>
+            </div>
+        </section>
+
+        <!-- Result/Revelation Screen -->
+        <section class="screen result-screen" id="resultScreen">
+            <div class="result-content">
+                <div class="result-icon" id="resultIcon">✓</div>
+                <h3 class="result-title" id="resultTitle">Excellent!</h3>
+                <p class="result-message" id="resultMessage">You made the right choice!</p>
+                
+                <div class="scripture-revelation">
+                    <div class="scripture-header">📖 Scripture</div>
+                    <div class="scripture-reference" id="scriptureRef">1 Samuel 17:45-47</div>
+                    <div class="scripture-text" id="scriptureText">"The scripture text will appear here..."</div>
+                </div>
+
+                <div class="fp-reward">
+                    <div class="fp-reward-label">Faith Points Earned</div>
+                    <div class="fp-reward-value" id="fpReward">+10 ✨</div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="nextQuestBtn">Next Quest →</button>
+                    <button class="btn btn-secondary" id="retryQuestBtn">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Completion Screen -->
+        <section class="screen completion-screen" id="completionScreen">
+            <div class="completion-content">
+                <div class="completion-animation">
+                    <div class="trophy-icon">🏆</div>
+                    <div class="confetti-container" id="completionConfetti"></div>
+                </div>
+                <h2 class="completion-title">Quest Complete! 🎉</h2>
+                <p class="completion-message" id="completionMessage">You've completed all quests for this character!</p>
+                
+                <div class="completion-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">✨</div>
+                        <div class="stat-value" id="completionFP">0</div>
+                        <div class="stat-label">Faith Points</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value" id="completionQuests">0</div>
+                        <div class="stat-label">Quests</div>
+                    </div>
+                </div>
+
+                <div class="testimony-badge" id="testimonyBadge">
+                    <div class="badge-icon">🎖️</div>
+                    <div class="badge-text">Character Testimony Unlocked!</div>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="btn btn-primary" id="selectCharacterBtn">Choose Another Hero</button>
+                    <button class="btn btn-secondary" id="replayCharacterBtn">Replay Quests</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Save Indicator -->
+        <div class="save-indicator" id="saveIndicator">
+            <span class="save-text">Saving progress...</span>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>Loading your adventure...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <!-- Firebase Config -->
+    <script src="../../../js/firebase-config.js"></script>
+    <!-- Game Logic -->
+    <script src="./game.js"></script>
+</body>
+</html>

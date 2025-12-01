@@ -15,3 +15,7 @@ content2.js
 another-content,js
 
 
+# environment variables
+.env
+
+

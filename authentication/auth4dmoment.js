@@ -81,164 +81,15 @@ const db = firebase.firestore();
 // Import offline detection (you'll need to add this)
 // For now, we'll add the offline check directly in the functions
 
-// // Register Function
-// async function register(event) {
-//   // Check if user is offline
-//   event.preventDefault(); // Prevent form submission from refreshing the page
-// if (!navigator.onLine) {
-//   showToast("Sorry, you are currently offline");
-//   return;
-// }
-  
-
-//   const name = document.getElementById("fullName").value.trim();
-//   const age = document.getElementById("age").value;
-//   const email = document.getElementById("email").value.trim();
-//   const password = document.getElementById("password").value;
-//   const confirmPassword = document.getElementById("confirm-password").value;
-
-//   // Validation
-//   if (!name || !age || !email || !password || !confirmPassword) {
-//     showToast("Please fill all fields.");
-//     return;
-//   }
-
-//   if (password !== confirmPassword) {
-//     showToast("Passwords do not match.");
-//     return;
-//   }
-
-//   if (age < 4 || age > 17) {
-//     showToast("Age must be between 4 and 17.");
-//     return;
-//   }
-
-//   try {
-//     // Set persistence to SESSION (default) or LOCAL based on your needs
-//     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-//     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-//     const user = userCredential.user;
-
-//     // Save extra data to Firestore
-//     await db
-//       .collection("users")
-//       .doc(user.uid)
-//       .set({
-//         name,
-//         age: parseInt(age),
-//         email,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-//       });
-
-//     showToast("Registered and logged in!");
-//     window.location.href = "../dashboard-files/dashboard.html";
-//   } catch (error) {
-//     console.error("Signup error:");
-//     showToast("error");
-//   }
-
-
-
- 
-// }
-
-
-// // Register Function
-// async function register(event) {
-//   // Check if user is offline
-//   event.preventDefault(); // Prevent form submission from refreshing the page
-//   if (!navigator.onLine) {
-//     showToast("Sorry, you are currently offline");
-//     return;
-//   }
-
-//   const name = document.getElementById("fullName").value.trim();
-//   const age = document.getElementById("age").value;
-//   const email = document.getElementById("email").value.trim();
-//   const password = document.getElementById("password").value;
-//   const confirmPassword = document.getElementById("confirm-password").value;
-
-//   // Validation
-//   if (!name || !age || !email || !password || !confirmPassword) {
-//     showToast("Please fill all fields.");
-//     return;
-//   }
-
-//   if (password !== confirmPassword) {
-//     showToast("Passwords do not match.");
-//     return;
-//   }
-
-//   if (age < 4 || age > 17) {
-//     showToast("Age must be between 4 and 17.");
-//     return;
-//   }
-
-//   try {
-//     // Set persistence
-//     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-//     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-//     const user = userCredential.user;
-
-//     // Save extra data to Firestore
-//     await db
-//       .collection("users")
-//       .doc(user.uid)
-//       .set({
-//         name,
-//         age: parseInt(age),
-//         email,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-//       });
-
-//     // ✅ TRIGGER WELCOME EMAIL VIA YOUR MINIMAL BACKEND
-//     try {
-//       const emailResponse = await fetch('http://localhost:3001/send-welcome', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//           email: user.email,
-//           displayName: name
-//         })
-//       });
-
-//       if (!emailResponse.ok) {
-//         console.warn('Failed to trigger welcome email, but user was created.');
-//       }
-//     } catch (emailError) {
-//       // Don't fail registration if email fails – it's non-critical
-//       console.error('Email trigger error:', emailError);
-//     }
-
-//     showToast("Registered and logged in!");
-//     window.location.href = "../dashboard-files/dashboard.html";
-//   } catch (error) {
-//     console.error("Signup error:", error);
-//     // Show a more helpful message
-//     let message = "Registration failed. Please try again.";
-//     if (error.code === "auth/email-already-in-use") {
-//       message = "This email is already registered.";
-//     } else if (error.code === "auth/invalid-email") {
-//       message = "Please enter a valid email.";
-//     } else if (error.code === "auth/weak-password") {
-//       message = "Password must be at least 6 characters.";
-//     }
-//     showToast(message, "error");
-//   }
-// }
-
-
-
-
 // Register Function
 async function register(event) {
-  event.preventDefault(); // Prevent form refresh
-
-  // Offline check
-  if (!navigator.onLine) {
-    showToast("Sorry, you are currently offline");
-    return;
-  }
+  // Check if user is offline
+  event.preventDefault(); // Prevent form submission from refreshing the page
+if (!navigator.onLine) {
+  showToast("Sorry, you are currently offline");
+  return;
+}
+  
 
   const name = document.getElementById("fullName").value.trim();
   const age = document.getElementById("age").value;
@@ -263,71 +114,35 @@ async function register(event) {
   }
 
   try {
-    // Set session persistence
+    // Set persistence to SESSION (default) or LOCAL based on your needs
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-
-    // Create user in Firebase Auth
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
     const user = userCredential.user;
 
-    // Save additional user data to Firestore
-    await db.collection("users").doc(user.uid).set({
-      name,
-      age: parseInt(age),
-      email,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-
-    // ✅ Trigger welcome email via your backend (non-blocking)
-    try {
-      const emailResponse = await fetch('http://localhost:3001/send-welcome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.email,
-          displayName: name
-        })
+    // Save extra data to Firestore
+    await db
+      .collection("users")
+      .doc(user.uid)
+      .set({
+        name,
+        age: parseInt(age),
+        email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
-      if (!emailResponse.ok) {
-        console.warn('Email service returned error:', emailResponse.status);
-      } else {
-        console.log('Welcome email triggered successfully');
-      }
-    } catch (emailError) {
-      // Log but don't stop registration — email is secondary
-      console.error('Failed to trigger welcome email:', emailError);
-    }
-
-    // Success! Show toast and redirect
     showToast("Registered and logged in!");
     window.location.href = "../dashboard-files/dashboard.html";
-
   } catch (error) {
-    console.error("Registration error:", error);
-
-    // Show user-friendly error
-    let message = "Registration failed. Please try again.";
-    switch (error.code) {
-      case "auth/email-already-in-use":
-        message = "This email is already registered.";
-        break;
-      case "auth/invalid-email":
-        message = "Please enter a valid email address.";
-        break;
-      case "auth/weak-password":
-        message = "Password must be at least 6 characters.";
-        break;
-      case "auth/operation-not-allowed":
-        message = "Email/password accounts are disabled.";
-        break;
-      default:
-        message = "Something went wrong. Please try again.";
-    }
-
-    showToast(message, "error");
+    console.error("Signup error:");
+    showToast("error");
   }
+
+
+
+ 
 }
+
+
 
 
 // comment: This function handles user registration

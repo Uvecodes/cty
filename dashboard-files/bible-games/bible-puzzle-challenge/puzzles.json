@@ -1,0 +1,204 @@
+[
+    {
+        "id": "puzzle_001",
+        "type": "verseScramble",
+        "verse": "For God so loved the world that he gave his one and only Son",
+        "reference": "John 3:16a",
+        "difficulty": 1,
+        "words": ["For", "God", "so", "loved", "the", "world", "that", "he", "gave", "his", "one", "and", "only", "Son"],
+        "hint": "The verse starts with 'For God' and talks about love."
+    },
+    {
+        "id": "puzzle_002",
+        "type": "missingWord",
+        "verse": "I can do all this through him who gives me",
+        "reference": "Philippians 4:13",
+        "difficulty": 1,
+        "fullVerse": "I can do all this through him who gives me strength.",
+        "blanks": [
+            { "position": 8, "word": "strength", "options": ["strength", "power", "energy", "hope"] }
+        ],
+        "hint": "This word describes what you receive to accomplish things."
+    },
+    {
+        "id": "puzzle_003",
+        "type": "bookSequence",
+        "reference": "Genesis Creation Order",
+        "difficulty": 1,
+        "items": [
+            { "text": "Light", "order": 1 },
+            { "text": "Sky", "order": 2 },
+            { "text": "Land and Sea", "order": 3 },
+            { "text": "Sun, Moon, Stars", "order": 4 },
+            { "text": "Birds and Fish", "order": 5 },
+            { "text": "Animals", "order": 6 },
+            { "text": "Humans", "order": 7 }
+        ],
+        "hint": "God created light first, then the sky, then dry land."
+    },
+    {
+        "id": "puzzle_004",
+        "type": "scriptureMatch",
+        "reference": "Bible Verse Matching",
+        "difficulty": 1,
+        "matches": [
+            {
+                "verse": "The Lord is my shepherd, I lack nothing.",
+                "reference": "Psalm 23:1"
+            },
+            {
+                "verse": "Trust in the Lord with all your heart",
+                "reference": "Proverbs 3:5"
+            },
+            {
+                "verse": "Be strong and courageous. Do not be afraid",
+                "reference": "Joshua 1:9"
+            },
+            {
+                "verse": "Love is patient, love is kind",
+                "reference": "1 Corinthians 13:4"
+            }
+        ],
+        "hint": "Match each verse to its book and chapter reference."
+    },
+    {
+        "id": "puzzle_005",
+        "type": "verseScramble",
+        "verse": "Trust in the Lord with all your heart and lean not on your own understanding",
+        "reference": "Proverbs 3:5",
+        "difficulty": 2,
+        "words": ["Trust", "in", "the", "Lord", "with", "all", "your", "heart", "and", "lean", "not", "on", "your", "own", "understanding"],
+        "hint": "This verse from Proverbs starts with 'Trust in the Lord'."
+    },
+    {
+        "id": "puzzle_006",
+        "type": "missingWord",
+        "verse": "Be still, and know that I am",
+        "reference": "Psalm 46:10",
+        "difficulty": 1,
+        "fullVerse": "Be still, and know that I am God.",
+        "blanks": [
+            { "position": 5, "word": "God", "options": ["God", "Lord", "the Creator", "Almighty"] }
+        ],
+        "hint": "The missing word refers to the divine being speaking."
+    },
+    {
+        "id": "puzzle_007",
+        "type": "bookSequence",
+        "reference": "Old Testament Books",
+        "difficulty": 2,
+        "items": [
+            { "text": "Genesis", "order": 1 },
+            { "text": "Exodus", "order": 2 },
+            { "text": "Leviticus", "order": 3 },
+            { "text": "Numbers", "order": 4 },
+            { "text": "Deuteronomy", "order": 5 }
+        ],
+        "hint": "These are the first five books of the Bible, also called the Pentateuch."
+    },
+    {
+        "id": "puzzle_008",
+        "type": "verseScramble",
+        "verse": "Cast all your anxiety on him because he cares for you",
+        "reference": "1 Peter 5:7",
+        "difficulty": 2,
+        "words": ["Cast", "all", "your", "anxiety", "on", "him", "because", "he", "cares", "for", "you"],
+        "hint": "This verse tells us what to do with our worries."
+    },
+    {
+        "id": "puzzle_009",
+        "type": "missingWord",
+        "verse": "The fruit of the Spirit is love, joy, peace,",
+        "reference": "Galatians 5:22",
+        "difficulty": 2,
+        "fullVerse": "The fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness.",
+        "blanks": [
+            { "position": 4, "word": "forbearance", "options": ["forbearance", "patience", "endurance", "strength"] },
+            { "position": 5, "word": "kindness", "options": ["kindness", "goodness", "mercy", "grace"] },
+            { "position": 6, "word": "goodness", "options": ["goodness", "righteousness", "purity", "holiness"] }
+        ],
+        "hint": "These are characteristics that come from the Holy Spirit."
+    },
+    {
+        "id": "puzzle_010",
+        "type": "scriptureMatch",
+        "reference": "Bible Verse Matching",
+        "difficulty": 2,
+        "matches": [
+            {
+                "verse": "And we know that in all things God works for the good",
+                "reference": "Romans 8:28"
+            },
+            {
+                "verse": "Come to me, all you who are weary and burdened",
+                "reference": "Matthew 11:28"
+            },
+            {
+                "verse": "I have hidden your word in my heart",
+                "reference": "Psalm 119:11"
+            },
+            {
+                "verse": "Do not be anxious about anything",
+                "reference": "Philippians 4:6"
+            }
+        ],
+        "hint": "Match each verse to its correct New Testament or Old Testament reference."
+    },
+    {
+        "id": "puzzle_011",
+        "type": "verseScramble",
+        "verse": "Jesus Christ is the same yesterday and today and forever",
+        "reference": "Hebrews 13:8",
+        "difficulty": 3,
+        "words": ["Jesus", "Christ", "is", "the", "same", "yesterday", "and", "today", "and", "forever"],
+        "hint": "This verse describes the unchanging nature of Christ."
+    },
+    {
+        "id": "puzzle_012",
+        "type": "missingWord",
+        "verse": "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you",
+        "reference": "Jeremiah 29:11",
+        "difficulty": 3,
+        "fullVerse": "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",
+        "blanks": [
+            { "position": 11, "word": "hope", "options": ["hope", "peace", "joy", "life"] },
+            { "position": 12, "word": "future", "options": ["future", "purpose", "destiny", "blessing"] }
+        ],
+        "hint": "These two words describe what God's plans provide."
+    },
+    {
+        "id": "puzzle_013",
+        "type": "bookSequence",
+        "reference": "Gospel Books",
+        "difficulty": 2,
+        "items": [
+            { "text": "Matthew", "order": 1 },
+            { "text": "Mark", "order": 2 },
+            { "text": "Luke", "order": 3 },
+            { "text": "John", "order": 4 }
+        ],
+        "hint": "These four books tell the story of Jesus' life, death, and resurrection."
+    },
+    {
+        "id": "puzzle_014",
+        "type": "verseScramble",
+        "verse": "Do to others as you would have them do to you",
+        "reference": "Luke 6:31",
+        "difficulty": 2,
+        "words": ["Do", "to", "others", "as", "you", "would", "have", "them", "do", "to", "you"],
+        "hint": "This is often called the Golden Rule."
+    },
+    {
+        "id": "puzzle_015",
+        "type": "missingWord",
+        "verse": "The Lord will fight for you; you need only to be",
+        "reference": "Exodus 14:14",
+        "difficulty": 2,
+        "fullVerse": "The Lord will fight for you; you need only to be still.",
+        "blanks": [
+            { "position": 6, "word": "still", "options": ["still", "calm", "quiet", "peaceful"] }
+        ],
+        "hint": "This word means to be calm and not worry."
+    }
+]
+
