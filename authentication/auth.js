@@ -280,7 +280,7 @@ async function register(event) {
 
     // ✅ Trigger welcome email via your backend (non-blocking)
     try {
-      const emailResponse = await fetch('https://cty-7cyi.onrender.com', {
+      const emailResponse = await fetch('https://cty-7cyi.onrender.com', { //'http://localhost:3001/send-welcome' localhost
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

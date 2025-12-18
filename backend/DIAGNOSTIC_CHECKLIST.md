@@ -206,3 +206,4 @@ http://localhost:3001/health
 3. Try registering again
 4. Watch both backend terminal AND browser console
 
+

@@ -236,3 +236,4 @@ Since EmailJS works from the frontend, you can optionally:
 - Users may need to check spam folder
 - Consider upgrading to paid plan for better deliverability
 
+

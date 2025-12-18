@@ -203,3 +203,4 @@ If still stuck, gather this information:
 - Contents of .env file structure (NOT the actual keys, just which ones are set)
 - EmailJS dashboard status (is service connected?)
 
+
