@@ -6,21 +6,7 @@ console.info = function() {};
 
 
 
-// Initialize Firebase
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
-//   authDomain: "catch-them-young-16da5.firebaseapp.com",
-//   projectId: "catch-them-young-16da5",
-//   storageBucket: "catch-them-young-16da5.firebasestorage.app",
-//   messagingSenderId: "777589364823",
-//   appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
-//   measurementId: "G-H517ECEK72",
-// };
-// Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-
-// Get Firestore instance
-// const db = firebase.firestore();
+/
 
 function getUserTZ(userDoc) {
   if (userDoc && userDoc.tz) {
