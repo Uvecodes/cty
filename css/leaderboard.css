@@ -108,7 +108,19 @@
       /* margin-top: 10rem; */
       margin: 0 auto;
       padding: 8rem 6rem 2rem 6rem;
+  }
+
+  /* Responsive: Reduce padding on tablets and mobile */
+  @media (max-width: 1024px) {
+    .leaderboard-container {
+      padding: 4rem 2rem 1rem 2rem;
     }
+  }
+  @media (max-width: 768px) {
+    .leaderboard-container {
+      padding: 2rem 0.5rem 1rem 0.5rem;
+    }
+  }
     
     .leaderboard-header {
       text-align: center;
@@ -198,6 +210,17 @@
       color: var(--color-green);
       margin-bottom: 0.5rem;
     }
+    @media (max-width: 500px) {
+      .stat-number {
+        font-size: 1.5rem;
+      }
+      .stat-label {
+        font-size: 0.85rem;
+      }
+      .leaderboard-title {
+        font-size: 1.2rem;
+      }
+    }
     
     .stat-label {
       color: #666;
@@ -205,11 +228,12 @@
     }
     
     .leaderboard-table {
-      background: white;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      animation: fadeInUp 0.8s ease-out 0.6s both;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+        overflow-x: auto;
     }
     
     .leaderboard-table-header {
@@ -223,6 +247,7 @@
       margin: 0;
       font-size: 1.5rem;
       font-weight: 600;
+      word-break: break-word;
     }
     
     .leaderboard-rows {
@@ -237,6 +262,41 @@
       padding: 1rem 2rem;
       border-bottom: 1px solid #f0f0f0;
       transition: all 0.3s ease;
+    }
+
+    /* Responsive: Adjust columns for tablets */
+    @media (max-width: 900px) {
+      .leaderboard-row {
+        grid-template-columns: 50px 1fr 80px 80px;
+      }
+    }
+    @media (max-width: 768px) {
+      .leaderboard-row {
+        grid-template-columns: 50px 1fr 80px;
+        padding: 1rem 0.5rem;
+        gap: 0.5rem;
+      }
+      .streak,
+      .completed {
+        display: none;
+      }
+    }
+    /* Responsive: Stack columns on very small screens */
+    @media (max-width: 500px) {
+      .leaderboard-row {
+        grid-template-columns: 1fr;
+        padding: 0.5rem 0.2rem;
+        gap: 0.3rem;
+      }
+      .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+      .score, .streak, .completed {
+        font-size: 1rem;
+        padding: 0.2rem 0;
+      }
     }
     
     .leaderboard-row:hover {
@@ -349,26 +409,11 @@
       100% { transform: rotate(360deg); }
     }
     
+    /* Remove conflicting padding for .leaderboard-container in mobile breakpoint */
     @media (max-width: 768px) {
-      .leaderboard-container {
-        padding: 10rem;
-      }
-      
       .leaderboard-title {
         font-size: 2rem;
       }
-      
-      .leaderboard-row {
-        grid-template-columns: 50px 1fr 80px;
-        padding: 1rem;
-        gap: 0.5rem;
-      }
-      
-      .streak,
-      .completed {
-        display: none;
-      }
-      
       .week-selector {
         flex-direction: column;
         gap: 0.5rem;
