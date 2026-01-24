@@ -1,8 +1,21 @@
+  @media (max-width: 768px) {
+    .games-container {
+      padding: 1rem 0.5rem 1rem 0.5rem;
+      min-height: unset;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .games-container {
+      padding: 0.5rem 0.2rem 0.5rem 0.2rem;
+    }
+  }
   .games-container {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 8rem 2rem 2rem 2rem;
-      min-height: 80vh;
+     plan a flex-direction: ;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -321,7 +334,8 @@
     
     @media (max-width: 768px) {
       .games-container {
-        padding: 1rem;
+        padding: 7rem;
+      
       }
       
       .games-title {

@@ -107,18 +107,18 @@
       max-width: var(--max-width);
       /* margin-top: 10rem; */
       margin: 0 auto;
-      padding: 8rem 6rem 2rem 6rem;
+       padding: 8rem 6rem 2rem 6rem; 
   }
 
   /* Responsive: Reduce padding on tablets and mobile */
   @media (max-width: 1024px) {
     .leaderboard-container {
-      padding: 4rem 2rem 1rem 2rem;
+      /* padding: 4rem 2rem 1rem 2rem; */
     }
   }
   @media (max-width: 768px) {
     .leaderboard-container {
-      padding: 2rem 0.5rem 1rem 0.5rem;
+      /* padding: 2rem 0.5rem 1rem 0.5rem; */
     }
   }
     
