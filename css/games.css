@@ -1,21 +1,112 @@
-  @media (max-width: 768px) {
+  /* Medium screens (600px - 900px): 2 columns */
+  @media (max-width: 900px) {
     .games-container {
-      padding: 1rem 0.5rem 1rem 0.5rem;
-      min-height: unset;
-      height: auto;
+      padding: 6rem 1.5rem 2rem 1.5rem;
+    }
+    .games-title {
+      font-size: 2.2rem;
+    }
+    .coming-soon-title {
+      font-size: 1.8rem;
+    }
+    .coming-soon-description {
+      max-width: 95%;
+      padding: 0 0.5rem;
+    }
+    .games-preview {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .game-card {
+      padding: 1.5rem;
     }
   }
 
-  @media (max-width: 500px) {
+  /* Small screens (480px - 600px): 2 columns with smaller cards */
+  @media (max-width: 600px) {
     .games-container {
-      padding: 0.5rem 0.2rem 0.5rem 0.2rem;
+      max-width: 100%;
+      width: 100%;
+      padding: 2.5rem 0.75rem 1.5rem 0.75rem;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .games-header,
+    .coming-soon-section {
+      margin-bottom: 2rem;
+    }
+    .games-title {
+      font-size: 1.8rem;
+    }
+    .games-subtitle {
+      font-size: 1.1rem;
+      padding: 0 0.5rem;
+    }
+    .coming-soon-title {
+      font-size: 1.5rem;
+    }
+    .coming-soon-description {
+      max-width: 100%;
+      padding: 0 0.25rem;
+      font-size: 1rem;
+    }
+    .games-preview {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+    }
+    .game-card {
+      padding: 1rem;
+      font-size: 0.95rem;
+    }
+    .game-icon {
+      font-size: 2.5rem;
+    }
+    .game-title {
+      font-size: 1.1rem;
+    }
+    .game-description {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Very small screens (< 480px): 1 column */
+  @media (max-width: 480px) {
+    .games-container {
+      padding: 1.5rem 0.5rem 1rem 0.5rem;
+      min-height: unset;
+      height: auto;
+    }
+    .games-title {
+      font-size: 1.5rem;
+    }
+    .coming-soon-title {
+      font-size: 1.3rem;
+    }
+    .games-subtitle,
+    .coming-soon-description {
+      font-size: 0.95rem;
+      padding: 0 0.25rem;
+    }
+    .coming-soon-description {
+      max-width: 100%;
+    }
+    .games-preview {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .game-card {
+      padding: 1rem;
+      font-size: 0.9rem;
+      width: 100%;
+      margin: 0 auto;
     }
   }
   .games-container {
       max-width: var(--max-width);
       margin: 0 auto;
       padding: 8rem 2rem 2rem 2rem;
-     plan a flex-direction: ;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -72,10 +163,11 @@
       font-size: 1.2rem;
       color: #666;
       margin-bottom: 3rem;
-      max-width: 600px;
+      max-width: 90%;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
+      padding: 0 1rem;
     }
     
     .cta-button {
@@ -99,7 +191,7 @@
     
     .games-preview {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
       margin-bottom: 4rem;
       animation: fadeInUp 0.8s ease-out 0.6s both;
@@ -332,25 +424,8 @@
       }
     }
     
-    @media (max-width: 768px) {
-      .games-container {
-        padding: 7rem;
-      
-      }
-      
-      .games-title {
-        font-size: 2.5rem;
-      }
-      
-      .coming-soon-title {
-        font-size: 2rem;
-      }
-      
-      .games-preview {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
+    /* Hide floating elements on smaller screens */
+    @media (max-width: 600px) {
       .floating-elements {
         display: none;
       }
