@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Puzzle Challenge 🧩</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Animated Background -->
+        <div class="animated-bg"></div>
+        <div class="particles" id="particles"></div>
+
+        <!-- Home Screen -->
+        <section class="screen home-screen active" id="homeScreen">
+            <video class="home-bg-video" autoplay loop muted playsinline>
+                <source src="../../../assets/videos/cty-hero-bg.mp4" type="video/mp4">
+            </video>
+            <div class="home-content">
+                <div class="logo-container">
+                    <h1 class="game-logo animate-logo">🧩 Bible Puzzle</h1>
+                    <p class="game-subtitle animate-subtitle">Challenge Your Mind, Strengthen Your Faith</p>
+                </div>
+                
+                <div class="stats-dashboard">
+                    <div class="stat-card">
+                        <div class="stat-icon">✨</div>
+                        <div class="stat-value" id="wisdomTokens">0</div>
+                        <div class="stat-label">Wisdom Tokens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="completedPuzzles">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-value" id="streakDays">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <div class="main-actions">
+                    <button class="btn btn-primary btn-large daily-btn" id="dailyChallengeBtn">
+                        <span class="btn-icon">⭐</span>
+                        <span>Daily Challenge</span>
+                        <span class="btn-badge" id="dailyBadge">NEW</span>
+                    </button>
+                    <button class="btn btn-secondary btn-large" id="browsePuzzlesBtn">
+                        <span class="btn-icon">📚</span>
+                        Browse Puzzles
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Puzzle Selection Screen -->
+        <section class="screen selection-screen" id="selectionScreen">
+            <div class="screen-header">
+                <button class="back-btn" id="backToHomeBtn">← Back</button>
+                <h2 class="screen-title">Choose Your Challenge</h2>
+                <div class="wisdom-display">
+                    <span class="token-icon">✨</span>
+                    <span id="wisdomDisplay">0</span>
+                </div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-type="all">All</button>
+                <button class="filter-tab" data-type="verseScramble">Scramble</button>
+                <button class="filter-tab" data-type="missingWord">Missing Word</button>
+                <button class="filter-tab" data-type="bookSequence">Book Order</button>
+                <button class="filter-tab" data-type="scriptureMatch">Match</button>
+            </div>
+
+            <div class="difficulty-selector">
+                <span class="difficulty-label">Difficulty:</span>
+                <button class="difficulty-btn active" data-difficulty="all">All</button>
+                <button class="difficulty-btn" data-difficulty="1">Easy</button>
+                <button class="difficulty-btn" data-difficulty="2">Medium</button>
+                <button class="difficulty-btn" data-difficulty="3">Hard</button>
+            </div>
+
+            <div class="puzzles-grid" id="puzzlesGrid">
+                <!-- Puzzle cards will be generated here -->
+            </div>
+        </section>
+
+        <!-- Puzzle Game Screen -->
+        <section class="screen puzzle-screen" id="puzzleScreen">
+            <div class="puzzle-header">
+                <button class="back-btn" id="backToSelectionBtn">← Back</button>
+                <div class="puzzle-info">
+                    <div class="puzzle-type-badge" id="puzzleTypeBadge">Scramble</div>
+                    <div class="difficulty-badge" id="puzzleDifficultyBadge">Easy</div>
+                </div>
+                <div class="puzzle-controls">
+                    <button class="hint-btn" id="hintBtn" title="Use a hint (costs 1 Wisdom Token)">
+                        <span>💡</span>
+                        <span class="hint-text">Hint</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="puzzle-content">
+                <div class="verse-reference" id="puzzleReference">John 3:16</div>
+                
+                <!-- Verse Scramble Puzzle -->
+                <div class="puzzle-type verse-scramble-puzzle" id="verseScramblePuzzle">
+                    <div class="instruction-text">Drag the words to arrange them in the correct order:</div>
+                    <div class="word-bank" id="wordBank">
+                        <!-- Words will be rendered here -->
+                    </div>
+                    <div class="answer-area" id="answerArea">
+                        <div class="answer-slot" data-index="0"></div>
+                        <div class="answer-slot" data-index="1"></div>
+                        <div class="answer-slot" data-index="2"></div>
+                        <div class="answer-slot" data-index="3"></div>
+                        <div class="answer-slot" data-index="4"></div>
+                        <div class="answer-slot" data-index="5"></div>
+                    </div>
+                </div>
+
+                <!-- Missing Word Puzzle -->
+                <div class="puzzle-type missing-word-puzzle hidden" id="missingWordPuzzle">
+                    <div class="instruction-text">Fill in the missing words:</div>
+                    <div class="verse-with-blanks" id="verseWithBlanks">
+                        <!-- Verse with blanks will be rendered here -->
+                    </div>
+                    <div class="word-options" id="wordOptions">
+                        <!-- Word options will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Book Sequence Puzzle -->
+                <div class="puzzle-type book-sequence-puzzle hidden" id="bookSequencePuzzle">
+                    <div class="instruction-text">Arrange the books/events in the correct order:</div>
+                    <div class="sequence-bank" id="sequenceBank">
+                        <!-- Items will be rendered here -->
+                    </div>
+                    <div class="sequence-answer" id="sequenceAnswer">
+                        <!-- Answer slots will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Scripture Match Puzzle -->
+                <div class="puzzle-type scripture-match-puzzle hidden" id="scriptureMatchPuzzle">
+                    <div class="instruction-text">Match each verse to its correct reference:</div>
+                    <div class="match-container">
+                        <div class="verses-column" id="versesColumn">
+                            <!-- Verses will be rendered here -->
+                        </div>
+                        <div class="references-column" id="referencesColumn">
+                            <!-- References will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="puzzle-footer">
+                <button class="btn btn-secondary" id="checkAnswerBtn">Check Answer</button>
+                <button class="btn btn-primary hidden" id="nextPuzzleBtn">Next Puzzle →</button>
+            </div>
+        </section>
+
+        <!-- Result Screen -->
+        <section class="screen result-screen" id="resultScreen">
+            <div class="result-content">
+                <div class="result-icon" id="resultIcon">✓</div>
+                <h2 class="result-title" id="resultTitle">Perfect! 🎉</h2>
+                <p class="result-message" id="resultMessage">You solved the puzzle correctly!</p>
+
+                <div class="verse-revelation">
+                    <div class="verse-ref" id="resultVerseRef">John 3:16</div>
+                    <div class="verse-text" id="resultVerseText">"For God so loved the world..."</div>
+                </div>
+
+                <div class="rewards-section">
+                    <div class="reward-item">
+                        <span class="reward-icon">✨</span>
+                        <span class="reward-text" id="rewardTokens">+5 Wisdom Tokens</span>
+                    </div>
+                    <div class="reward-item">
+                        <span class="reward-icon">📖</span>
+                        <span class="reward-text">Scripture Insight Unlocked!</span>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="continueBtn">Continue</button>
+                    <button class="btn btn-secondary" id="retryBtn">Try Again</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Completion Animation Overlay -->
+        <div class="completion-overlay" id="completionOverlay">
+            <div class="confetti-container" id="confettiContainer"></div>
+        </div>
+
+        <!-- Hint Modal -->
+        <div class="hint-modal" id="hintModal">
+            <div class="hint-content">
+                <div class="hint-icon">💡</div>
+                <h3>Hint</h3>
+                <p id="hintText">This is a hint for the puzzle.</p>
+                <div class="hint-actions">
+                    <button class="btn btn-primary" id="useHintBtn">Use Hint (1 Token)</button>
+                    <button class="btn btn-secondary" id="closeHintBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Indicator -->
+        <div class="save-indicator" id="saveIndicator">
+            <span>Saving progress...</span>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>Loading puzzles...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <!-- Firebase Config -->
+    <script src="../../../js/firebase-config.js"></script>
+    <!-- Game Logic -->
+    <script src="./game.js"></script>
+</body>
+</html>

@@ -3,21 +3,21 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
-// const emailjs = require('@emailjs/nodejs');
-const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY); // ← from .env, secure
+const emailjs = require('@emailjs/nodejs');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// // Security: Only allow your frontend origin
-// app.use(cors({
-//   origin: process.env.FRONTEND_ORIGIN
-// }));
+// Import routes
+const authRoutes = require('./routes/auth');
+const versesRoutes = require('./routes/verses');
 
-// CORS - allow all origins in development for easier testing
+// CORS configuration
+const frontendUrl = process.env.FRONTEND_URL || '*';
 app.use(cors({
-  origin: true, // Allow all origins (change this in production)
-  credentials: false
+  origin: frontendUrl === '*' ? true : frontendUrl,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
@@ -27,6 +27,10 @@ app.use((req, res, next) => {
   console.log(`📨 ${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
+
+// Mount routes
+app.use('/api/auth', authRoutes);
+app.use('/api/verses', versesRoutes);
 
 // Initialize EmailJS with credentials from environment variables
 if (!process.env.EMAILJS_PRIVATE_KEY || !process.env.EMAILJS_PUBLIC_KEY) {
@@ -101,15 +105,32 @@ app.post('/send-welcome', async (req, res) => {
   }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('❌ Error:', err);
+  res.status(err.status || 500).json({
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not found',
+    message: `Route ${req.method} ${req.path} not found`
+  });
+});
+
 app.listen(PORT, () => {
-  console.log(`📧 Email backend running on http://localhost:${PORT}`);
-  console.log(`📝 Using EmailJS for email sending`);
+  console.log(`🚀 Backend server running on http://localhost:${PORT}`);
+  console.log(`📧 Email service: ${process.env.RESEND_API_KEY ? '✅ Configured' : '❌ Not configured'}`);
+  console.log(`🔐 Auth routes: /api/auth/*`);
   console.log(`\n📋 Environment Check:`);
   console.log(`   - PORT: ${PORT}`);
-  console.log(`   - EMAILJS_SERVICE_ID: ${process.env.EMAILJS_SERVICE_ID ? '✅ Set' : '❌ Missing'}`);
-  console.log(`   - EMAILJS_TEMPLATE_ID: ${process.env.EMAILJS_TEMPLATE_ID ? '✅ Set' : '❌ Missing'}`);
-  console.log(`   - EMAILJS_PRIVATE_KEY: ${process.env.EMAILJS_PRIVATE_KEY ? '✅ Set' : '❌ Missing'}`);
-  console.log(`   - EMAILJS_PUBLIC_KEY: ${process.env.EMAILJS_PUBLIC_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - FRONTEND_URL: ${process.env.FRONTEND_URL || 'Not set (allowing all origins)'}`);
+  console.log(`   - FIREBASE_SERVICE_ACCOUNT: ${process.env.FIREBASE_SERVICE_ACCOUNT_KEY || process.env.FIREBASE_SERVICE_ACCOUNT_PATH ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - RESEND_API_KEY: ${process.env.RESEND_API_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`\n💡 Waiting for requests...\n`);
 });
 

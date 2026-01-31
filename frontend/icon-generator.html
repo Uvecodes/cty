@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="color"] {
+            width: 100px;
+            height: 50px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .preview h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        .icon-item canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .icon-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #2196F3;
+        }
+        .instructions h4 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+        .instructions ol {
+            margin: 10px 0 0 20px;
+            color: #555;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 PWA Icon Generator</h1>
+        <p class="subtitle">Create placeholder icons for testing your PWA</p>
+        
+        <div class="input-group">
+            <label for="appName">App Name / Initials:</label>
+            <input type="text" id="appName" value="CTY" maxlength="3" placeholder="e.g., CTY">
+        </div>
+        
+        <div class="input-group">
+            <label for="bgColor">Background Color:</label>
+            <input type="color" id="bgColor" value="#4CAF50">
+        </div>
+        
+        <div class="input-group">
+            <label for="textColor">Text Color:</label>
+            <input type="color" id="textColor" value="#FFFFFF">
+        </div>
+        
+        <button onclick="generateIcons()">Generate Icons</button>
+        <button onclick="downloadAll()">Download All</button>
+        
+        <div class="preview" id="preview" style="display: none;">
+            <h3>Preview & Download:</h3>
+            <div class="icon-preview" id="iconPreview"></div>
+        </div>
+        
+        <div class="instructions">
+            <h4>📋 Instructions:</h4>
+            <ol>
+                <li>Enter your app name or initials (max 3 characters)</li>
+                <li>Choose your colors</li>
+                <li>Click "Generate Icons"</li>
+                <li>Click "Download All" or download individually</li>
+                <li>Place the downloaded files in: <code>/frontend/assets/icons/</code></li>
+                <li>Rename them to:
+                    <ul>
+                        <li><code>icon-192x192.png</code></li>
+                        <li><code>icon-512x512.png</code></li>
+                    </ul>
+                </li>
+                <li>Refresh your app and check the console for PWA diagnostics</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let canvases = {};
+
+        function generateIcons() {
+            const appName = document.getElementById('appName').value || 'CTY';
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            
+            const sizes = [192, 512];
+            const previewDiv = document.getElementById('iconPreview');
+            previewDiv.innerHTML = '';
+            canvases = {};
+            
+            sizes.forEach(size => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw background
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, size, size);
+                
+                // Draw text
+                ctx.fillStyle = textColor;
+                ctx.font = `bold ${size * 0.4}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(appName.toUpperCase(), size / 2, size / 2);
+                
+                // Draw border
+                ctx.strokeStyle = textColor;
+                ctx.lineWidth = size * 0.02;
+                ctx.strokeRect(size * 0.05, size * 0.05, size * 0.9, size * 0.9);
+                
+                // Store canvas
+                canvases[size] = canvas;
+                
+                // Create preview
+                const iconItem = document.createElement('div');
+                iconItem.className = 'icon-item';
+                
+                const previewCanvas = document.createElement('canvas');
+                previewCanvas.width = 100;
+                previewCanvas.height = 100;
+                const previewCtx = previewCanvas.getContext('2d');
+                previewCtx.drawImage(canvas, 0, 0, 100, 100);
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = 'Download';
+                downloadBtn.onclick = () => downloadIcon(size);
+                
+                const label = document.createElement('p');
+                label.textContent = `${size}x${size}`;
+                
+                iconItem.appendChild(previewCanvas);
+                iconItem.appendChild(label);
+                iconItem.appendChild(downloadBtn);
+                previewDiv.appendChild(iconItem);
+            });
+            
+            document.getElementById('preview').style.display = 'block';
+        }
+        
+        function downloadIcon(size) {
+            const canvas = canvases[size];
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadAll() {
+            Object.keys(canvases).forEach(size => {
+                setTimeout(() => downloadIcon(size), 100 * size / 192);
+            });
+        }
+        
+        // Generate default icons on load
+        window.onload = () => generateIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+
+                <!-- font link -->
+
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
+  <!-- PWA mets tags -->
+        <link rel="manifest" href="../manifest.json">
+        <meta name="theme-color" content="#4CAF50">
+        <!-- ios support -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="CTY Bible">
+        <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
+  <title>Edit Profile | Catch Them Young</title>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+   <!-- Fixed Top Navbar -->
+  <nav  class="profile-navbar">
+    <div class="navbar-left">
+      <div class="logo">
+        <!-- <img src="../assets/images/official-logo.svg" alt=""> -->
+         <!-- <div class="profile-avatar"> -->
+                    <img id="profileAvatar" src="../assets/images/official-logo.svg" alt="#">
+                    <!-- <input type="file" id="avatarUpload" accept="image/*" style="display: none;"> -->
+                    <!-- <button type="button" id="avatarUploadBtn" class="avatar-upload-btn">Change Photo</button> -->
+                <!-- </div> -->
+      </div>
+    </div>
+
+     <div class="navbar-right">
+      <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
+    </div>
+
+     <!-- <div class="navbar-right">
+                <a href="./dashboard.html" class="btn btn-primary">BACK TO DASHBOARD</a>
+                
+            </div> -->
+    <!-- <div class="navbar-right">
+      <a href="#" class="btn btn-secondary" aria-label="logout" onClick="logout()">← Logout</a> -->
+        
+                <!-- tooltip was implemented here -->
+    <!-- <button id="installBtn"  class="btn-install">Install App
+        <span class="tooltip">Install for a better personalized experience</span>
+    </button> -->
+
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
+      <!-- we will implement 3d avatar later as a new feature to excite users-->
+      <!-- <div class="user-avatar"> -->
+        <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
+      <!-- </div> -->
+    <!--/div -->
+  </nav>
+    
+
+
+  <section id="edit-profile" class="edit-profile-section">
+    <div class="profile-card">
+      <header class="profile-header">
+        <h1> <img src="../assets/icons/person-cty.svg" alt="#"> Edit Your Profile</h1>
+        <p>Update your information and preferences</p>
+      </header>
+
+      <form class="profile-form">
+        <!-- Profile Avatar Section -->
+        <div class="avatar-section">
+          <div class="avatar-container">
+            <img src="../assets/images/avatar, user, icon, client, account, buttons….jpg" alt="" class="profile-avatar" id="mainProfileAvatar">
+            <!-- <div class="avatar-overlay">
+              <span class="camera-icon">📷</span>
+            </div> -->
+          </div>
+          <div class="avatar-buttons">
+            <button type="button" id="avatarInput" class="change-photo-btn">Change Photo</button>
+            <button type="button" id="deleteAvatarBtn" class="delete-photo-btn" style="display: none;">Delete Photo</button>
+          </div>
+        </div>
+
+        <!-- first commenting -->
+
+        <!-- Form Fields -->
+         <!-- <div class="form-fields">
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+          </div> 
+
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword"  placeholder="Enter new password" minlength="6">
+          </div>  -->
+
+
+          
+          <!-- second commenting -->
+
+           <!-- <div class="form-group">
+                    <label for="confirmPassword">New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="6">
+                </div> -->
+
+           <!-- <div class="form-group"> 
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="4" max="17" placeholder="Your age" required>
+          </div> -->
+
+          <!-- <div class="form-actions">
+           
+            <button type="button" id="updatePasswordBtn" class="updatepasswordBtn" disabled>Update Password</button>
+          </div> -->
+          <!--  3rd commenting -->
+
+          <div class="form-group">
+            <label for="theme-preference">Theme Preference</label>
+            <div class="theme-toggle-container">
+              <label class="theme-option">
+                <input type="radio" name="theme" value="light" id="lightModeRadio">
+                <span class="theme-label">
+                  <span class="theme-icon">☀️</span>
+                  Light Mode
+                </span>
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="theme" value="dark" id="darkModeRadio">
+                <span class="theme-label">
+                  <span class="theme-icon">🌙</span>
+                  Dark Mode
+                </span> 
+               </label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section> 
+  <!-- 6th commenting -->
+   
+   <!-- <h1>COMING SOON</h1> -->
+
+   <!-- scripts -->
+   <!-- Cropper.js Library -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+   
+   <!-- Firebase SDK v8 -->
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
+   
+   <!-- Firebase Configuration -->
+   <script src="../js/firebase-config.js"></script>
+   
+   <!-- Profile Script -->
+   <script src="./profile.js"></script>
+   
+   <!-- Dark Mode Script -->
+   <script src="../js/dark-mode.js"></script>
+  
+</body>
+</html> 

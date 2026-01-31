@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today's Verse | Catch Them Young</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/todaysverse.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/dark-mode.css">
+
+
+                  <!-- font link -->
+
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
+   
+  <!-- PWA mets tags -->
+        <link rel="manifest" href="../manifest.json">
+        <meta name="theme-color" content="#4CAF50">
+        <!-- ios support -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="CTY Bible">
+        <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
+
+  
+  <!-- Firebase v8 CDN (compat, no modules) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <!-- Fixed Top Navbar -->
+  <nav class="dashboard-navbar">
+    <div class="navbar-left">
+      <div class="logo">
+        <img id="navbarLogo" src="../assets/images/official-logo.svg" alt="">
+      </div>
+    </div>
+    <div class="navbar-right">
+      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
+      <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="verse-content">
+    <!-- Header Section -->
+    <section class="verse-header">
+      <div class="verse-title">
+        <h1> <img src="../assets/icons/open-bible-cty.svg" alt="bible" width="70"> Today's Bible Verse</h1>
+        <p class="verse-date" id="verse-date">Loading...</p>
+      </div>
+    </section>
+
+    <!-- Verse Display Section -->
+    <section class="verse-display">
+      <div class="verse-card">
+        <div class="verse-icon"> <img src="../assets/icons/scroll-cty.svg" alt="scroll" width="100"></div>
+        <h2 id="passage">Loading verse...</h2>
+        <p class="verse-reference" id="ref">Loading reference...</p>
+        <input type="checkbox" id="read-checkbox1" class="read-checkbox-inline">
+        <label for="read-checkbox1" class="checkbox-label-small">Read</label>
+      </div>
+      
+    </section>
+
+    <!-- Moral Lesson Section -->
+    <section class="moral-section">
+      <div class="moral-card">
+        <div class="moral-icon"> <img src="../assets/icons/very-bright-heart-cty.svg" alt="heart" width="90"></div>
+        <h3>Moral of the Day</h3>
+        <p id="moral">Loading moral lesson...</p>
+        <input type="checkbox" id="read-checkbox2" class="read-checkbox-inline">
+        <label for="read-checkbox2" class="checkbox-label-small">Read</label>
+      </div>
+    </section>
+
+    <!-- Reflection Section -->
+    <section class="reflection-section">
+      <div class="reflection-card">
+        <h3> <img src="../assets/icons/thinking-cty.svg" alt="thinking" width="90"> Think About It</h3>
+        <div class="reflection-questions">
+          <p class="question" id="reflectionQ">Loading reflection question...</p>
+          
+        </div>
+        <input type="checkbox" id="read-checkbox3" class="read-checkbox-inline">
+          <label for="read-checkbox3" class="checkbox-label-small">Read</label>
+      </div>
+    </section>
+
+    <!-- Challenge Section -->
+    <section class="challenge-section">
+      <div class="challenge-card">
+        <h3> <img src="../assets/icons/targetboardcty1.svg" alt="target-board" width="90"> Today's Challenge</h3>
+        <p id="challenge">Loading challenge...</p>
+        <input type="checkbox" id="read-checkbox4" class="read-checkbox-inline">
+        <label for="read-checkbox4" class="checkbox-label-small">Read</label>
+      </div>
+    </section>
+
+    <!-- Dig Deeper Section (for 14-17 age group) -->
+    <section class="dig-deeper-section" id="dig-deeper-section" style="display: none;">
+      <div class="dig-deeper-card">
+        <h3>🔍 Dig Deeper</h3>
+        <p>Explore related verses and deeper meanings:</p>
+        <ul id="cross-references">
+          <li>Related verse 1</li>
+          <li>Related verse 2</li>
+          <li>Related verse 3</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Action Section -->
+    <!-- <section class="action-section">
+      <div class="action-buttons">
+        <button class="action-btn primary" id="mark-complete">✅ Mark as Complete</button>
+        <button class="action-btn secondary" id="share-verse">📤 Share Verse</button>
+        <button class="action-btn secondary" id="save-verse">💾 Save for Later</button>
+      </div>
+    </section> -->
+
+    <!-- Navigation Section -->
+    <section class="navigation-section">
+      <div class="nav-cards">
+        <a href="./dashboard.html" class="nav-card">
+          <div class="nav-icon"> <img src="../assets/icons/house-cty.svg" alt="home" width="70"></div>
+          <h4>Dashboard</h4>
+          <p>Return to main dashboard</p>
+        </a>
+        <a href="./profile.html" class="nav-card">
+          <div class="nav-icon"> <img src="../assets/icons/person-cty.svg" alt="person" width="70"></div>
+          <h4>My Profile</h4>
+          <p>View your progress</p>
+        </a>
+        <a href="./games.html" class="nav-card">
+          <div class="nav-icon"> <img src="../assets/icons/game-pad-cty.svg" alt="game-pad" width="70"></div>
+          <h4>Games</h4>
+          <p>Play fun games</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <!-- scripts loaded -->
+  <script src="../authentication/auth.js"></script>
+   <script src="./content.js"></script>
+ 
+   <!-- <script src="./dashboard.js"></script>  -->
+    <script src="./checkbox.js"></script>
+
+     <script src="../js/dark-mode.js"></script>
+  
+</body>
+</html>
