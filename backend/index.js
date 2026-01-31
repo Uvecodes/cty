@@ -12,15 +12,50 @@ const authRoutes = require('./routes/auth');
 const versesRoutes = require('./routes/verses');
 
 // CORS configuration
-const frontendUrl = process.env.FRONTEND_URL || '*';
+// const frontendUrl = process.env.FRONTEND_URL || '*';
+// app.use(cors({
+//   origin: frontendUrl === '*' ? true : frontendUrl,
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+// app.use(express.json());
+
+
+// CORS Configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL,                    // Production URL from env variable
+  'http://127.0.0.1:5500',                     // Local dev (Live Server)
+  'http://localhost:5500',                      // Local dev (alternate)
+  'http://localhost:3000',                      // Local dev (if using a dev server)
+].filter(Boolean);                             // Removes undefined/null entries
+
 app.use(cors({
-  origin: frontendUrl === '*' ? true : frontendUrl,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (Postman, same-origin, etc.)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error('CORS blocked for origin:', origin);
+      callback(new Error('Origin not allowed: ' + origin));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Handle preflight requests explicitly
+app.options('*', cors());
+
 app.use(express.json());
+
+
+
+
 
 // Request logging middleware
 app.use((req, res, next) => {
