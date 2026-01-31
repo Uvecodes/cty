@@ -1,0 +1,13 @@
+[build]
+  # Publish directory - where your site files are
+  publish = "frontend"
+  
+  # Command to run before deploy (if you have any build steps)
+  command = ""
+
+# Redirect rules (optional - for cleaner URLs)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
