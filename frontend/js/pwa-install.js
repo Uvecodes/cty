@@ -398,7 +398,7 @@ class PWAInstaller {
     
     console.log('PWA Install: Registering service worker:', swPath);
     
-    navigator.serviceWorker.register(swPath, { scope: '/frontend/' })
+    navigator.serviceWorker.register(swPath, { scope: '/' })
       .then(function(registration) {
         console.log('PWA Install: Service Worker registered successfully');
         console.log('PWA Install: Scope:', registration.scope);
