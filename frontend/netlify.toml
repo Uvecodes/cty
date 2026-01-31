@@ -1,4 +1,0 @@
-[build]
- 
-  publish = "frontend"          # publish the contents of the base directory
-  # command = ""         # no build needed for static files; leave blank or omit
