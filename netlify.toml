@@ -3,7 +3,7 @@
   publish = "frontend"
   
   # Command to run before deploy (if you have any build steps)
-  command = ""
+  command = "npm run build"
 
 # Redirect rules (optional - for cleaner URLs)
 [[redirects]]
