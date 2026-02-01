@@ -271,7 +271,7 @@ router.get('/verify', verifyToken, (req, res) => {
  */
 router.post('/logout', verifyToken, (req, res) => {
   // Firebase doesn't require server-side logout for ID tokens
-  // This endpoint is here for future use if needed
+  //  note This endpoint is here for future use if needed
   res.json({
     success: true,
     message: 'Logged out successfully'
