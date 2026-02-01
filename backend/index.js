@@ -181,7 +181,7 @@ app.listen(PORT, () => {
   console.log(`\n🚀 Backend server running on http://localhost:${PORT}`);
   console.log(`\n📋 Environment Check:`);
   console.log(`   - FRONTEND_URL:              ${process.env.FRONTEND_URL || '❌ Not set'}`);
-  console.log(`   - FIREBASE_SERVICE_ACCOUNT: ${process.env.FIREBASE_SERVICE_ACCOUNT_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - FIREBASE_SERVICE_ACCOUNT_KEY: ${process.env.FIREBASE_SERVICE_ACCOUNT_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`   - FIREBASE_CLIENT_CONFIG:   ${process.env.FIREBASE_API_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`   - EMAILJS:                  ${process.env.EMAILJS_PRIVATE_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`   - RESEND_API_KEY:           ${process.env.RESEND_API_KEY ? '✅ Set' : '❌ Missing'}`);
