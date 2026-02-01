@@ -82,7 +82,8 @@
         confettiContainer: document.getElementById('confettiContainer')
     };
 
-    // Initialize Firebase
+    // Wait for Firebase (init from API via firebase-config.js)
+    (window.firebaseReady || Promise.resolve()).then(function() {
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -852,5 +853,6 @@
         startPuzzle,
         checkAnswer
     };
+    }); // end firebaseReady.then
 })();
 

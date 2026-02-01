@@ -1,29 +1,30 @@
-// console.log() redec;laration to avoid errors in some environments
-console.log = function() {};
-console.warn = function() {};
-console.error = function() {};
-console.info = function() {};
+// Firebase v8 Namespaced SDK - Init from backend API
+// No hardcoded config; dependent scripts wait on window.firebaseReady
 
+const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+  ? 'http://localhost:3001'
+  : 'https://cty-7cyi.onrender.com';
 
-// Firebase v8 Namespaced SDK - Browser Compatible
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCRjTTx_FOCFybP5Dhp2Bz82NQN1n-9fJ4",
-  authDomain: "catch-them-young-16da5.firebaseapp.com",
-  projectId: "catch-them-young-16da5",
-  storageBucket: "catch-them-young-16da5.firebasestorage.app",
-  messagingSenderId: "777589364823",
-  appId: "1:777589364823:web:ee9f214c01c7d9779aab12",
-  measurementId: "G-H517ECEK72"
-};
-
-// Initialize Firebase app (only if not already initialized)
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+function initFirebaseFromAPI() {
+  if (firebase.apps.length) {
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+    window.analytics = firebase.analytics();
+    window.messaging = firebase.messaging();
+    return Promise.resolve();
+  }
+  return fetch(`${API_BASE}/api/firebase-config`)
+    .then((res) => {
+      if (!res.ok) throw new Error('Failed to fetch Firebase config');
+      return res.json();
+    })
+    .then((config) => {
+      firebase.initializeApp(config);
+      window.auth = firebase.auth();
+      window.db = firebase.firestore();
+      window.analytics = firebase.analytics();
+      window.messaging = firebase.messaging();
+    });
 }
 
-// Initialize Firebase services
-const auth = firebase.auth();
-const db = firebase.firestore();
-const analytics = firebase.analytics();
-const messaging = firebase.messaging();
+window.firebaseReady = initFirebaseFromAPI();

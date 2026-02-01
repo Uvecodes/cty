@@ -50,7 +50,8 @@
     const dailyMode = document.getElementById('dailyMode');
     const feedbackContent = document.querySelector('.feedback-content');
 
-    // Initialize Firebase - assumes firebase-config.js is loaded
+    // Wait for Firebase (init from API via firebase-config.js)
+    (window.firebaseReady || Promise.resolve()).then(function() {
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -530,4 +531,5 @@
         getVerse,
         generateQuiz
     };
+    }); // end firebaseReady.then
 })();

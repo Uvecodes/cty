@@ -10,8 +10,11 @@ const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hos
 // Firebase Config — fetched from your backend
 // ===================================================
 async function initFirebase() {
-  // If Firebase is already initialized, skip
-  if (firebase.apps.length) return;
+  // If Firebase is already initialized, notify and return
+  if (firebase.apps.length) {
+    window.dispatchEvent(new CustomEvent('firebase-ready'));
+    return;
+  }
 
   try {
     const response = await fetch(`${API_BASE}/api/firebase-config`);
@@ -22,6 +25,7 @@ async function initFirebase() {
 
     const config = await response.json();
     firebase.initializeApp(config);
+    window.dispatchEvent(new CustomEvent('firebase-ready'));
   } catch (error) {
     console.error('Firebase initialization failed:', error);
     showToast('App failed to initialize. Please refresh.', 'error');

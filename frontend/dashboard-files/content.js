@@ -692,19 +692,25 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
   }
 }
 
-// Hook up renderTodayContent on DOMContentLoaded and auth state changes
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('renderTodayContent: DOM loaded, setting up auth listener');
-  
-  // Set up Firebase auth state listener
+// Hook up renderTodayContent after Firebase is ready (auth.js on dashboard)
+function setupContentAuthListener() {
+  if (typeof firebase === 'undefined' || !firebase.auth) return;
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(`renderTodayContent: User authenticated: ${user.uid}, rendering content`);
+      console.log('renderTodayContent: User authenticated: ' + user.uid + ', rendering content');
       renderTodayContent();
     } else {
       console.log('renderTodayContent: User signed out, no content to render');
     }
   });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('renderTodayContent: DOM loaded, setting up auth listener');
+  if (window.firebaseReady) {
+    window.firebaseReady.then(setupContentAuthListener);
+  } else {
+    window.addEventListener('firebase-ready', setupContentAuthListener, { once: true });
+  }
 });
 
 // Update date display immediately

@@ -255,19 +255,28 @@ async function initializeCheckboxAndProgress() {
   }
 }
 
-// Make sure Firebase auth is ready
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    initializeCheckboxAndProgress();
-  }
-});
+// Run after Firebase is ready (auth.js or firebase-config.js)
+function setupCheckboxAuthListener() {
+  if (typeof firebase === 'undefined' || !firebase.auth) return;
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      initializeCheckboxAndProgress();
+    }
+  });
+}
+if (window.firebaseReady) {
+  window.firebaseReady.then(setupCheckboxAuthListener);
+} else {
+  window.addEventListener('firebase-ready', setupCheckboxAuthListener, { once: true });
+}
 
 // Retry pending daily resets stored in localStorage when online
 async function retryPendingDailyResets() {
-  if (typeof firebase === 'undefined' || typeof db === 'undefined') {
+  if (typeof firebase === 'undefined' || !firebase.firestore) {
     console.warn('retryPendingDailyResets');
     return;
   }
+  const db = window.db || firebase.firestore();
 
   try {
     for (let i = 0; i < localStorage.length; i++) {

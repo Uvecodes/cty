@@ -218,39 +218,52 @@ console.info = function() {};
             }
         }
 
-        // Initialize modal and trigger after 2 seconds if needed
+        // Initialize modal after Firebase is ready (auth.js or firebase-config.js)
         document.addEventListener('DOMContentLoaded', () => {
-            window.migrationModalInstance = new MigrationModal(db);
-            
-            if (typeof openMigrationModal === 'function') {
-                const originalStub = openMigrationModal;
-                window.openMigrationModal = (onSave, onSkip) => {
-                    console.log('Opening real migration modal...');
-                    MigrationModal.open(onSave, onSkip);
-                };
-                console.log('Migration modal stub replaced with real implementation');
-            }
-            
-            window.addEventListener('load', async () => {
-                try {
-                    await auth.onAuthStateChanged(async (user) => {
-                        if (user) {
-                            const hasBirthDate = await window.migrationModalInstance.checkUserBirthDate(user.uid);
-                            if (!hasBirthDate) {
-                                setTimeout(() => {
-                                    window.migrationModalInstance.openWithCallbacks();
-                                }, 6000);
-                            } else {
-                                console.log('User already has birth date, skipping modal');
-                            }
-                        } else {
-                            console.log('No user logged in, skipping modal');
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error checking auth state:', error);
+            function initModal() {
+                const db = window.db || (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore());
+                const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth && firebase.auth());
+                if (!db || !auth) return;
+                window.migrationModalInstance = new MigrationModal(db);
+
+                if (typeof openMigrationModal === 'function') {
+                    const originalStub = openMigrationModal;
+                    window.openMigrationModal = (onSave, onSkip) => {
+                        console.log('Opening real migration modal...');
+                        MigrationModal.open(onSave, onSkip);
+                    };
+                    console.log('Migration modal stub replaced with real implementation');
                 }
-            });
+
+                window.addEventListener('load', async () => {
+                    try {
+                        auth.onAuthStateChanged(async (user) => {
+                            if (user) {
+                                const hasBirthDate = await window.migrationModalInstance.checkUserBirthDate(user.uid);
+                                if (!hasBirthDate) {
+                                    setTimeout(() => {
+                                        window.migrationModalInstance.openWithCallbacks();
+                                    }, 6000);
+                                } else {
+                                    console.log('User already has birth date, skipping modal');
+                                }
+                            } else {
+                                console.log('No user logged in, skipping modal');
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error checking auth state:', error);
+                    }
+                });
+            }
+
+            if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+                initModal();
+            } else if (window.firebaseReady) {
+                window.firebaseReady.then(initModal);
+            } else {
+                window.addEventListener('firebase-ready', () => initModal(), { once: true });
+            }
         });
 
         if (typeof module !== 'undefined' && module.exports) {

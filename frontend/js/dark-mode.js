@@ -6,7 +6,14 @@ const DarkMode = {
     this.setupThemeRadioButtons();
     this.setupToggleButton();
     this.detectSystemPreference();
-    this.loadUserAvatar();
+    // Load avatar only after Firebase is ready (auth.js or firebase-config.js)
+    if (window.firebaseReady) {
+      window.firebaseReady.then(() => this.loadUserAvatar());
+    } else if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+      this.loadUserAvatar();
+    } else {
+      window.addEventListener('firebase-ready', () => this.loadUserAvatar(), { once: true });
+    }
   },
 
   // Set theme (called by radio buttons or toggle)

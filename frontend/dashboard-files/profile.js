@@ -11,10 +11,17 @@ let cropperInstance = null;
 let croppedBlob = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    initializeAvatarUpload();
-    loadExistingAvatar();
-    initializeDeleteButton();
-    initializeAvatarPreview();
+    var runAfterFirebase = function() {
+        initializeAvatarUpload();
+        loadExistingAvatar();
+        initializeDeleteButton();
+        initializeAvatarPreview();
+    };
+    if (window.firebaseReady) {
+        window.firebaseReady.then(runAfterFirebase);
+    } else {
+        runAfterFirebase();
+    }
 });
 
 // Initialize avatar upload functionality

@@ -58,7 +58,8 @@
         completionConfetti: document.getElementById('completionConfetti')
     };
 
-    // Initialize Firebase - assumes firebase-config.js is loaded
+    // Wait for Firebase (init from API via firebase-config.js)
+    (window.firebaseReady || Promise.resolve()).then(function() {
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -533,5 +534,6 @@
         loadUserProgress,
         saveUserProgress
     };
+    }); // end firebaseReady.then
 })();
 
