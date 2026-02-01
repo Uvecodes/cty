@@ -6,7 +6,7 @@ console.info = function() {};
 
 
 
-/
+
 
 function getUserTZ(userDoc) {
   if (userDoc && userDoc.tz) {
