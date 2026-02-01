@@ -660,7 +660,7 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
     // Call backend API to get today's verse
     // The backend handles: age calculation, group determination, verse index calculation, blocklist, persistence
     try {
-      const response = await fetch('http://localhost:3001/api/verses/today', {
+      const response = await fetch('https://cty-7cyi.onrender.com/api/verses/today', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${await firebase.auth().currentUser.getIdToken()}`
