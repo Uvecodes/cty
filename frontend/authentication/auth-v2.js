@@ -1,3 +1,8 @@
+console.log('🔥 AUTH-V2 LOADED');
+console.log('🌍 Hostname:', window.location.hostname);
+
+
+
 // ===================================================
 // API Base URL — auto-detects environment
 // ===================================================
