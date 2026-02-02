@@ -1,8 +1,9 @@
 // console.log() redec;laration to avoid errors in some environments
-console.log = function() {};
-console.warn = function() {};
-console.error = function() {};
-console.info = function() {};
+const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+  ? 'http://localhost:3001'
+  : 'https://cty-7cyi.onrender.com';
+
+console.log('✅ content.js loaded - API_BASE:', API_BASE);
 
 
 
@@ -660,7 +661,7 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
     // Call backend API to get today's verse
     // The backend handles: age calculation, group determination, verse index calculation, blocklist, persistence
     try {
-      const response = await fetch('https://cty-7cyi.onrender.com/api/verses/today', {
+      const response = await fetch(`${API_BASE}/api/verses/today`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${await firebase.auth().currentUser.getIdToken()}`
