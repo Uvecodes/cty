@@ -1,9 +1,7 @@
 // console.log() redec;laration to avoid errors in some environments
-const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-  ? 'http://localhost:3001'
-  : 'https://cty-7cyi.onrender.com';
+console.log('✅ content.js loaded - using API_BASE:', typeof API_BASE !== 'undefined' ? API_BASE : 'NOT DEFINED');
 
-console.log('✅ content.js loaded - API_BASE:', API_BASE);
+
 
 
 
