@@ -3,7 +3,31 @@ console.log('✅ content.js loaded - using API_BASE:', typeof API_BASE !== 'unde
 
 
 
+// ===================================================
+// Firebase Config — fetched from your backend
+// ===================================================
+// async function initFirebase() {
+  // If Firebase is already initialized, notify and return
+//   if (firebase.apps.length) {
+//     window.dispatchEvent(new CustomEvent('firebase-ready'));
+//     return;
+//   }
 
+//   try {
+//     const response = await fetch(`${API_BASE}/api/firebase-config`);
+
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch Firebase config');
+//     }
+
+//     const config = await response.json();
+//     firebase.initializeApp(config);
+//     window.dispatchEvent(new CustomEvent('firebase-ready'));
+//   } catch (error) {
+//     console.error('Firebase initialization failed:', error);
+//     showToast('App failed to initialize. Please refresh.', 'error');
+//   }
+// }
 
 
 
@@ -408,8 +432,13 @@ function renderItemToDOM(item) {
     return;
   }
   
+  console.log('renderItemToDOM: Rendering verse data:', item);
+  
   // Define the DOM element IDs to populate
   const elementIds = ['ref', 'passage', 'moral', 'reflectionQ', 'challenge'];
+  
+  let renderedCount = 0;
+  let missingElements = [];
   
   // Populate each element with content from the item
   elementIds.forEach(elementId => {
@@ -417,12 +446,25 @@ function renderItemToDOM(item) {
     if (element) {
       // Get the content from the item, defaulting to empty string if missing
       const content = item[elementId] || '';
-      element.textContent = content;
+      if (content) {
+        element.textContent = content;
+        renderedCount++;
+        console.log(`renderItemToDOM: Set ${elementId} = "${content.substring(0, 50)}${content.length > 50 ? '...' : ''}"`);
+      } else {
+        console.warn(`renderItemToDOM: No content found for field '${elementId}' in item`);
+      }
     } else {
       // Log warning if element is missing but don't throw
-      console.warn(`renderItemToDOM: Element with id '${elementId}' not found`);
+      missingElements.push(elementId);
+      console.warn(`renderItemToDOM: Element with id '${elementId}' not found in DOM`);
     }
   });
+  
+  console.log(`renderItemToDOM: Rendering complete. Rendered ${renderedCount}/${elementIds.length} fields. Missing elements: ${missingElements.join(', ') || 'none'}`);
+  
+  if (missingElements.length > 0) {
+    console.error(`renderItemToDOM: ERROR - Missing DOM elements: ${missingElements.join(', ')}. Make sure the page has loaded completely.`);
+  }
 }
 
 function shouldShowMigration(userDoc, todayISO) {
@@ -656,10 +698,24 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
   try {
     console.log(`renderContentAfterMigration: Starting for user ${uid}`);
     
+    // Ensure DOM is ready before trying to render
+    if (document.readyState === 'loading') {
+      console.log('renderContentAfterMigration: DOM still loading, waiting...');
+      await new Promise((resolve) => {
+        if (document.readyState === 'complete') {
+          resolve();
+        } else {
+          document.addEventListener('DOMContentLoaded', resolve, { once: true });
+        }
+      });
+    }
+    
     // Call backend API to get today's verse
     // The backend handles: age calculation, group determination, verse index calculation, blocklist, persistence
     try {
-      const response = await fetch(`${API_BASE}/api/verses/today`, {
+      console.log(`renderContentAfterMigration: Fetching verse from ${API_BASE}/api/verses/today`);
+      
+      const response = await fetch(`${window.API_BASE}/api/verses/today`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${await firebase.auth().currentUser.getIdToken()}`
@@ -667,26 +723,30 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
       });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error(`renderContentAfterMigration: API error - Status ${response.status}:`, errorData);
         throw new Error(errorData.message || errorData.error || 'Failed to fetch verse');
       }
       
       const result = await response.json();
+      console.log(`renderContentAfterMigration: API response received:`, result);
       
       if (result.success && result.verse) {
-        console.log(`renderContentAfterMigration: Received verse from backend for user ${uid}`);
+        console.log(`renderContentAfterMigration: Received verse from backend for user ${uid}:`, result.verse);
         renderItemToDOM(result.verse);
         console.log(`renderContentAfterMigration: Content rendered successfully for user ${uid}`);
       } else {
-        console.warn(`renderContentAfterMigration: No verse data in response for user ${uid}`);
+        console.warn(`renderContentAfterMigration: No verse data in response for user ${uid}. Response:`, result);
       }
     } catch (apiError) {
       console.error(`renderContentAfterMigration: API error for user ${uid}:`, apiError);
+      console.error(`renderContentAfterMigration: Error stack:`, apiError.stack);
       // Continue execution - don't throw
     }
     
   } catch (error) {
     console.error(`renderContentAfterMigration: Error for user ${uid}:`, error);
+    console.error(`renderContentAfterMigration: Error stack:`, error.stack);
     // No throws, just log and continue
   }
 }
@@ -703,14 +763,25 @@ function setupContentAuthListener() {
     }
   });
 }
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('renderTodayContent: DOM loaded, setting up auth listener');
+var contentAuthSetupScheduled = false;
+function whenFirebaseReadyThenSetupContent() {
+  if (contentAuthSetupScheduled) return;
+  contentAuthSetupScheduled = true;
   if (window.firebaseReady) {
     window.firebaseReady.then(setupContentAuthListener);
   } else {
     window.addEventListener('firebase-ready', setupContentAuthListener, { once: true });
   }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('renderTodayContent: DOM loaded, setting up auth listener');
+  whenFirebaseReadyThenSetupContent();
 });
+
+if (document.readyState !== 'loading') {
+  whenFirebaseReadyThenSetupContent();
+}
 
 // Update date display immediately
 // nb: this is a simple static update, not tied to user auth and also it is a quick fix due to file conflicting loads due to to preview feature as dashboard.js no longer runs in todaysvers.html. future look out and scaling would be advised
@@ -808,4 +879,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // PWA: install prompt - Handled by pwa-install.js instead
-// Removed duplicate handler to prevent conflicts
+// Removed duplicate handler to prevent conflict 

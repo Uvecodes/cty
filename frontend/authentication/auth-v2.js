@@ -1,41 +1,47 @@
 console.log('🔥 AUTH-V2 LOADED');
 console.log('🌍 Hostname:', window.location.hostname);
 
+// Wait for Firebase to be ready before doing anything
+if (typeof window.firebaseReady !== 'undefined') {
+  window.firebaseReady.then(() => {
+    console.log('✅ Firebase ready, auth-v2.js can proceed');
+    // All your existing auth-v2.js code here
+  });
+}
+
 
 
 // ===================================================
 // API Base URL — auto-detects environment
 // ===================================================
-const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-  ? 'http://localhost:3001'
-  : 'https://cty-7cyi.onrender.com';
+console.log('✅ auth-v2.js loaded - using API_BASE:', window.API_BASE);
 
 
 // ===================================================
 // Firebase Config — fetched from your backend
 // ===================================================
-async function initFirebase() {
-  // If Firebase is already initialized, notify and return
-  if (firebase.apps.length) {
-    window.dispatchEvent(new CustomEvent('firebase-ready'));
-    return;
-  }
+// async function initFirebase() {
+//   // If Firebase is already initialized, notify and return
+//   if (firebase.apps.length) {
+//     window.dispatchEvent(new CustomEvent('firebase-ready'));
+//     return;
+//   }
 
-  try {
-    const response = await fetch(`${API_BASE}/api/firebase-config`);
+//   try {
+//     const response = await fetch(`${API_BASE}/api/firebase-config`);
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch Firebase config');
-    }
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch Firebase config');
+//     }
 
-    const config = await response.json();
-    firebase.initializeApp(config);
-    window.dispatchEvent(new CustomEvent('firebase-ready'));
-  } catch (error) {
-    console.error('Firebase initialization failed:', error);
-    showToast('App failed to initialize. Please refresh.', 'error');
-  }
-}
+//     const config = await response.json();
+//     firebase.initializeApp(config);
+//     window.dispatchEvent(new CustomEvent('firebase-ready'));
+//   } catch (error) {
+//     console.error('Firebase initialization failed:', error);
+//     showToast('App failed to initialize. Please refresh.', 'error');
+//   }
+// }
 
 
 // ===================================================
@@ -89,7 +95,7 @@ async function register(event) {
   }
 
   try {
-    const response = await fetch(`${API_BASE}/api/auth/register`, {
+    const response = await fetch(`${window.API_BASE}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, name, age: parseInt(age) })
@@ -104,7 +110,7 @@ async function register(event) {
     const userCredential = await auth.signInWithCustomToken(data.token);
 
     // Trigger welcome email (non-blocking)
-    fetch(`${API_BASE}/send-welcome`, {
+    fetch(`${window.API_BASE}/send-welcome`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: userCredential.user.email, displayName: name })
@@ -137,16 +143,20 @@ async function login(event) {
   const password = document.getElementById('password').value;
 
   try {
-    const response = await fetch(`${API_BASE}/api/auth/login`, {
+    // console.log({apiBase: window.API_BASE});
+    const response = await fetch(`${window.API_BASE}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
+      
     });
-
+    console.log({ email: email, password: password });
     const data = await response.json();
+    console.log({ data: data});
+
     if (!response.ok) throw new Error(data.message || data.error || 'Login failed');
 
-    // Sign in with custom token from backend
+    // Sign in with custom token from back-end
     const auth = firebase.auth();
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     await auth.signInWithCustomToken(data.token);
@@ -179,7 +189,7 @@ async function forgotPassword() {
   }
 
   try {
-    const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+    const response = await fetch(`${window.API_BASE}/api/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
@@ -232,11 +242,19 @@ function setupAuthMonitor() {
 // Event Listeners
 // ===================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  // Initialize Firebase first (fetches config from backend)
-  await initFirebase();
+  // Wait for Firebase to be ready (initialized by firebase-config.js)
+  if (window.firebaseReady) {
+    await window.firebaseReady;
+  } else {
+    // Fallback: wait for firebase-ready event if promise not available
+    await new Promise((resolve) => {
+      window.addEventListener('firebase-ready', resolve, { once: true });
+    });
+  }
 
   // Then set up auth monitor and form listeners
   setupAuthMonitor();
+
 
   const signupForm = document.getElementById('signupForm');
   if (signupForm) signupForm.addEventListener('submit', register);

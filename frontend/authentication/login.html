@@ -58,7 +58,7 @@
       <header>
         <h1>Catch Them Young</h1>
       </header>
-      <form id="loginForm" autocomplete="on">
+      <form id="loginForm" autocomplete="on" method="post">
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" required autocomplete="username">
@@ -79,7 +79,7 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
-
+  <script src="../js/firebase-config.js"></script>
   <script src="./auth-v2.js"></script>
   <!-- <script src="../js/offline-detection.js"></script> -->
   <!-- <script src="../js/dark-mode.js"></script> -->

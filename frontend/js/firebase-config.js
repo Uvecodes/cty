@@ -1,30 +1,41 @@
-// Firebase v8 Namespaced SDK - Init from backend API
-// No hardcoded config; dependent scripts wait on window.firebaseReady
+// Firebase initialization - ONLY declares API_BASE and initializes Firebase
+// Other scripts will use window.auth, window.db, window.API_BASE
 
-const API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+window.API_BASE = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
   ? 'http://localhost:3001'
   : 'https://cty-7cyi.onrender.com';
 
+console.log('🔥 firebase-config.js loading... API_BASE:', window.API_BASE);
+
 function initFirebaseFromAPI() {
   if (firebase.apps.length) {
+    console.log('✅ Firebase already initialized');
     window.auth = firebase.auth();
     window.db = firebase.firestore();
-    window.analytics = firebase.analytics();
-    window.messaging = firebase.messaging();
+    window.dispatchEvent(new CustomEvent('firebase-ready'));
     return Promise.resolve();
   }
-  return fetch(`${API_BASE}/api/firebase-config`)
+
+  console.log('📡 Fetching Firebase config from:', `${window.API_BASE}/api/firebase-config`);
+  
+  return fetch(`${window.API_BASE}/api/firebase-config`)
     .then((res) => {
-      if (!res.ok) throw new Error('Failed to fetch Firebase config');
+      if (!res.ok) throw new Error(`Failed to fetch Firebase config: ${res.status}`);
       return res.json();
     })
     .then((config) => {
+      console.log('✅ Firebase config received, initializing...');
       firebase.initializeApp(config);
       window.auth = firebase.auth();
       window.db = firebase.firestore();
-      window.analytics = firebase.analytics();
-      window.messaging = firebase.messaging();
+      window.dispatchEvent(new CustomEvent('firebase-ready'));
+      console.log('✅ Firebase initialized - auth and db available globally');
+    })
+    .catch((error) => {
+      console.error('❌ Firebase initialization failed:', error);
+      throw error;
     });
 }
 
+// Initialize immediately
 window.firebaseReady = initFirebaseFromAPI();

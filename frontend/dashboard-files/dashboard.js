@@ -1,13 +1,5 @@
-// console.log() redec;laration to avoid errors in some environments
-console.log = function() {};
-console.warn = function() {};
-console.error = function() {};
-console.info = function() {};
-
-
-
 // Dashboard Logic - Firebase v8 Compatible
-// Firebase is initialized by auth.js (fetch from API); run only after firebase-ready
+// Firebase is initialized by auth-v2.js (fetch from API); run only after firebase-ready
 (function() {
   function runWhenFirebaseReady() {
     const auth = firebase.auth();

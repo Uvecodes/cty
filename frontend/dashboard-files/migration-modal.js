@@ -218,49 +218,66 @@ console.info = function() {};
             }
         }
 
-        // Initialize modal after Firebase is ready (auth.js or firebase-config.js)
+        // Initialize modal after Firebase is ready (auth-v2.js initializes Firebase)
         document.addEventListener('DOMContentLoaded', () => {
             function initModal() {
-                const db = window.db || (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore());
-                const auth = window.auth || (typeof firebase !== 'undefined' && firebase.auth && firebase.auth());
-                if (!db || !auth) return;
-                window.migrationModalInstance = new MigrationModal(db);
-
-                if (typeof openMigrationModal === 'function') {
-                    const originalStub = openMigrationModal;
-                    window.openMigrationModal = (onSave, onSkip) => {
-                        console.log('Opening real migration modal...');
-                        MigrationModal.open(onSave, onSkip);
-                    };
-                    console.log('Migration modal stub replaced with real implementation');
-                }
-
-                window.addEventListener('load', async () => {
-                    try {
-                        auth.onAuthStateChanged(async (user) => {
-                            if (user) {
-                                const hasBirthDate = await window.migrationModalInstance.checkUserBirthDate(user.uid);
-                                if (!hasBirthDate) {
-                                    setTimeout(() => {
-                                        window.migrationModalInstance.openWithCallbacks();
-                                    }, 6000);
-                                } else {
-                                    console.log('User already has birth date, skipping modal');
-                                }
-                            } else {
-                                console.log('No user logged in, skipping modal');
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error checking auth state:', error);
+                try {
+                    // Check if Firebase is initialized before accessing it
+                    if (typeof firebase === 'undefined' || !firebase.apps || firebase.apps.length === 0) {
+                        console.warn('migration-modal.js: Firebase not initialized yet, waiting...');
+                        return;
                     }
-                });
+
+                    const db = window.db || (firebase.firestore && firebase.firestore());
+                    const auth = window.auth || (firebase.auth && firebase.auth());
+
+                    if (!db || !auth) {
+                        console.warn('migration-modal.js: db or auth not available');
+                        return;
+                    }
+
+                    window.migrationModalInstance = new MigrationModal(db);
+
+                    if (typeof openMigrationModal === 'function') {
+                        const originalStub = openMigrationModal;
+                        window.openMigrationModal = (onSave, onSkip) => {
+                            console.log('Opening real migration modal...');
+                            MigrationModal.open(onSave, onSkip);
+                        };
+                        console.log('Migration modal stub replaced with real implementation');
+                    }
+
+                    window.addEventListener('load', async () => {
+                        try {
+                            auth.onAuthStateChanged(async (user) => {
+                                if (user) {
+                                    const hasBirthDate = await window.migrationModalInstance.checkUserBirthDate(user.uid);
+                                    if (!hasBirthDate) {
+                                        setTimeout(() => {
+                                            window.migrationModalInstance.openWithCallbacks();
+                                        }, 6000);
+                                    } else {
+                                        console.log('User already has birth date, skipping modal');
+                                    }
+                                } else {
+                                    console.log('No user logged in, skipping modal');
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Error checking auth state:', error);
+                        }
+                    });
+                } catch (error) {
+                    console.error('migration-modal.js: Error initializing modal:', error);
+                }
             }
 
-            if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
+            if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
                 initModal();
             } else if (window.firebaseReady) {
-                window.firebaseReady.then(initModal);
+                window.firebaseReady.then(initModal).catch((err) => {
+                    console.error('migration-modal.js: window.firebaseReady rejected:', err);
+                });
             } else {
                 window.addEventListener('firebase-ready', () => initModal(), { once: true });
             }
