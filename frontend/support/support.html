@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Us | Catch Them Young</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="./support.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="CTY Bible">
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
+</head>
+<body>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar support-nav">
+    <div class="nav-content">
+      <div class="logo">
+        <img src="../assets/images/official-logo.svg" alt="Catch Them Young">
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About Us</a>
+        <a href="../shop/shop.html">Shop</a>
+        <a href="./support.html" class="active">Support Us</a>
+        <button id="installBtn" class="btn-install">
+          Install App
+          <span class="tooltip">Install for a better personalized experience</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero: Give Back -->
+  <section class="support-hero">
+    <h1 class="support-hero-title">Give Back to Catch Them Young</h1>
+    <p class="support-hero-tagline">
+      If every family that uses our app gave a small amount each month, we could reach many more children with daily Bible verses and moral lessons.
+    </p>
+    <p class="support-hero-cta">Every contribution counts. Thank you!</p>
+  </section>
+
+  <!-- Currency Picker -->
+  <section class="currency-section">
+    <div class="currency-inner">
+      <span class="currency-label">Pay in your currency:</span>
+      <div id="currency-picker" class="currency-picker">
+        <button class="currency-btn active" data-currency="USD">🇺🇸 USD</button>
+        <button class="currency-btn" data-currency="NGN" disabled>🇳🇬 NGN</button>
+        <button class="currency-btn" data-currency="GHS" disabled>🇬🇭 GHS</button>
+        <button class="currency-btn" data-currency="GBP" disabled>🇬🇧 GBP</button>
+      </div>
+      <span id="rate-display" class="rate-display">Loading rates...</span>
+    </div>
+  </section>
+
+  <!-- Donation Options -->
+  <section class="donate-options">
+    <div class="donate-options-grid">
+
+      <!-- Monthly Support Card -->
+      <div class="donate-card donate-monthly">
+        <div class="donate-card-icon">❤️</div>
+        <h2>Monthly Support</h2>
+        <p>Support core development with a recurring contribution. Choose an amount that works for you.</p>
+
+        <div class="amount-selector" id="monthly-amounts">
+          <button class="amount-btn" data-amount="1" data-usd="1">$1</button>
+          <button class="amount-btn" data-amount="3" data-usd="3">$3</button>
+          <button class="amount-btn active" data-amount="5" data-usd="5">$5</button>
+          <button class="amount-btn" data-amount="10" data-usd="10">$10</button>
+        </div>
+        <input type="number" class="amount-custom" id="monthly-custom" placeholder="Custom amount ($)" min="1">
+
+        <input type="email" class="donate-input" id="monthly-email" placeholder="Your email (required)">
+        <input type="text" class="donate-input" id="monthly-name" placeholder="Display name in credits (optional)">
+
+        <button class="btn-donate btn-donate-primary" id="monthly-btn">Start Monthly Support</button>
+      </div>
+
+      <!-- One-time Donation Card -->
+      <div class="donate-card donate-onetime">
+        <div class="donate-card-icon">⭐</div>
+        <h2>One-time Donation</h2>
+        <p>Make a single donation to support our mission. Every amount helps.</p>
+
+        <div class="amount-selector" id="onetime-amounts">
+          <button class="amount-btn" data-amount="1" data-usd="1">$1</button>
+          <button class="amount-btn" data-amount="3" data-usd="3">$3</button>
+          <button class="amount-btn active" data-amount="5" data-usd="5">$5</button>
+          <button class="amount-btn" data-amount="10" data-usd="10">$10</button>
+        </div>
+        <input type="number" class="amount-custom" id="onetime-custom" placeholder="Custom amount ($)" min="1">
+
+        <input type="email" class="donate-input" id="onetime-email" placeholder="Your email (required)">
+        <input type="text" class="donate-input" id="onetime-name" placeholder="Display name in credits (optional)">
+
+        <button class="btn-donate btn-donate-secondary" id="onetime-btn">Donate Once</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Latest Activity -->
+  <section class="support-activity">
+    <h2 class="section-heading">Latest activity</h2>
+    <ul class="activity-list" id="activity-list">
+      <!-- Skeleton placeholders shown while loading -->
+      <li class="activity-item skeleton-item"><span class="activity-dot"></span><span class="skeleton-text"></span></li>
+      <li class="activity-item skeleton-item"><span class="activity-dot"></span><span class="skeleton-text"></span></li>
+      <li class="activity-item skeleton-item"><span class="activity-dot"></span><span class="skeleton-text"></span></li>
+    </ul>
+    <p class="activity-note">Thank you to every supporter. You help us keep the app free for children.</p>
+  </section>
+
+  <!-- Numbers -->
+  <section class="support-numbers">
+    <h2 class="section-heading">Numbers</h2>
+    <div class="numbers-grid">
+      <div class="number-card">
+        <span class="number-value" id="stat-children">—</span>
+        <span class="number-label">Children reached</span>
+      </div>
+      <div class="number-card">
+        <span class="number-value" id="stat-verses">—</span>
+        <span class="number-label">Daily verses delivered</span>
+      </div>
+      <div class="number-card">
+        <span class="number-value" id="stat-supporters">—</span>
+        <span class="number-label">Supporters</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credits -->
+  <section class="support-credits">
+    <h2 class="section-heading">Credits</h2>
+    <p class="credits-intro">We are grateful to everyone who supports Catch Them Young. Your generosity helps us create content and keep the app running.</p>
+    <div class="credits-tiers">
+      <div class="tier">
+        <h3 class="tier-name">Supporters</h3>
+        <p class="tier-desc">Families and individuals who give one-time.</p>
+        <ul class="tier-list" id="credits-supporters">
+          <li class="skeleton-text-sm"></li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3 class="tier-name">Partners</h3>
+        <p class="tier-desc">Organizations and individuals giving monthly.</p>
+        <ul class="tier-list" id="credits-partners">
+          <li class="skeleton-text-sm"></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="support-footer-cta">
+    <p>Questions? Get in touch.</p>
+    <a href="mailto:support@catchthemyoung.org?subject=Support%20Catch%20Them%20Young" class="btn-donate btn-donate-primary">Contact us</a>
+  </section>
+
+  <!-- Flutterwave Inline Checkout SDK -->
+  <script src="https://checkout.flutterwave.com/v3.js"></script>
+
+  <script src="./support.js"></script>
+  <script src="../js/pwa-install.js"></script>
+</body>
+</html>

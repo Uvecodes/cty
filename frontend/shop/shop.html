@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | Catch Them Young</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="./shop.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="CTY Bible">
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
+
+  <!-- Firebase v8 CDN -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar shop-nav">
+    <div class="nav-content">
+      <div class="logo">
+        <img src="../assets/images/official-logo.svg" alt="Catch Them Young">
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
+      <div class="nav-links" id="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About Us</a>
+        <a href="./shop.html" class="active">Shop</a>
+        <a href="../support/support.html">Support Us</a>
+        <div id="auth-nav-actions" class="auth-nav-actions">
+          <!-- Populated by JS -->
+        </div>
+        <button id="installBtn" class="btn-install">
+          Install App
+          <span class="tooltip">Install for a better personalized experience</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="shop-content">
+
+    <!-- Shop Header -->
+    <section class="shop-header">
+      <div class="shop-title-section">
+        <h1 class="shop-title">
+          <img src="../assets/icons/paint-pallet-cty.svg" alt="shop" width="50"> Shop
+        </h1>
+        <p class="shop-subtitle">Get awesome items to personalize your experience!</p>
+      </div>
+      <div id="balance-display" class="balance-display"></div>
+    </section>
+
+    <!-- Guest Banner -->
+    <div class="guest-banner" id="guest-banner" style="display:none;">
+      <span>
+        🎉 Merchandise is available to everyone!
+        <a href="../authentication/login.html">Log in</a> to buy virtual items with coins and keep your order history.
+      </span>
+    </div>
+
+    <!-- Category Filter -->
+    <section class="category-filter">
+      <button class="category-btn active" data-category="all">All Items</button>
+      <button class="category-btn" data-category="avatars">Avatars</button>
+      <button class="category-btn" data-category="badges">Badges</button>
+      <button class="category-btn" data-category="powerups">Power-ups</button>
+      <button class="category-btn" data-category="shirts">Shirts</button>
+      <button class="category-btn" data-category="cap">Caps</button>
+      <button class="category-btn" data-category="wrist-bands">Wrist Bands</button>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+      <div class="products-grid" id="products-grid">
+        <div class="loading-message">Loading products...</div>
+      </div>
+    </section>
+
+    <!-- My Virtual Items (authenticated only) -->
+    <section class="purchases-section" id="purchases-section" style="display:none;">
+      <h2 class="section-title">My Virtual Items</h2>
+      <div class="purchases-grid" id="purchases-grid">
+        <p class="empty-message">No virtual items yet. Start shopping!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Order Modal (physical items) -->
+  <div class="modal-overlay" id="order-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-product-name">
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+
+      <div class="modal-product-preview">
+        <div class="modal-product-icon" id="modal-product-icon"></div>
+        <div class="modal-product-details">
+          <h3 id="modal-product-name"></h3>
+          <p class="modal-price" id="modal-product-price"></p>
+        </div>
+      </div>
+
+      <div class="modal-form">
+        <div class="modal-field" id="size-field" style="display:none;">
+          <label for="order-size">Size</label>
+          <select id="order-size">
+            <option value="S">Small (S)</option>
+            <option value="M" selected>Medium (M)</option>
+            <option value="L">Large (L)</option>
+            <option value="XL">X-Large (XL)</option>
+          </select>
+        </div>
+
+        <div class="modal-field">
+          <label>Quantity</label>
+          <div class="qty-control">
+            <button class="qty-btn" id="qty-decrease" type="button">&#8722;</button>
+            <span id="qty-value">1</span>
+            <button class="qty-btn" id="qty-increase" type="button">+</button>
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label for="order-email">Email address</label>
+          <input type="email" id="order-email" placeholder="your@email.com" autocomplete="email">
+          <small>Order confirmation will be sent here.</small>
+        </div>
+
+        <p class="modal-note">We will contact you for shipping details after payment.</p>
+        <button class="btn-proceed" id="btn-proceed" type="button">Proceed to Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flutterwave SDK -->
+  <script src="https://checkout.flutterwave.com/v3.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="./shop.js"></script>
+  <script src="../js/dark-mode.js"></script>
+  <script src="../js/pwa-install.js"></script>
+</body>
+</html>
