@@ -33,6 +33,57 @@
     return "Good Evening";
   }
 
+  // ---- Mood face ----
+  function updateFace(pct) {
+    const face = document.getElementById('progress-face');
+    if (!face) return;
+    const stage = pct === 0 ? '😢' : pct < 50 ? '😐' : pct < 100 ? '😊' : '🥳';
+    if (face.textContent !== stage) {
+      face.textContent = stage;
+      face.classList.add('pop');
+      setTimeout(() => face.classList.remove('pop'), 300);
+    }
+  }
+
+  // ---- Celebration popup ----
+  function spawnConfetti() {
+    const container = document.getElementById('celebrationConfetti');
+    if (!container) return;
+    container.innerHTML = '';
+    const colours = ['#f9c74f', '#43aa8b', '#f94144', '#577590', '#90be6d', '#f3722c'];
+    for (let i = 0; i < 22; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.background = colours[Math.floor(Math.random() * colours.length)];
+      piece.style.animationDelay = (Math.random() * 0.9).toFixed(2) + 's';
+      piece.style.animationDuration = (1.2 + Math.random() * 0.8).toFixed(2) + 's';
+      container.appendChild(piece);
+    }
+  }
+
+  function showCelebration() {
+    const modal = document.getElementById('celebrationModal');
+    if (!modal) return;
+    modal.hidden = false;
+    spawnConfetti();
+  }
+
+  function maybeCelebrate(pct) {
+    if (pct < 100) return;
+    const today = new Date().toISOString().split('T')[0];
+    const key = 'celebrationShown';
+    if (localStorage.getItem(key) === today) return;
+    localStorage.setItem(key, today);
+    showCelebration();
+  }
+
+  // ---- Wire close button ----
+  document.getElementById('closeCelebration')?.addEventListener('click', () => {
+    const modal = document.getElementById('celebrationModal');
+    if (modal) modal.hidden = true;
+  });
+
   // Function to update progress bar with user completion data
   async function updateProgressBar() {
     try {
@@ -67,19 +118,27 @@
           progressPercentageElement.textContent = Math.round(progressPercentage) + '%';
           console.log('Progress percentage updated:', Math.round(progressPercentage) + '%');
         }
-        
+
+        // Cache for instant restore on next page load
+        try { localStorage.setItem('cty_progress_' + new Date().toISOString().split('T')[0], progressPercentage.toString()); } catch(e) {}
+
+        updateFace(progressPercentage);
+        maybeCelebrate(progressPercentage);
+
       } else {
         console.log('User document not found, setting progress to 0%');
-        // Set progress to 0% if no user data
+        try { localStorage.setItem('cty_progress_' + new Date().toISOString().split('T')[0], '0'); } catch(e) {}
         const progressBarFill = document.getElementById('progress-bar-fill');
         if (progressBarFill) {
           progressBarFill.style.width = '0%';
         }
-        
+
         const progressPercentageElement = document.querySelector('.progress-percentage');
         if (progressPercentageElement) {
           progressPercentageElement.textContent = '0%';
         }
+
+        updateFace(0);
       }
       
     } catch (error) {
@@ -231,9 +290,9 @@
       const passageElement = document.getElementById('passage');
       const moralElement = document.getElementById('moral');
       
-      if (passageElement && moralElement && 
-          passageElement.textContent !== 'Loading...' && 
-          moralElement.textContent !== 'Loading...') {
+      if (passageElement && moralElement &&
+          !passageElement.textContent.includes('Loading') &&
+          !moralElement.textContent.includes('Loading')) {
         
         // Content is loaded, apply previews
         clearInterval(checkInterval);
@@ -271,11 +330,9 @@
    }
  }
 
-  // Call this after dashboard loads
-  document.addEventListener('DOMContentLoaded', () => {
-    //  Wait a bit for content.js to finish
-     setTimeout(waitForContentAndApplyPreviews, 1000);
-  });
+  // DOMContentLoaded has already fired by the time Firebase is ready,
+  // so call directly instead of listening for it.
+  waitForContentAndApplyPreviews();
 
 /**
  * Updates the user's daily streak in Firestore
@@ -293,6 +350,13 @@
   const today = new Date();
   const todayDateStr = today.toISOString().split("T")[0]; // "YYYY-MM-DD"
 
+  // Guard: only run Firestore streak logic once per day per device
+  const streakGuardKey = 'cty_streak_done_' + user.uid + '_' + todayDateStr;
+  if (localStorage.getItem(streakGuardKey)) {
+    console.log("Streak already updated today (localStorage guard). Skipping.");
+    return;
+  }
+
   try {
     const userSnap = await userRef.get();
 
@@ -303,6 +367,7 @@
 
       if (lastVisit === todayDateStr) {
         // Already visited today — skip to prevent inflation
+        localStorage.setItem(streakGuardKey, '1');
         console.log("Already visited today. Streak unchanged.");
         return;
       }
@@ -336,6 +401,7 @@
         { merge: true }
       );
 
+      localStorage.setItem(streakGuardKey, '1');
       console.log(`Streak updated: ${newStreak} | Last visit: ${todayDateStr}`);
     } else {
       // New user — initialize with streakCount
@@ -344,17 +410,12 @@
         lastVisit: todayDateStr,
       });
 
+      localStorage.setItem(streakGuardKey, '1');
       console.log("New user streak initialized: 1");
     }
   } catch (error) {
     console.error("Error updating user streak:", error);
   }
-  //Update streak count
-        const streakElement = document.getElementById("streak-count");
-        if (streakElement) {
-          const streak = newStreak || 0;  // Fixed: newStreak is a number
-          streakElement.textContent = `${streak} Day Streak!`;
-        }
 }
 
 
@@ -405,6 +466,21 @@
   });
 
   } // end runWhenFirebaseReady
+
+  // ---- Instant progress bar restore from localStorage (runs before Firebase is ready) ----
+  (function restoreProgressInstant() {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const cached = parseFloat(localStorage.getItem('cty_progress_' + today));
+      if (isNaN(cached)) return;
+      const fill = document.getElementById('progress-bar-fill');
+      if (fill) fill.style.width = cached + '%';
+      const pctEl = document.querySelector('.progress-percentage');
+      if (pctEl) pctEl.textContent = Math.round(cached) + '%';
+      const face = document.getElementById('progress-face');
+      if (face) face.textContent = cached === 0 ? '😢' : cached < 50 ? '😐' : cached < 100 ? '😊' : '🥳';
+    } catch(e) {}
+  })();
 
   if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
     runWhenFirebaseReady();

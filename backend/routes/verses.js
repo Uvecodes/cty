@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const { verifyToken } = require('../middleware/auth');
+const { versesLimiter } = require('../middleware/rateLimits');
 const { auth, db, admin } = require('../config/firebase-admin');
 const {
   getUserTZ,
@@ -21,7 +22,7 @@ const router = express.Router();
  * Get today's verse for authenticated user
  * Implements the same deterministic logic as frontend
  */
-router.get('/today', verifyToken, async (req, res) => {
+router.get('/today', versesLimiter, verifyToken, async (req, res) => {
   try {
     const { uid } = req.user;
     

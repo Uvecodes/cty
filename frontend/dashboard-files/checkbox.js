@@ -1,8 +1,16 @@
-// console.log() redec;laration to avoid errors in some environments
-console.log = function() {};
-console.warn = function() {};
-console.error = function() {};
-console.info = function() {};
+// ---- localStorage helpers for instant checkbox restore ----
+function _cbCacheKey(uid, date) { return 'cty_cb_' + uid + '_' + date; }
+
+function _saveCbCache(uid, date, states) {
+  try { localStorage.setItem(_cbCacheKey(uid, date), JSON.stringify(states)); } catch(e) {}
+}
+
+function _loadCbCache(uid, date) {
+  try {
+    const v = localStorage.getItem(_cbCacheKey(uid, date));
+    return v ? JSON.parse(v) : null;
+  } catch(e) { return null; }
+}
 
 
 // Call this when the page loads
@@ -25,6 +33,18 @@ async function initializeCheckboxAndProgress() {
   if (!user) {
     console.warn("No user logged in.");
     return;
+  }
+
+  // ---- Instant restore from localStorage (before async Firestore read) ----
+  const _quickDate = (typeof localDateInTZ === 'function')
+    ? localDateInTZ(new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone)
+    : new Date().toISOString().split('T')[0];
+  const _cached = _loadCbCache(user.uid, _quickDate);
+  if (_cached) {
+    if (checkbox1) checkbox1.checked = !!_cached.verseCompleted;
+    if (checkbox2) checkbox2.checked = !!_cached.moralCompleted;
+    if (checkbox3) checkbox3.checked = !!_cached.reflectionCompleted;
+    if (checkbox4) checkbox4.checked = !!_cached.challengeCompleted;
   }
 
   const db = firebase.firestore();
@@ -107,17 +127,19 @@ async function initializeCheckboxAndProgress() {
         }
       }
 
-      // Update UI cleared state
+      // Update UI cleared state and clear yesterday's cache
       if (checkbox1) checkbox1.checked = false;
       if (checkbox2) checkbox2.checked = false;
       if (checkbox3) checkbox3.checked = false;
       if (checkbox4) checkbox4.checked = false;
+      _saveCbCache(user.uid, today, { verseCompleted: false, moralCompleted: false, reflectionCompleted: false, challengeCompleted: false });
     } else {
-      // Restore today's completed state
+      // Restore today's completed state and refresh cache
       if (checkbox1) checkbox1.checked = verseCompleted;
       if (checkbox2) checkbox2.checked = moralCompleted;
       if (checkbox3) checkbox3.checked = reflectionCompleted;
       if (checkbox4) checkbox4.checked = challengeCompleted;
+      _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
     }
 
     // Checkbox 1 handler (Verse)
@@ -142,15 +164,14 @@ async function initializeCheckboxAndProgress() {
 
           // Update local counter in memory (clamp at zero)
           completedCount = Math.max(0, completedCount + delta);
-
-          console.log(`read`);
+          _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
 
           // Update dashboard progress if available
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating verse completion:');
+          console.error('Error updating verse completion:', error);
         }
       });
     }
@@ -175,13 +196,13 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Moral read`);
+          _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating moral completion:');
+          console.error('Error updating moral completion:', error);
         }
       });
     }
@@ -206,13 +227,13 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Reflection read`);
+          _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating reflection completion:');
+          console.error('Error updating reflection completion:', error);
         }
       });
     }
@@ -237,13 +258,13 @@ async function initializeCheckboxAndProgress() {
           }
 
           completedCount = Math.max(0, completedCount + delta);
-          console.log(`Challenge read`);
+          _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
           }
         } catch (error) {
-          console.error('Error updating challenge completion:');
+          console.error('Error updating challenge completion:', error);
         }
       });
     }
@@ -251,7 +272,7 @@ async function initializeCheckboxAndProgress() {
     console.log(`Checkboxes initialized.`);
                
   } catch (error) {
-    console.error("Error loading or saving checkbox state:");
+    console.error("Error loading or saving checkbox state:", error);
   }
 }
 

@@ -2,7 +2,9 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { auth, db, admin } = require('../config/firebase-admin');
 const { verifyToken } = require('../middleware/auth');
+const { loginLimiter, registerLimiter, forgotPasswordLimiter } = require('../middleware/rateLimits');
 const axios = require('axios');
+const emailjs = require('@emailjs/nodejs');
 const router = express.Router();
 
 // Helper function to handle validation errors
@@ -23,10 +25,10 @@ const VALID_DENOMINATIONS = ['catholic', 'anglican', 'pentecostal', 'lutheran', 
  * POST /api/auth/register
  * Register a new user
  */
-router.post('/register', [
+router.post('/register', registerLimiter, [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('name').trim().notEmpty().isLength({ max: 100 }).withMessage('Name is required'),
   body('age').isInt({ min: 4, max: 17 }).withMessage('Age must be between 4 and 17'),
   body('denomination').isIn(VALID_DENOMINATIONS).withMessage('Invalid denomination'),
   handleValidationErrors
@@ -71,6 +73,15 @@ router.post('/register', [
 
     console.log(`✅ User registered: ${email} (${userRecord.uid})`);
 
+    // Send welcome email server-side (non-blocking)
+    if (process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID) {
+      emailjs.send(
+        process.env.EMAILJS_SERVICE_ID,
+        process.env.EMAILJS_TEMPLATE_ID,
+        { displayName: name || 'there', email }
+      ).catch((err) => console.error('Welcome email failed:', err.message));
+    }
+
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -102,7 +113,7 @@ router.post('/register', [
  * Login existing user
  * Uses Firebase REST API to verify password before generating custom token
  */
-router.post('/login', [
+router.post('/login', loginLimiter, [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
   body('password').notEmpty().withMessage('Password is required'),
   handleValidationErrors
@@ -205,7 +216,7 @@ router.post('/login', [
  * POST /api/auth/forgot-password
  * Send password reset email
  */
-router.post('/forgot-password', [
+router.post('/forgot-password', forgotPasswordLimiter, [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
   handleValidationErrors
 ], async (req, res) => {
@@ -239,7 +250,9 @@ router.post('/forgot-password', [
     // You can integrate with your existing email service here
     
     console.log(`✅ Password reset link generated for: ${email}`);
-    console.log(`Reset link: ${resetLink}`); // Remove this in production
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Reset link: ${resetLink}`);
+    }
 
     res.json({
       success: true,

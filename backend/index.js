@@ -11,6 +11,7 @@ const authRoutes = require('./routes/auth');
 const versesRoutes = require('./routes/verses');
 const supportRoutes = require('./routes/support');
 const shopRoutes = require('./routes/shop');
+const { welcomeEmailLimiter } = require('./middleware/rateLimits');
 
 // ===================================================
 // CORS Configuration
@@ -55,7 +56,8 @@ app.use((req, res, next) => {
 // Firebase Client Config Endpoint
 // Serves safe client-side config from env variables
 // ===================================================
-app.get('/api/firebase-config', (req, res) => {
+app.get('/api/firebase-config', (_req, res) => {
+  res.set('Cache-Control', 'public, max-age=86400');
   const clientConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -123,7 +125,7 @@ app.get('/health', (req, res) => {
 // ===================================================
 // Send Welcome Email
 // ===================================================
-app.post('/send-welcome', async (req, res) => {
+app.post('/send-welcome', welcomeEmailLimiter, async (req, res) => {
   console.log('📧 Received welcome email request:', req.body);
   const { email, displayName } = req.body;
 

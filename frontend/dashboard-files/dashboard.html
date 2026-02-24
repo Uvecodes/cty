@@ -87,7 +87,10 @@
     <section class="progress-section">
       <div class="progress-header">
         <h2>Today's Goal</h2>
-        <span class="progress-percentage">0%</span>
+        <div class="progress-header-right">
+          <span id="progress-face" class="progress-face" aria-label="mood">😢</span>
+          <span class="progress-percentage">0%</span>
+        </div>
       </div>
       <div class="progress-bar-container">
         <div class="progress-bar-fill"  id="progress-bar-fill"></div>
@@ -284,6 +287,17 @@
     </div>
 
 
+
+  <!-- Celebration Modal -->
+  <div id="celebrationModal" class="celebration-overlay" hidden>
+    <div class="celebration-card">
+      <div class="celebration-confetti" id="celebrationConfetti"></div>
+      <div class="celebration-emoji">🎉</div>
+      <h2 class="celebration-title">All Done!</h2>
+      <p class="celebration-msg">You've completed all your tasks for today.<br>Amazing work, keep it up!</p>
+      <button id="closeCelebration" class="btn btn-primary">Keep it up! 🙌</button>
+    </div>
+  </div>
 
   <script src="../js/firebase-config.js"></script>
   <script src="../authentication/auth-v2.js"></script>

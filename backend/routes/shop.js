@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
-const { db, admin } = require('../config/firebase-admin');
+const { db, admin, auth } = require('../config/firebase-admin');
+const { paymentVerifyLimiter } = require('../middleware/rateLimits');
 const router = express.Router();
 
 /**
@@ -8,7 +9,7 @@ const router = express.Router();
  * Verify a Flutterwave payment and record the shop order.
  * If a uid is provided (authenticated user), also appends to their shopHistory.
  */
-router.post('/verify-order', async (req, res) => {
+router.post('/verify-order', paymentVerifyLimiter, async (req, res) => {
   const {
     transaction_id,
     product_id,
@@ -17,12 +18,31 @@ router.post('/verify-order', async (req, res) => {
     currency,
     email,
     quantity,
-    size,
-    uid
+    size
   } = req.body;
 
   if (!transaction_id || !product_id || !amount || !email) {
     return res.status(400).json({ error: 'Missing required fields: transaction_id, product_id, amount, email' });
+  }
+
+  if (typeof email === 'string' && email.length > 254) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+
+  if (product_name && typeof product_name === 'string' && product_name.length > 200) {
+    return res.status(400).json({ error: 'product_name too long' });
+  }
+
+  // Resolve uid from Authorization header token (if present) — never trust client-supplied uid
+  let uid = null;
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const decoded = await auth.verifyIdToken(authHeader.split('Bearer ')[1]);
+      uid = decoded.uid;
+    } catch (_) {
+      // Invalid token — treat as guest order, do not attach to any user
+    }
   }
 
   try {

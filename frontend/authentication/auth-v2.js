@@ -108,14 +108,7 @@ async function register(event) {
     // Sign in with custom token from backend
     const auth = firebase.auth();
     await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-    const userCredential = await auth.signInWithCustomToken(data.token);
-
-    // Trigger welcome email (non-blocking)
-    fetch(`${window.API_BASE}/send-welcome`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: userCredential.user.email, displayName: name })
-    }).catch(() => {}); // Silent fail — email is non-critical
+    await auth.signInWithCustomToken(data.token);
 
     showToast('Registered and logged in!');
     setTimeout(() => {

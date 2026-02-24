@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const { db } = require('../config/firebase-admin');
+const { paymentVerifyLimiter, publicReadLimiter } = require('../middleware/rateLimits');
 
 const router = express.Router();
 
@@ -21,11 +22,15 @@ router.get('/public-config', (req, res) => {
 // POST /api/support/verify-payment
 // Verifies a Flutterwave transaction and records the donation
 // =============================================
-router.post('/verify-payment', async (req, res) => {
+router.post('/verify-payment', paymentVerifyLimiter, async (req, res) => {
   const { transaction_id, amount, currency, type, opted_in_name } = req.body;
 
   if (!transaction_id || !amount || !currency) {
     return res.status(400).json({ error: 'transaction_id, amount and currency are required' });
+  }
+
+  if (opted_in_name && opted_in_name.trim().length > 100) {
+    return res.status(400).json({ error: 'opted_in_name must be 100 characters or fewer' });
   }
 
   if (!process.env.FLW_SECRET_KEY) {
@@ -34,6 +39,17 @@ router.post('/verify-payment', async (req, res) => {
   }
 
   try {
+    // Guard against duplicate transactions BEFORE calling Flutterwave API
+    const existingSnap = await db.collection('donations')
+      .where('flw_tx_id', '==', String(transaction_id))
+      .limit(1)
+      .get();
+
+    if (!existingSnap.empty) {
+      console.log(`ℹ️  Duplicate transaction ignored: ${transaction_id}`);
+      return res.json({ success: true, duplicate: true });
+    }
+
     // Verify with Flutterwave API
     const response = await axios.get(
       `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
@@ -53,17 +69,6 @@ router.post('/verify-payment', async (req, res) => {
         received: { amount: txData.amount, currency: txData.currency, status: txData.status }
       });
       return res.status(400).json({ error: 'Payment verification failed' });
-    }
-
-    // Guard against duplicate transactions
-    const existingSnap = await db.collection('donations')
-      .where('flw_tx_id', '==', String(transaction_id))
-      .limit(1)
-      .get();
-
-    if (!existingSnap.empty) {
-      console.log(`ℹ️  Duplicate transaction ignored: ${transaction_id}`);
-      return res.json({ success: true, duplicate: true });
     }
 
     // Build anonymized display string
@@ -107,7 +112,8 @@ router.post('/verify-payment', async (req, res) => {
 // GET /api/support/stats
 // Returns live stats for the Numbers section
 // =============================================
-router.get('/stats', async (req, res) => {
+router.get('/stats', publicReadLimiter, async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300');
   try {
     const statsDoc = await db.collection('stats').doc('public').get();
     const saved = statsDoc.exists ? statsDoc.data() : {};
@@ -141,7 +147,8 @@ router.get('/stats', async (req, res) => {
 // GET /api/support/activity
 // Returns latest 10 anonymized donations for the activity feed
 // =============================================
-router.get('/activity', async (req, res) => {
+router.get('/activity', publicReadLimiter, async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=60');
   try {
     const snap = await db.collection('donations')
       .orderBy('timestamp', 'desc')
@@ -170,7 +177,8 @@ router.get('/activity', async (req, res) => {
 // GET /api/support/credits
 // Returns opted-in supporter names grouped by tier
 // =============================================
-router.get('/credits', async (req, res) => {
+router.get('/credits', publicReadLimiter, async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=3600');
   try {
     const snap = await db.collection('donations')
       .orderBy('timestamp', 'desc')
