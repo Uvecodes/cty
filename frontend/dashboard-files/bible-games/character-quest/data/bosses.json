@@ -1,0 +1,761 @@
+[
+  {
+    "id": "boss_serpent",
+    "eraId": 1,
+    "name": "The Serpent's Riddle",
+    "emoji": "🐍",
+    "tagline": "Did God really say...?",
+    "description": "The deceiver of Eden challenges your knowledge of God's Word. Three rounds of temptation — will you stand firm?",
+    "hp": 3,
+    "color": "#22c55e",
+    "entranceText": "The serpent rises from the shadows...",
+    "defeatText": "The truth crushes the serpent's lies!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "The First Lie",
+        "characterPool": ["adam","eve"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "The serpent tells you 'You will not surely die if you eat the fruit.'",
+            "question": "What does God's Word actually say about eating the forbidden fruit?",
+            "choices": [
+              {"text": "God said you will certainly die", "correct": true},
+              {"text": "God said you might get sick", "correct": false},
+              {"text": "God said it was just a test", "correct": false}
+            ],
+            "scriptureRef": "Genesis 2:17",
+            "feedback": "God's Word is always true! 'You will certainly die' was the clear warning."
+          },
+          {
+            "type": "fill-in",
+            "verse": "The serpent was more ___ than any wild animal the Lord God had made.",
+            "options": ["crafty", "powerful", "beautiful", "frightening"],
+            "answer": 0,
+            "scriptureRef": "Genesis 3:1",
+            "feedback": "The serpent was crafty — using twisting words to confuse Eve."
+          },
+          {
+            "type": "decision",
+            "scenario": "After eating the fruit, Adam and Eve hear God walking in the garden.",
+            "question": "What did Adam and Eve do when they heard God?",
+            "choices": [
+              {"text": "They ran towards God to tell Him", "correct": false},
+              {"text": "They hid among the trees from God", "correct": true},
+              {"text": "They called out to God for forgiveness", "correct": false}
+            ],
+            "scriptureRef": "Genesis 3:8",
+            "feedback": "Sin always separates us from God. They hid — but God came looking for them anyway!"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "Corruption Spreads",
+        "characterPool": ["cain","enoch"],
+        "questions": [
+          {
+            "type": "who-said",
+            "quote": "Am I my brother's keeper?",
+            "characters": ["Cain", "Abel", "Adam"],
+            "emojis": ["⚠️", "🌾", "🌱"],
+            "answer": 0,
+            "scriptureRef": "Genesis 4:9",
+            "feedback": "Cain tried to deny responsibility. But we ARE responsible for how we treat each other!"
+          },
+          {
+            "type": "decision",
+            "scenario": "God warns Cain that sin is 'crouching at the door' before he kills Abel.",
+            "question": "What does God want Cain to do about his anger?",
+            "choices": [
+              {"text": "Master it and do what is right", "correct": true},
+              {"text": "Express it to feel better", "correct": false},
+              {"text": "Blame it on God for rejecting his offering", "correct": false}
+            ],
+            "scriptureRef": "Genesis 4:7",
+            "feedback": "God said 'sin is crouching at the door — you must master it.' We CAN choose right!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Enoch walked faithfully with God; then he was no more, because God ___ him away.",
+            "options": ["took", "called", "lifted", "carried"],
+            "answer": 0,
+            "scriptureRef": "Genesis 5:24",
+            "feedback": "Enoch's close walk with God was so complete that death itself couldn't hold him!"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Serpent's Final Strike",
+        "characterPool": ["noah","enoch"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Everyone around Noah is evil and corrupt. God asks Noah to build a massive ark.",
+            "question": "Noah had never seen rain. People mocked him. What should he do?",
+            "choices": [
+              {"text": "Trust God completely and build the ark", "correct": true},
+              {"text": "Wait until it actually starts raining to believe", "correct": false},
+              {"text": "Ask for a sign before committing", "correct": false}
+            ],
+            "scriptureRef": "Hebrews 11:7",
+            "feedback": "By faith Noah built the ark when he had not yet seen the rain. That is true faith!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Noah was a righteous man, ___ among the people of his time, and he walked faithfully with God.",
+            "options": ["blameless", "perfect", "holy", "chosen"],
+            "answer": 0,
+            "scriptureRef": "Genesis 6:9",
+            "feedback": "Blameless doesn't mean perfect — it means completely committed to God."
+          },
+          {
+            "type": "decision",
+            "scenario": "After the flood God shows Noah a rainbow and makes a promise.",
+            "question": "What did God promise with the rainbow?",
+            "choices": [
+              {"text": "To never again destroy the earth by flood", "correct": true},
+              {"text": "To always protect Noah's family from trouble", "correct": false},
+              {"text": "To make the earth perfect forever", "correct": false}
+            ],
+            "scriptureRef": "Genesis 9:11",
+            "feedback": "The rainbow is God's signature on a forever promise. Every rainbow reminds us God keeps His word!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 500, "fp": 100, "badge": "🌈", "badgeName": "Eden Overcomer" }
+  },
+  {
+    "id": "boss_pharaoh",
+    "eraId": 2,
+    "name": "Pharaoh's Final Test",
+    "emoji": "👑",
+    "tagline": "I will NOT let your people go!",
+    "description": "Egypt's mightiest king bars the exit. Answer his three rounds of challenges to free God's people.",
+    "hp": 3,
+    "color": "#f59e0b",
+    "entranceText": "Pharaoh sits upon his golden throne...",
+    "defeatText": "The Red Sea crashes — Pharaoh's army is defeated!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "The Plagues Begin",
+        "characterPool": ["moses","abraham"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "God appears to Moses in a burning bush that does not burn up.",
+            "question": "God tells Moses to lead Israel out of Egypt. Moses says 'Who am I to do this?' What is the best response?",
+            "choices": [
+              {"text": "Trust God's call even when you feel unqualified", "correct": true},
+              {"text": "Wait until you feel ready and confident", "correct": false},
+              {"text": "Find someone else more qualified", "correct": false}
+            ],
+            "scriptureRef": "Exodus 3:12",
+            "feedback": "God said 'I will be with you.' His presence is always greater than our weakness!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "God said to Moses, 'I AM WHO I ___.'",
+            "options": ["AM", "WAS", "WILL BE", "SENT"],
+            "answer": 0,
+            "scriptureRef": "Exodus 3:14",
+            "feedback": "I AM — God's eternal name. Always present, never changing, always enough!"
+          },
+          {
+            "type": "who-said",
+            "quote": "Let my people go!",
+            "characters": ["Moses", "Aaron", "Joshua"],
+            "emojis": ["🔥", "📜", "🛡️"],
+            "answer": 0,
+            "scriptureRef": "Exodus 5:1",
+            "feedback": "Moses boldly confronted the most powerful man on earth — because God was with him!"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "The Sea Parts",
+        "characterPool": ["moses","joseph"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "The Israelites are trapped between the Red Sea and Pharaoh's charging army. The people cry out in fear.",
+            "question": "Moses said 'Do not be afraid.' What did God tell Moses to do?",
+            "choices": [
+              {"text": "Raise his staff and stretch it over the sea", "correct": true},
+              {"text": "Gather weapons and fight Pharaoh's army", "correct": false},
+              {"text": "Wait on the shore and pray for 40 days", "correct": false}
+            ],
+            "scriptureRef": "Exodus 14:16",
+            "feedback": "Moses raised his staff — God split the sea! When we act in faith, God makes a way."
+          },
+          {
+            "type": "fill-in",
+            "verse": "You intended to harm me, but God intended it for ___ to accomplish what is now being done.",
+            "options": ["good", "glory", "peace", "justice"],
+            "answer": 0,
+            "scriptureRef": "Genesis 50:20",
+            "feedback": "Joseph's words — one of the most powerful truths in the Bible. God turns evil into good!"
+          },
+          {
+            "type": "decision",
+            "scenario": "In the wilderness, the Israelites have no food or water and start complaining against Moses.",
+            "question": "How did God respond to His hungry, thirsty people?",
+            "choices": [
+              {"text": "God provided manna from heaven and water from rock", "correct": true},
+              {"text": "God left them to learn their lesson", "correct": false},
+              {"text": "God sent them back to Egypt", "correct": false}
+            ],
+            "scriptureRef": "Exodus 16:4",
+            "feedback": "God rained bread from heaven every morning. He always provides for His people!"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Promised Land Awaits",
+        "characterPool": ["joshua","sarah"],
+        "questions": [
+          {
+            "type": "who-said",
+            "quote": "As for me and my house, we will serve the Lord.",
+            "characters": ["Joshua", "Moses", "Caleb"],
+            "emojis": ["🛡️", "🔥", "⚔️"],
+            "answer": 0,
+            "scriptureRef": "Joshua 24:15",
+            "feedback": "Joshua made a bold public declaration for his whole family. What about you?"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Have I not commanded you? Be strong and ___. Do not be afraid.",
+            "options": ["courageous", "bold", "faithful", "wise"],
+            "answer": 0,
+            "scriptureRef": "Joshua 1:9",
+            "feedback": "God commanded courage — it's not just a feeling but a decision to trust God!"
+          },
+          {
+            "type": "decision",
+            "scenario": "The walls of Jericho are massive. God tells Joshua to march around them for 7 days and shout.",
+            "question": "This plan sounds foolish to the world. What should Joshua's soldiers do?",
+            "choices": [
+              {"text": "Obey God's strange plan completely", "correct": true},
+              {"text": "Try a normal military attack first", "correct": false},
+              {"text": "Ask God for a more sensible plan", "correct": false}
+            ],
+            "scriptureRef": "Joshua 6:20",
+            "feedback": "The walls fell flat! God's plans often look foolish to the world but always work!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 500, "fp": 100, "badge": "🌊", "badgeName": "Desert Conqueror" }
+  },
+  {
+    "id": "boss_goliath",
+    "eraId": 3,
+    "name": "Goliath Reborn",
+    "emoji": "🗡️",
+    "tagline": "Come here and I will feed you to the birds!",
+    "description": "The giant of Gath returns with three rounds of terrifying challenges. Use your faith — not your fear!",
+    "hp": 3,
+    "color": "#a855f7",
+    "entranceText": "The ground shakes as Goliath steps forward...",
+    "defeatText": "The stone flies true — the giant falls!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "The Giant's Taunt",
+        "characterPool": ["samson","samuel"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Samson meets a lion on the road — the Spirit of God comes upon him.",
+            "question": "Samson tears the lion apart with his bare hands. Later he finds honey in the carcass. What temptation should he resist?",
+            "choices": [
+              {"text": "Breaking his Nazirite vow to touch the dead animal", "correct": true},
+              {"text": "Sharing the honey with his parents", "correct": false},
+              {"text": "Telling Philistines about the lion", "correct": false}
+            ],
+            "scriptureRef": "Judges 14:8-9",
+            "feedback": "Samson touched the carcass despite his Nazirite vow — small compromises lead to big falls."
+          },
+          {
+            "type": "fill-in",
+            "verse": "The Lord does not look at the things people look at. People look at the outward appearance, but the Lord looks at the ___.",
+            "options": ["heart", "soul", "mind", "spirit"],
+            "answer": 0,
+            "scriptureRef": "1 Samuel 16:7",
+            "feedback": "God chose David — the youngest, smallest brother — because He looks at the heart!"
+          },
+          {
+            "type": "who-said",
+            "quote": "Speak, Lord, for your servant is listening.",
+            "characters": ["Samuel", "Eli", "David"],
+            "emojis": ["📯", "🕯️", "🎵"],
+            "answer": 0,
+            "scriptureRef": "1 Samuel 3:10",
+            "feedback": "Samuel listened before speaking — the mark of a true servant of God."
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "The Stone and the Sword",
+        "characterPool": ["david","jonathan"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "The entire Israelite army is terrified of Goliath. David is just a boy bringing food to his brothers.",
+            "question": "David wants to fight Goliath. King Saul offers his heavy armour. What should David do?",
+            "choices": [
+              {"text": "Reject the armour and use his sling — the tools God trained him with", "correct": true},
+              {"text": "Wear Saul's armour to show respect to the king", "correct": false},
+              {"text": "Wait for a real soldier to step forward first", "correct": false}
+            ],
+            "scriptureRef": "1 Samuel 17:38-40",
+            "feedback": "David used what God had trained him with — not someone else's tools. Be yourself for God!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Jonathan became one in ___ with David, and he loved him as himself.",
+            "options": ["spirit", "heart", "faith", "soul"],
+            "answer": 0,
+            "scriptureRef": "1 Samuel 18:1",
+            "feedback": "Jonathan's friendship with David is one of the Bible's most beautiful — purely selfless love."
+          },
+          {
+            "type": "decision",
+            "scenario": "David has snuck into Saul's camp and stands over the sleeping king who wants him dead.",
+            "question": "David's men say 'God has delivered your enemy into your hands!' What does David do?",
+            "choices": [
+              {"text": "Refuses to harm God's anointed king and takes only his spear", "correct": true},
+              {"text": "Kills Saul quietly to end the threat", "correct": false},
+              {"text": "Wakes Saul up and confronts him face to face", "correct": false}
+            ],
+            "scriptureRef": "1 Samuel 24:6",
+            "feedback": "David trusted God to handle his enemies. He refused to take revenge into his own hands."
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Throne of Wisdom",
+        "characterPool": ["solomon","david"],
+        "questions": [
+          {
+            "type": "who-said",
+            "quote": "Give me a wise and discerning heart so that I can govern your people and know the difference between right and wrong.",
+            "characters": ["Solomon", "David", "Samuel"],
+            "emojis": ["💎", "🎵", "📯"],
+            "answer": 0,
+            "scriptureRef": "1 Kings 3:9",
+            "feedback": "Solomon asked for wisdom — and God gave him that PLUS wealth and honour. Seek God first!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "The fear of the Lord is the ___ of wisdom, and knowledge of the Holy One is understanding.",
+            "options": ["beginning", "source", "end", "height"],
+            "answer": 0,
+            "scriptureRef": "Proverbs 9:10",
+            "feedback": "True wisdom starts with respecting and obeying God — not with cleverness or education alone."
+          },
+          {
+            "type": "decision",
+            "scenario": "Solomon has everything — wealth, wisdom, power. But his foreign wives lead him toward other gods.",
+            "question": "What should Solomon have done when his wives urged him to worship idols?",
+            "choices": [
+              {"text": "Stayed completely loyal to God no matter the pressure", "correct": true},
+              {"text": "Worshipped their gods privately to keep peace at home", "correct": false},
+              {"text": "Allowed it because he was already so wise", "correct": false}
+            ],
+            "scriptureRef": "1 Kings 11:4",
+            "feedback": "Even the wisest man fell when he compromised on obedience. Keep your heart fully His!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 600, "fp": 120, "badge": "👑", "badgeName": "Kingdom Champion" }
+  },
+  {
+    "id": "boss_false_prophet",
+    "eraId": 4,
+    "name": "The False Prophet's Trial",
+    "emoji": "🔥",
+    "tagline": "Your God is silent. Bow to Baal!",
+    "description": "Lies disguised as truth. Three rounds of fire to test what you really know.",
+    "hp": 3,
+    "color": "#ef4444",
+    "entranceText": "The false prophet steps forward with a smirk...",
+    "defeatText": "Fire falls from heaven — the truth wins!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "The Mount Carmel Showdown",
+        "characterPool": ["elijah","elisha"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "450 prophets of Baal have failed all day. Elijah rebuilds the altar, drenches it with water, and prays.",
+            "question": "Elijah drenched the altar with water 3 times before calling on God. Why was this significant?",
+            "choices": [
+              {"text": "To show that God — not Baal — would miraculously light the wet wood", "correct": true},
+              {"text": "Because water is holy and needed for prayer", "correct": false},
+              {"text": "To make it fair for the prophets of Baal", "correct": false}
+            ],
+            "scriptureRef": "1 Kings 18:36-38",
+            "feedback": "Elijah made it IMPOSSIBLE by human means — so when fire fell, everyone knew it was God!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "After the fire came a gentle ___ voice. When Elijah heard it, he pulled his cloak over his face.",
+            "options": ["whisper", "still", "quiet", "soft"],
+            "answer": 0,
+            "scriptureRef": "1 Kings 19:12-13",
+            "feedback": "After earthquake, wind, and fire — God spoke in a whisper. Sometimes God is loudest when He's quiet."
+          },
+          {
+            "type": "who-said",
+            "quote": "I have been very zealous for the Lord God Almighty. I am the only one left, and now they are trying to kill me too.",
+            "characters": ["Elijah", "Elisha", "Jonah"],
+            "emojis": ["⚡", "🪄", "🐳"],
+            "answer": 0,
+            "scriptureRef": "1 Kings 19:14",
+            "feedback": "Elijah felt utterly alone — but God said 7,000 others had not bowed to Baal. You're never alone!"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "The Den of Lions",
+        "characterPool": ["daniel","esther"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "A new law says no one can pray to anyone except King Darius for 30 days. Daniel knows about the law.",
+            "question": "What does Daniel do?",
+            "choices": [
+              {"text": "Continues praying to God three times a day with his window open", "correct": true},
+              {"text": "Prays secretly with the window closed for 30 days", "correct": false},
+              {"text": "Stops praying temporarily to avoid trouble", "correct": false}
+            ],
+            "scriptureRef": "Daniel 6:10",
+            "feedback": "Daniel didn't hide his faith or compromise it. His open prayers were an act of holy courage!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Who knows whether you have not come to the kingdom for such a ___ as this?",
+            "options": ["time", "moment", "reason", "purpose"],
+            "answer": 0,
+            "scriptureRef": "Esther 4:14",
+            "feedback": "Mordecai's challenge to Esther — God places us exactly where we are needed most!"
+          },
+          {
+            "type": "decision",
+            "scenario": "Three Hebrew young men face a blazing furnace for refusing to bow to Nebuchadnezzar's golden statue.",
+            "question": "They said 'Our God CAN save us — but even if He doesn't, we will NOT bow.' What does this show?",
+            "choices": [
+              {"text": "Faith in God even without guarantee of a good outcome", "correct": true},
+              {"text": "Stubbornness and disrespect for the king", "correct": false},
+              {"text": "They knew for certain God would rescue them", "correct": false}
+            ],
+            "scriptureRef": "Daniel 3:17-18",
+            "feedback": "This is one of the Bible's greatest faith statements — trusting God even in the fire!"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Great Fish",
+        "characterPool": ["jonah","elisha"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Jonah has been swallowed and is praying from inside the fish. God gives him a second chance.",
+            "question": "What should Jonah do differently this time when God sends him to Nineveh?",
+            "choices": [
+              {"text": "Obey immediately without running away", "correct": true},
+              {"text": "Go but preach a softer message so they won't repent", "correct": false},
+              {"text": "Ask God to destroy Nineveh from a safe distance", "correct": false}
+            ],
+            "scriptureRef": "Jonah 3:3",
+            "feedback": "Jonah obeyed — and the entire city of 120,000 people repented! Obedience changes nations."
+          },
+          {
+            "type": "who-said",
+            "quote": "What I have vowed I will make good. I will say, Salvation comes from the Lord.",
+            "characters": ["Jonah", "Elijah", "Daniel"],
+            "emojis": ["🐳", "⚡", "🦁"],
+            "answer": 0,
+            "scriptureRef": "Jonah 2:9",
+            "feedback": "Even inside a giant fish, Jonah worshipped God! Praise can happen anywhere."
+          },
+          {
+            "type": "fill-in",
+            "verse": "Naaman's servants went to Elisha and he told him to wash himself seven times in the ___ River.",
+            "options": ["Jordan", "Nile", "Euphrates", "Tigris"],
+            "answer": 0,
+            "scriptureRef": "2 Kings 5:10",
+            "feedback": "Naaman nearly missed his miracle because the instruction seemed too simple. Obey simple steps!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 700, "fp": 140, "badge": "🔥", "badgeName": "Prophet's Flame" }
+  },
+  {
+    "id": "boss_pharisee",
+    "eraId": 5,
+    "name": "The Pharisee's Chamber",
+    "emoji": "📜",
+    "tagline": "By what authority do you do these things?",
+    "description": "The religious leaders of Jerusalem fire their hardest questions. Three rounds — only truth can stand.",
+    "hp": 3,
+    "color": "#3b82f6",
+    "entranceText": "The Pharisee unrolls his scroll with a cold stare...",
+    "defeatText": "The tomb is empty — even death cannot silence the truth!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "Who Is This Man?",
+        "characterPool": ["john_baptist","mary"],
+        "questions": [
+          {
+            "type": "who-said",
+            "quote": "Behold the Lamb of God who takes away the sin of the world!",
+            "characters": ["John the Baptist", "Peter", "Andrew"],
+            "emojis": ["📢", "⛰️", "🎣"],
+            "answer": 0,
+            "scriptureRef": "John 1:29",
+            "feedback": "John introduced Jesus to the world with the most powerful two sentences ever spoken."
+          },
+          {
+            "type": "fill-in",
+            "verse": "The angel said to Mary, 'Do not be afraid, you have found ___ with God.'",
+            "options": ["favour", "glory", "peace", "blessing"],
+            "answer": 0,
+            "scriptureRef": "Luke 1:30",
+            "feedback": "Mary found favour — not because she was perfect, but because she was willing and humble."
+          },
+          {
+            "type": "decision",
+            "scenario": "John the Baptist is in prison because he confronted King Herod about marrying his brother's wife.",
+            "question": "John sends disciples to ask Jesus 'Are you the one who was to come?' What does this moment reveal?",
+            "choices": [
+              {"text": "Even the strongest faith can have moments of doubt in dark times", "correct": true},
+              {"text": "John had never believed Jesus was the Messiah", "correct": false},
+              {"text": "John wanted Jesus to rescue him from prison", "correct": false}
+            ],
+            "scriptureRef": "Matthew 11:3",
+            "feedback": "Doubt in the dark doesn't erase faith in the light. God understands our hard questions!"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "The Miracles",
+        "characterPool": ["jesus","peter"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Peter is walking on the water toward Jesus. He sees the wind and waves and begins to sink.",
+            "question": "Jesus reaches out and catches Peter, then says 'Why did you doubt?' What lesson does this teach?",
+            "choices": [
+              {"text": "Keep your eyes on Jesus, not on the storm around you", "correct": true},
+              {"text": "Never attempt anything unless you're completely certain", "correct": false},
+              {"text": "Miracles only work when the weather is calm", "correct": false}
+            ],
+            "scriptureRef": "Matthew 14:30-31",
+            "feedback": "Peter succeeded while looking at Jesus. He sank when he focused on the waves. Eyes on Jesus!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Jesus said, 'I am the ___ the truth and the life. No one comes to the Father except through me.'",
+            "options": ["way", "light", "bread", "door"],
+            "answer": 0,
+            "scriptureRef": "John 14:6",
+            "feedback": "One of the most powerful I AM statements — Jesus is THE way, not just a way."
+          },
+          {
+            "type": "who-said",
+            "quote": "You are the Messiah, the Son of the living God.",
+            "characters": ["Peter", "John", "Andrew"],
+            "emojis": ["⛰️", "❤️", "🎣"],
+            "answer": 0,
+            "scriptureRef": "Matthew 16:16",
+            "feedback": "Peter's great confession — the rock on which the church was built!"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Empty Tomb",
+        "characterPool": ["mary_magdalene","peter"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Mary Magdalene arrives at the tomb and finds it empty. She thinks someone has stolen the body.",
+            "question": "Then she hears her name spoken — 'Mary.' She recognises the voice immediately. Who is it?",
+            "choices": [
+              {"text": "The risen Jesus", "correct": true},
+              {"text": "An angel guarding the tomb", "correct": false},
+              {"text": "Peter who arrived before her", "correct": false}
+            ],
+            "scriptureRef": "John 20:16",
+            "feedback": "Jesus called her by name. The Good Shepherd always knows and calls His own sheep by name!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Mary Magdalene went to the disciples with the news: 'I have ___ the Lord!'",
+            "options": ["seen", "heard", "found", "met"],
+            "answer": 0,
+            "scriptureRef": "John 20:18",
+            "feedback": "The first words of resurrection news — spoken by a woman others had dismissed. God loves to use the unexpected!"
+          },
+          {
+            "type": "decision",
+            "scenario": "Peter had denied Jesus three times. After the resurrection Jesus asks Peter three times 'Do you love me?'",
+            "question": "Why does Jesus ask three times?",
+            "choices": [
+              {"text": "To restore Peter with the same number as his denials", "correct": true},
+              {"text": "Because Jesus doubted Peter's love", "correct": false},
+              {"text": "To show the disciples Peter was untrustworthy", "correct": false}
+            ],
+            "scriptureRef": "John 21:17",
+            "feedback": "Three denials — three restorations. Jesus doesn't hold our worst moments against us forever!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 800, "fp": 160, "badge": "✝️", "badgeName": "Living King Warrior" }
+  },
+  {
+    "id": "boss_caesar",
+    "eraId": 6,
+    "name": "Caesar's Inquisition",
+    "emoji": "⚔️",
+    "tagline": "Renounce your faith or face the sword!",
+    "description": "The Roman Empire at its most powerful demands silence. Three rounds — preach the truth anyway!",
+    "hp": 3,
+    "color": "#7c3aed",
+    "entranceText": "The Roman guard stamps his spear on the stone floor...",
+    "defeatText": "The Gospel spreads to every nation — nothing can stop it!",
+    "rounds": [
+      {
+        "round": 1,
+        "title": "The First Martyr",
+        "characterPool": ["stephen","barnabas"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Stephen is on trial for his faith and the council is furious at his message.",
+            "question": "As stones are thrown at him, what are Stephen's final words?",
+            "choices": [
+              {"text": "Receive my spirit Lord — and do not hold this sin against them", "correct": true},
+              {"text": "God will punish you for this!", "correct": false},
+              {"text": "I am innocent — let me go!", "correct": false}
+            ],
+            "scriptureRef": "Acts 7:59-60",
+            "feedback": "Stephen died exactly as Jesus lived — with forgiveness on his lips. Greatest of endings!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "Barnabas was a good man, full of the Holy Spirit and ___. A great number of people were brought to the Lord.",
+            "options": ["faith", "wisdom", "love", "power"],
+            "answer": 0,
+            "scriptureRef": "Acts 11:24",
+            "feedback": "Barnabas' goodness and faith attracted people to the Lord. Your character is your greatest witness!"
+          },
+          {
+            "type": "who-said",
+            "quote": "I see heaven open and the Son of Man standing at the right hand of God.",
+            "characters": ["Stephen", "Paul", "Peter"],
+            "emojis": ["🌟", "📜", "⛰️"],
+            "answer": 0,
+            "scriptureRef": "Acts 7:56",
+            "feedback": "At the worst moment, Stephen saw the best reality — Jesus standing up to welcome him home!"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "title": "Chains Cannot Hold the Gospel",
+        "characterPool": ["paul","lydia"],
+        "questions": [
+          {
+            "type": "decision",
+            "scenario": "Paul and Silas are in a Philippian prison, bleeding from beatings, feet in stocks.",
+            "question": "What do Paul and Silas do at midnight?",
+            "choices": [
+              {"text": "Pray and sing hymns to God while the other prisoners listen", "correct": true},
+              {"text": "Plan their escape before the earthquake", "correct": false},
+              {"text": "Send word to the other Christians for help", "correct": false}
+            ],
+            "scriptureRef": "Acts 16:25",
+            "feedback": "Praise in prison! Their worship caused an earthquake, opened every door, and saved the jailer's family!"
+          },
+          {
+            "type": "fill-in",
+            "verse": "The Lord opened her heart to respond to Paul's message.",
+            "options": ["opened", "moved", "turned", "softened"],
+            "answer": 0,
+            "scriptureRef": "Acts 16:14",
+            "feedback": "Lydia's conversion was God's work — He opened her heart. Only He can do that!"
+          },
+          {
+            "type": "decision",
+            "scenario": "Paul's ship is caught in a violent storm for two weeks. The crew has given up all hope.",
+            "question": "Paul stands up on the ship and says they will survive. What was his source of confidence?",
+            "choices": [
+              {"text": "An angel of God appeared to him saying all aboard would survive", "correct": true},
+              {"text": "Paul was an experienced sailor who had seen many storms", "correct": false},
+              {"text": "The storm was weakening and Paul could see land", "correct": false}
+            ],
+            "scriptureRef": "Acts 27:23-25",
+            "feedback": "Paul believed God's word over his circumstances. That's faith that changes the room!"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "title": "The Unstoppable Gospel",
+        "characterPool": ["timothy","paul"],
+        "questions": [
+          {
+            "type": "who-said",
+            "quote": "Don't let anyone look down on you because you are young, but set an example in speech, conduct, love, faith, and purity.",
+            "characters": ["Paul to Timothy", "Jesus to Peter", "Barnabas to John Mark"],
+            "emojis": ["📜", "✝️", "🤗"],
+            "answer": 0,
+            "scriptureRef": "1 Timothy 4:12",
+            "feedback": "Age is never an excuse! Timothy changed cities for God while still young."
+          },
+          {
+            "type": "fill-in",
+            "verse": "I can do all this through him who ___ me strength.",
+            "options": ["gives", "lends", "brings", "grants"],
+            "answer": 0,
+            "scriptureRef": "Philippians 4:13",
+            "feedback": "Not 'I can do all things because I am strong' — but 'through HIM.' God's strength, not ours!"
+          },
+          {
+            "type": "decision",
+            "scenario": "Paul is writing from prison for possibly the last time, knowing he may be executed.",
+            "question": "Paul writes 'To live is Christ, to die is gain.' What does this mean?",
+            "choices": [
+              {"text": "Whether Paul lives or dies, Jesus wins — life is for Christ, death brings him home", "correct": true},
+              {"text": "Paul was tired of living and wanted to die", "correct": false},
+              {"text": "Paul believed death was an escape from suffering", "correct": false}
+            ],
+            "scriptureRef": "Philippians 1:21",
+            "feedback": "One of the most powerful life-mottos ever written — from a prison cell with chains on his wrists!"
+          }
+        ]
+      }
+    ],
+    "rewards": { "xp": 1000, "fp": 200, "badge": "🌍", "badgeName": "Church Legend" }
+  }
+]

@@ -1,0 +1,602 @@
+[
+  {
+    "id": 1,
+    "verse": "Jesus wept.",
+    "ref": "John 11:35",
+    "theme": "Compassion",
+    "era": "New Testament",
+    "context": "Jesus cried at the tomb of Lazarus before raising him from the dead, showing his genuine human grief and love for his friends.",
+    "lesson": "Jesus shares in our deepest sorrows. His tears show that God is not distant from human pain.",
+    "keywords": ["wept"]
+  },
+  {
+    "id": 2,
+    "verse": "God is love.",
+    "ref": "1 John 4:8",
+    "theme": "God's Nature",
+    "era": "New Testament",
+    "context": "The apostle John, writing late in life, summarizes the very essence of God's character in three words.",
+    "lesson": "Love is not just something God does — it is who he is. Every act of God flows from his love.",
+    "keywords": ["love"]
+  },
+  {
+    "id": 3,
+    "verse": "Love your neighbor as yourself.",
+    "ref": "Mark 12:31",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "Jesus declared this the second greatest commandment, equal to loving God with all your heart.",
+    "lesson": "The measure of our love for God is shown in how we treat the people around us every day.",
+    "keywords": ["neighbor", "yourself"]
+  },
+  {
+    "id": 4,
+    "verse": "The Lord is my shepherd, I lack nothing.",
+    "ref": "Psalm 23:1",
+    "theme": "God's Provision",
+    "era": "Old Testament",
+    "context": "David, once a shepherd himself, describes God using the most intimate image of pastoral care in the ancient world.",
+    "lesson": "Under God's care, we lack nothing that truly matters. He leads, feeds, and restores his people.",
+    "keywords": ["shepherd", "lack", "nothing"]
+  },
+  {
+    "id": 5,
+    "verse": "Be still, and know that I am God.",
+    "ref": "Psalm 46:10",
+    "theme": "Trust",
+    "era": "Old Testament",
+    "context": "Spoken to a nation in chaos, surrounded by enemies — God commands his people to stop striving and trust him.",
+    "lesson": "Stillness is an act of faith. When we stop trying to control everything, we open space to experience God.",
+    "keywords": ["still", "know", "God"]
+  },
+  {
+    "id": 6,
+    "verse": "In the beginning God created the heavens and the earth.",
+    "ref": "Genesis 1:1",
+    "theme": "Creation",
+    "era": "Old Testament",
+    "context": "The first sentence of the entire Bible establishes God as the sovereign Creator of all reality.",
+    "lesson": "Everything that exists owes its existence to God. Creation is not an accident — it flows from divine purpose.",
+    "keywords": ["beginning", "created", "heavens", "earth"]
+  },
+  {
+    "id": 7,
+    "verse": "I can do all this through him who gives me strength.",
+    "ref": "Philippians 4:13",
+    "theme": "Strength",
+    "era": "New Testament",
+    "context": "Paul wrote this from prison, having learned contentment in both abundance and need. 'All this' refers to enduring all circumstances.",
+    "lesson": "True strength is not self-reliance but Christ-dependence. God empowers us to endure what we cannot handle alone.",
+    "keywords": ["all", "through", "strength", "gives"]
+  },
+  {
+    "id": 8,
+    "verse": "Jesus Christ is the same yesterday and today and forever.",
+    "ref": "Hebrews 13:8",
+    "theme": "God's Faithfulness",
+    "era": "New Testament",
+    "context": "Written to Jewish believers tempted to return to old rituals, this verse anchors faith in Christ's unchanging character.",
+    "lesson": "In a world of constant change, Jesus is the one fixed point. His promises do not expire or shift.",
+    "keywords": ["same", "yesterday", "today", "forever"]
+  },
+  {
+    "id": 9,
+    "verse": "The Lord is near to all who call on him.",
+    "ref": "Psalm 145:18",
+    "theme": "Prayer",
+    "era": "Old Testament",
+    "context": "King David's great hymn of praise assures us that God is not far — he actively draws close to those who call.",
+    "lesson": "Prayer is not shouting into empty space. The moment we turn to God, he is already near.",
+    "keywords": ["near", "call", "him"]
+  },
+  {
+    "id": 10,
+    "verse": "Do to others as you would have them do to you.",
+    "ref": "Luke 6:31",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "Known as the Golden Rule, Jesus gave this as the active principle of love — treat people the way you wish to be treated.",
+    "lesson": "The Golden Rule flips selfishness around. Instead of asking 'what can I get?' we ask 'what can I give?'",
+    "keywords": ["others", "would", "have", "you"]
+  },
+  {
+    "id": 11,
+    "verse": "Come to me, all you who are weary and burdened, and I will give you rest.",
+    "ref": "Matthew 11:28",
+    "theme": "Rest",
+    "era": "New Testament",
+    "context": "Jesus spoke to people crushed under heavy religious rules and the weight of daily life in a Roman-occupied land.",
+    "lesson": "Jesus does not offer rest as a reward for good performance. He offers it freely to the exhausted and struggling.",
+    "keywords": ["weary", "burdened", "rest", "all"]
+  },
+  {
+    "id": 12,
+    "verse": "Trust in the Lord with all your heart and lean not on your own understanding.",
+    "ref": "Proverbs 3:5",
+    "theme": "Trust",
+    "era": "Old Testament",
+    "context": "Solomon's wisdom literature consistently warns against relying on human wisdom alone and urges total trust in God.",
+    "lesson": "Our understanding is limited and often wrong. Surrendering our plans to God's guidance is the beginning of wisdom.",
+    "keywords": ["Trust", "heart", "lean", "understanding"]
+  },
+  {
+    "id": 13,
+    "verse": "Cast all your anxiety on him because he cares for you.",
+    "ref": "1 Peter 5:7",
+    "theme": "Worry",
+    "era": "New Testament",
+    "context": "Peter, who once sank when he took his eyes off Jesus, urges believers to actively throw their worries onto God.",
+    "lesson": "Worry is a weight we were never meant to carry. God invites us to cast — not toss gently — every anxiety onto him.",
+    "keywords": ["anxiety", "cares", "Cast", "him"]
+  },
+  {
+    "id": 14,
+    "verse": "Your word is a lamp for my feet, a light on my path.",
+    "ref": "Psalm 119:105",
+    "theme": "God's Word",
+    "era": "Old Testament",
+    "context": "The longest chapter in the Bible celebrates God's Word — not a floodlight to see everything, but a lamp for the next step.",
+    "lesson": "God's Word doesn't always show us the whole future, but it gives us enough light for the step we're on.",
+    "keywords": ["lamp", "feet", "light", "path"]
+  },
+  {
+    "id": 15,
+    "verse": "The Lord will fight for you; you need only to be still.",
+    "ref": "Exodus 14:14",
+    "theme": "Courage",
+    "era": "Old Testament",
+    "context": "Moses spoke this to terrified Israelites with the Red Sea in front of them and Pharaoh's army charging behind.",
+    "lesson": "Some of our greatest battles are won by trusting God to fight — not by charging ahead in our own strength.",
+    "keywords": ["fight", "still", "only", "Lord"]
+  },
+  {
+    "id": 16,
+    "verse": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+    "ref": "John 3:16",
+    "theme": "Salvation",
+    "era": "New Testament",
+    "context": "Jesus spoke these words to Nicodemus, a Pharisee who came secretly at night to ask about the kingdom of God.",
+    "lesson": "God's love is not passive. It moved him to sacrifice his own Son so that we could live forever with him.",
+    "keywords": ["loved", "gave", "believes", "eternal", "perish"]
+  },
+  {
+    "id": 17,
+    "verse": "I am the way and the truth and the life. No one comes to the Father except through me.",
+    "ref": "John 14:6",
+    "theme": "Salvation",
+    "era": "New Testament",
+    "context": "Jesus said this at the Last Supper when Thomas asked how they could know the way to where Jesus was going.",
+    "lesson": "Jesus is not a path among many paths. He is the only way to the Father — exclusive, sufficient, and certain.",
+    "keywords": ["way", "truth", "life", "Father", "through"]
+  },
+  {
+    "id": 18,
+    "verse": "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.",
+    "ref": "Joshua 1:9",
+    "theme": "Courage",
+    "era": "Old Testament",
+    "context": "God spoke these words to Joshua as he prepared to lead Israel into Canaan after Moses died.",
+    "lesson": "Courage is not the absence of fear — it is obedience in spite of fear because God promises his presence.",
+    "keywords": ["strong", "courageous", "afraid", "discouraged", "wherever"]
+  },
+  {
+    "id": 19,
+    "verse": "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",
+    "ref": "Jeremiah 29:11",
+    "theme": "Hope",
+    "era": "Old Testament",
+    "context": "God spoke this to Jewish exiles in Babylon — people who felt abandoned and hopeless — promising a future beyond captivity.",
+    "lesson": "Even in exile and suffering, God holds our future in his hands. His plans are always toward our flourishing.",
+    "keywords": ["plans", "prosper", "harm", "hope", "future"]
+  },
+  {
+    "id": 20,
+    "verse": "I have hidden your word in my heart that I might not sin against you.",
+    "ref": "Psalm 119:11",
+    "theme": "God's Word",
+    "era": "Old Testament",
+    "context": "The psalmist describes the practice of memorizing scripture — storing God's word deep in the heart as a guard against sin.",
+    "lesson": "Memorizing Scripture is not just an intellectual exercise — it is a spiritual defense system for our daily lives.",
+    "keywords": ["hidden", "word", "heart", "sin"]
+  },
+  {
+    "id": 21,
+    "verse": "But seek first his kingdom and his righteousness, and all these things will be given to you as well.",
+    "ref": "Matthew 6:33",
+    "theme": "Priorities",
+    "era": "New Testament",
+    "context": "From the Sermon on the Mount, Jesus addresses anxiety about daily needs by pointing to proper priorities.",
+    "lesson": "When we put God's kingdom first, God takes responsibility for meeting our needs. Right priorities change everything.",
+    "keywords": ["seek", "kingdom", "righteousness", "given"]
+  },
+  {
+    "id": 22,
+    "verse": "So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you.",
+    "ref": "Isaiah 41:10",
+    "theme": "Courage",
+    "era": "Old Testament",
+    "context": "God speaks tenderly to exiled Israel, calling them not to fear because his presence and power are with them.",
+    "lesson": "The antidote to fear is not human courage but divine presence. God says 'I am with you' — and that changes everything.",
+    "keywords": ["fear", "dismayed", "strengthen", "help", "God"]
+  },
+  {
+    "id": 23,
+    "verse": "Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!",
+    "ref": "2 Corinthians 5:17",
+    "theme": "Identity",
+    "era": "New Testament",
+    "context": "Paul declares the radical transformation that occurs when someone comes to Christ — a complete new identity and nature.",
+    "lesson": "In Christ, you are not just forgiven — you are entirely new. Old patterns and identities no longer define you.",
+    "keywords": ["Christ", "creation", "old", "gone", "new"]
+  },
+  {
+    "id": 24,
+    "verse": "Love is patient, love is kind. It does not envy, it does not boast, it is not proud.",
+    "ref": "1 Corinthians 13:4",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "Paul's great love chapter describes love not as a feeling but as a consistent behavior and character orientation.",
+    "lesson": "Real love is not a warm emotion — it is a disciplined choice to be patient, kind, and free from pride.",
+    "keywords": ["patient", "kind", "envy", "boast", "proud"]
+  },
+  {
+    "id": 25,
+    "verse": "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.",
+    "ref": "Philippians 4:6",
+    "theme": "Prayer",
+    "era": "New Testament",
+    "context": "Paul wrote from prison to a beloved church, teaching that prayer — not anxiety — is the right response to every difficulty.",
+    "lesson": "Anxiety and prayer cannot fully coexist. When we bring every worry to God with thanksgiving, peace begins to grow.",
+    "keywords": ["anxious", "prayer", "petition", "thanksgiving", "requests"]
+  },
+  {
+    "id": 26,
+    "verse": "And we know that in all things God works for the good of those who love him, who have been called according to his purpose.",
+    "ref": "Romans 8:28",
+    "theme": "Hope",
+    "era": "New Testament",
+    "context": "Paul gives suffering believers the ultimate anchor: nothing in their lives is outside God's redemptive purpose.",
+    "lesson": "God doesn't waste anything. Even pain, loss, and failure are woven into his plan for our ultimate good.",
+    "keywords": ["know", "works", "good", "love", "purpose", "called"]
+  },
+  {
+    "id": 27,
+    "verse": "Delight yourself in the Lord, and he will give you the desires of your heart.",
+    "ref": "Psalm 37:4",
+    "theme": "Joy",
+    "era": "Old Testament",
+    "context": "David's wisdom: when God is our delight, our desires are shaped by him — so he gives us what he's already placed in us.",
+    "lesson": "Delighting in God transforms our desires. He gives us what we want because he first changes what we want.",
+    "keywords": ["Delight", "Lord", "desires", "heart"]
+  },
+  {
+    "id": 28,
+    "verse": "The Lord is my light and my salvation — whom shall I fear? The Lord is the stronghold of my life — of whom shall I be afraid?",
+    "ref": "Psalm 27:1",
+    "theme": "Courage",
+    "era": "Old Testament",
+    "context": "David wrote this psalm while surrounded by enemies, yet declares absolute confidence because of who God is.",
+    "lesson": "When God is your light and stronghold, fear loses its grip. The question 'whom shall I fear?' becomes rhetorical.",
+    "keywords": ["light", "salvation", "fear", "stronghold", "afraid"]
+  },
+  {
+    "id": 29,
+    "verse": "Greater love has no one than this: to lay down one's life for one's friends.",
+    "ref": "John 15:13",
+    "theme": "Sacrifice",
+    "era": "New Testament",
+    "context": "Jesus spoke this at the Last Supper, hours before demonstrating it on the cross — giving the ultimate definition of love.",
+    "lesson": "Sacrifice is the highest expression of love. Jesus didn't just teach this — he embodied it completely.",
+    "keywords": ["Greater", "love", "lay", "life", "friends"]
+  },
+  {
+    "id": 30,
+    "verse": "But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.",
+    "ref": "Isaiah 40:31",
+    "theme": "Hope",
+    "era": "Old Testament",
+    "context": "Isaiah comforts exhausted exiles by contrasting human weakness with the renewing energy that comes from waiting on God.",
+    "lesson": "When our own strength runs out, God's strength begins. Hope-filled waiting is not passive — it is actively replenishing.",
+    "keywords": ["hope", "renew", "strength", "soar", "weary", "faint"]
+  },
+  {
+    "id": 31,
+    "verse": "Now faith is confidence in what we hope for and assurance about what we do not see.",
+    "ref": "Hebrews 11:1",
+    "theme": "Faith",
+    "era": "New Testament",
+    "context": "Hebrews 11 opens the great 'Hall of Faith' — a gallery of Old Testament believers who trusted God for what they couldn't yet see.",
+    "lesson": "Faith is not blind — it is conviction about realities not yet visible. It is trust grounded in God's revealed character.",
+    "keywords": ["faith", "confidence", "hope", "assurance", "see"]
+  },
+  {
+    "id": 32,
+    "verse": "The thief comes only to steal and kill and destroy; I have come that they may have life, and have it to the full.",
+    "ref": "John 10:10",
+    "theme": "Life",
+    "era": "New Testament",
+    "context": "Jesus contrasts himself with false leaders who harm the flock. He is the Good Shepherd who gives abundant life.",
+    "lesson": "Jesus doesn't offer a minimal life — he offers abundant life, full of meaning, purpose, and joy, starting now.",
+    "keywords": ["steal", "kill", "destroy", "life", "full"]
+  },
+  {
+    "id": 33,
+    "verse": "For God did not give us a spirit of timidity, but a spirit of power, of love and of self-discipline.",
+    "ref": "2 Timothy 1:7",
+    "theme": "Strength",
+    "era": "New Testament",
+    "context": "Paul writes to encourage the young, perhaps timid, Timothy to boldly fulfill his ministry without fear.",
+    "lesson": "Fear is not from God. The Spirit God gives us is characterized by power, love, and a sound mind — not timidity.",
+    "keywords": ["spirit", "timidity", "power", "love", "self-discipline"]
+  },
+  {
+    "id": 34,
+    "verse": "In the same way, let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",
+    "ref": "Matthew 5:16",
+    "theme": "Witness",
+    "era": "New Testament",
+    "context": "Jesus extends the 'salt and light' metaphor in the Sermon on the Mount — our visible lives should point to God's glory.",
+    "lesson": "We live visibly for an audience that includes those who don't yet know God. Our lives are the message they read.",
+    "keywords": ["light", "shine", "others", "deeds", "glorify"]
+  },
+  {
+    "id": 35,
+    "verse": "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.",
+    "ref": "Matthew 7:7",
+    "theme": "Prayer",
+    "era": "New Testament",
+    "context": "Jesus uses three progressive verbs — ask, seek, knock — to describe persistent, expectant prayer.",
+    "lesson": "God rewards persistent prayer. He invites us to keep asking, keep seeking, and keep knocking with bold faith.",
+    "keywords": ["Ask", "given", "seek", "find", "knock", "opened"]
+  },
+  {
+    "id": 36,
+    "verse": "For it is by grace you have been saved, through faith — and this is not from yourselves, it is the gift of God — not by works, so that no one can boast.",
+    "ref": "Ephesians 2:8-9",
+    "theme": "Salvation",
+    "era": "New Testament",
+    "context": "Paul dismantles any pride in salvation — it is entirely God's unearned gift received through faith, not religious achievement.",
+    "lesson": "Salvation cannot be earned, only received. Grace levels the playing field — no one stands before God on their own merits.",
+    "keywords": ["grace", "saved", "faith", "gift", "works", "boast"]
+  },
+  {
+    "id": 37,
+    "verse": "Do not conform to the pattern of this world, but be transformed by the renewing of your mind.",
+    "ref": "Romans 12:2",
+    "theme": "Transformation",
+    "era": "New Testament",
+    "context": "Paul calls Christians to resist cultural pressure to conform, and instead undergo a deep, inward renovation of thought.",
+    "lesson": "Transformation begins in the mind. What we think about consistently shapes who we become.",
+    "keywords": ["conform", "pattern", "transformed", "renewing", "mind"]
+  },
+  {
+    "id": 38,
+    "verse": "I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.",
+    "ref": "Psalm 139:14",
+    "theme": "Identity",
+    "era": "Old Testament",
+    "context": "David reflects on God's intimate knowledge of him, from conception to the present — and responds with worship.",
+    "lesson": "You are not an accident. Every detail of your being was crafted by God with extraordinary care and intentionality.",
+    "keywords": ["fearfully", "wonderfully", "made", "works", "wonderful"]
+  },
+  {
+    "id": 39,
+    "verse": "And now these three remain: faith, hope and love. But the greatest of these is love.",
+    "ref": "1 Corinthians 13:13",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "Closing the love chapter, Paul identifies three eternal virtues — and declares love supreme above all of them.",
+    "lesson": "Love outlasts prophecy, tongues, and knowledge. It is the greatest because it perfectly reflects God's own nature.",
+    "keywords": ["three", "remain", "faith", "hope", "love", "greatest"]
+  },
+  {
+    "id": 40,
+    "verse": "Create in me a pure heart, O God, and renew a steadfast spirit within me.",
+    "ref": "Psalm 51:10",
+    "theme": "Repentance",
+    "era": "Old Testament",
+    "context": "David prayed this after his grievous sin with Bathsheba — one of the Bible's most honest prayers of repentance.",
+    "lesson": "True repentance asks God to change us from the inside out — not just to forgive the act but to transform the heart.",
+    "keywords": ["Create", "pure", "heart", "renew", "steadfast", "spirit"]
+  },
+  {
+    "id": 41,
+    "verse": "For the wages of sin is death, but the gift of God is eternal life in Christ Jesus our Lord.",
+    "ref": "Romans 6:23",
+    "theme": "Salvation",
+    "era": "New Testament",
+    "context": "Paul contrasts what sin earns (death) with what God gives (eternal life) — making the gospel's offer crystal clear.",
+    "lesson": "Sin has a paycheck, and it's death. But God offers a gift — eternal life — that no one could ever earn.",
+    "keywords": ["wages", "sin", "death", "gift", "eternal", "life"]
+  },
+  {
+    "id": 42,
+    "verse": "He has shown you, O mortal, what is good. And what does the Lord require of you? To act justly and to love mercy and to walk humbly with your God.",
+    "ref": "Micah 6:8",
+    "theme": "Justice",
+    "era": "Old Testament",
+    "context": "Micah cuts through empty religious ritual to name what God actually wants from his people: justice, mercy, humility.",
+    "lesson": "God is not impressed by rituals without reality. He wants justice in our dealings, mercy in our relationships, and humility in our walk.",
+    "keywords": ["justly", "mercy", "humbly", "require", "shown"]
+  },
+  {
+    "id": 43,
+    "verse": "Rejoice in the Lord always. I will say it again: Rejoice! Let your gentleness be evident to all. The Lord is near.",
+    "ref": "Philippians 4:4-5",
+    "theme": "Joy",
+    "era": "New Testament",
+    "context": "Paul writes 'rejoice' from prison — proving joy is not a mood dependent on circumstances but a choice rooted in Christ.",
+    "lesson": "Joy is a command, not a feeling. It is possible in all circumstances because it is rooted in Christ, not in comfort.",
+    "keywords": ["Rejoice", "Lord", "always", "gentleness", "near"]
+  },
+  {
+    "id": 44,
+    "verse": "The fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.",
+    "ref": "Galatians 5:22-23",
+    "theme": "Character",
+    "era": "New Testament",
+    "context": "Paul lists nine qualities produced in believers by the Holy Spirit — these are not achievements but fruit grown by God.",
+    "lesson": "Christlike character is not manufactured by willpower — it grows naturally when we remain connected to God's Spirit.",
+    "keywords": ["fruit", "Spirit", "love", "joy", "peace", "kindness", "faithfulness", "self-control"]
+  },
+  {
+    "id": 45,
+    "verse": "I lift up my eyes to the mountains — where does my help come from? My help comes from the Lord, the Maker of heaven and earth.",
+    "ref": "Psalm 121:1-2",
+    "theme": "Help",
+    "era": "Old Testament",
+    "context": "A pilgrim's song for those journeying to Jerusalem, perhaps across dangerous mountain terrain — looking to God for protection.",
+    "lesson": "Our help does not come from impressive powers or institutions. It comes from the Creator of all things.",
+    "keywords": ["lift", "eyes", "mountains", "help", "Maker", "heaven", "earth"]
+  },
+  {
+    "id": 46,
+    "verse": "You will keep in perfect peace those whose minds are steadfast, because they trust in you.",
+    "ref": "Isaiah 26:3",
+    "theme": "Peace",
+    "era": "Old Testament",
+    "context": "Isaiah describes a peace so complete that the Hebrew uses the word 'shalom' twice — 'shalom shalom' — the deepest peace.",
+    "lesson": "Perfect peace is not circumstances-based. It flows from a fixed mind — one that has chosen to trust God.",
+    "keywords": ["perfect", "peace", "minds", "steadfast", "trust"]
+  },
+  {
+    "id": 47,
+    "verse": "The Lord is my strength and my shield; my heart trusts in him, and he helps me. My heart leaps for joy, and with my song I praise him.",
+    "ref": "Psalm 28:7",
+    "theme": "Praise",
+    "era": "Old Testament",
+    "context": "David moves from desperate prayer to confident praise within a single psalm — a model of honest, hopeful worship.",
+    "lesson": "Praise changes the atmosphere of our hearts. Trusting God leads to joy, and joy naturally overflows into praise.",
+    "keywords": ["strength", "shield", "trusts", "helps", "joy", "song", "praise"]
+  },
+  {
+    "id": 48,
+    "verse": "The name of the Lord is a fortified tower; the righteous run to it and are safe.",
+    "ref": "Proverbs 18:10",
+    "theme": "Protection",
+    "era": "Old Testament",
+    "context": "In ancient cities, towers were refuges in battle. God's very name — his character and reputation — is our ultimate stronghold.",
+    "lesson": "When crisis comes, we run toward God, not away. His name is not just a word — it is a fortress we can enter.",
+    "keywords": ["name", "Lord", "fortified", "tower", "righteous", "safe"]
+  },
+  {
+    "id": 49,
+    "verse": "The steadfast love of the Lord never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.",
+    "ref": "Lamentations 3:22-23",
+    "theme": "Faithfulness",
+    "era": "Old Testament",
+    "context": "Written in the ruins of Jerusalem after its destruction, this is one of the Bible's most remarkable acts of faith amid devastation.",
+    "lesson": "Even in the darkest ruins, God's mercies are not exhausted. Every morning brings a fresh supply of his faithfulness.",
+    "keywords": ["steadfast", "love", "ceases", "mercies", "morning", "faithfulness"]
+  },
+  {
+    "id": 50,
+    "verse": "By this everyone will know that you are my disciples, if you love one another.",
+    "ref": "John 13:35",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "At the Last Supper, Jesus gave his disciples a new commandment — love — and named it as the mark of true discipleship.",
+    "lesson": "The most powerful testimony to the world is not impressive arguments but genuine love between believers.",
+    "keywords": ["everyone", "know", "disciples", "love", "one another"]
+  },
+  {
+    "id": 51,
+    "verse": "For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do.",
+    "ref": "Ephesians 2:10",
+    "theme": "Purpose",
+    "era": "New Testament",
+    "context": "Immediately after explaining salvation by grace, Paul reveals its purpose: we are not saved merely to go to heaven but to do good works.",
+    "lesson": "You were saved for a purpose. God has specific good works designed uniquely for you to walk in.",
+    "keywords": ["handiwork", "created", "good", "works", "prepared", "advance"]
+  },
+  {
+    "id": 52,
+    "verse": "No eye has seen, no ear has heard, and no human mind has conceived the things God has prepared for those who love him.",
+    "ref": "1 Corinthians 2:9",
+    "theme": "Hope",
+    "era": "New Testament",
+    "context": "Paul quotes Isaiah to describe the incomprehensible blessings God has in store — things beyond human imagination.",
+    "lesson": "The best things God has for us are beyond what we can see, hear, or imagine. His plans for us exceed our dreams.",
+    "keywords": ["eye", "seen", "ear", "heard", "mind", "conceived", "prepared", "love"]
+  },
+  {
+    "id": 53,
+    "verse": "I have been crucified with Christ and I no longer live, but Christ lives in me. The life I now live in the body, I live by faith in the Son of God, who loved me and gave himself for me.",
+    "ref": "Galatians 2:20",
+    "theme": "Identity",
+    "era": "New Testament",
+    "context": "Paul describes the radical shift in identity that union with Christ brings — the old self is dead, Christ now lives within.",
+    "lesson": "The Christian life is not self-improvement but Christ-replacement. He lives through us, not alongside us.",
+    "keywords": ["crucified", "Christ", "live", "faith", "Son", "loved", "gave"]
+  },
+  {
+    "id": 54,
+    "verse": "Hear, O Israel: The Lord our God, the Lord is one. Love the Lord your God with all your heart and with all your soul and with all your strength.",
+    "ref": "Deuteronomy 6:4-5",
+    "theme": "Love",
+    "era": "Old Testament",
+    "context": "The Shema — Israel's daily declaration of faith, the greatest commandment, the bedrock of Jewish and Christian worship.",
+    "lesson": "Loving God is not partial — it demands all our heart, all our soul, all our strength. Nothing held back.",
+    "keywords": ["Lord", "one", "Love", "heart", "soul", "strength"]
+  },
+  {
+    "id": 55,
+    "verse": "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you. For everyone who asks receives; the one who seeks finds; and to the one who knocks, the door will be opened.",
+    "ref": "Matthew 7:7-8",
+    "theme": "Prayer",
+    "era": "New Testament",
+    "context": "Jesus gives a triple promise about prayer — three progressive actions with three guaranteed responses from a generous God.",
+    "lesson": "God's responsiveness to prayer is emphatic. He is not reluctant. The triple repetition removes all doubt.",
+    "keywords": ["Ask", "given", "seek", "find", "knock", "opened", "receives", "finds"]
+  },
+  {
+    "id": 56,
+    "verse": "Jesus said to her, I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die.",
+    "ref": "John 11:25-26",
+    "theme": "Resurrection",
+    "era": "New Testament",
+    "context": "Jesus spoke this to Martha at the tomb of Lazarus before raising him — the clearest declaration of his power over death.",
+    "lesson": "Death is not the final word for those who believe in Jesus. Resurrection is not just an event — it is a person.",
+    "keywords": ["resurrection", "life", "believes", "live", "die", "never"]
+  },
+  {
+    "id": 57,
+    "verse": "For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.",
+    "ref": "Romans 8:38-39",
+    "theme": "Love",
+    "era": "New Testament",
+    "context": "Paul builds to a magnificent climax, listing every conceivable force in the universe — and declares none can separate us from God's love.",
+    "lesson": "Nothing in creation can cut you off from God's love. This is one of the most comprehensive assurances in all Scripture.",
+    "keywords": ["convinced", "death", "life", "separate", "love", "Christ", "creation"]
+  },
+  {
+    "id": 58,
+    "verse": "The Lord bless you and keep you; the Lord make his face shine on you and be gracious to you; the Lord turn his face toward you and give you peace.",
+    "ref": "Numbers 6:24-26",
+    "theme": "Blessing",
+    "era": "Old Testament",
+    "context": "The ancient priestly blessing God gave Aaron to speak over Israel — still spoken in Jewish and Christian worship today.",
+    "lesson": "God's blessing is not luck. It is his intentional face turned toward us — his light, his grace, his shalom.",
+    "keywords": ["bless", "keep", "shine", "gracious", "peace", "face"]
+  },
+  {
+    "id": 59,
+    "verse": "The Lord is compassionate and gracious, slow to anger, abounding in love. He will not always accuse, nor will he harbor his anger forever.",
+    "ref": "Psalm 103:8-9",
+    "theme": "Grace",
+    "era": "Old Testament",
+    "context": "David's magnificent psalm of praise describes God's character — slow to anger is the opposite of quick to punish.",
+    "lesson": "God's anger is always reluctant and restrained. His love is the dominant feature of his character, not his wrath.",
+    "keywords": ["compassionate", "gracious", "anger", "love", "accuse", "harbor"]
+  },
+  {
+    "id": 60,
+    "verse": "Where can I go from your Spirit? Where can I flee from your presence? If I go up to the heavens, you are there; if I make my bed in the depths, you are there. If I rise on the wings of the dawn, if I settle on the far side of the sea, even there your hand will guide me, your right hand will hold me fast.",
+    "ref": "Psalm 139:7-10",
+    "theme": "God's Presence",
+    "era": "Old Testament",
+    "context": "David asks a rhetorical question: where can I go from God? The answer is nowhere — God's presence fills all creation.",
+    "lesson": "You can never go somewhere God is not. His presence is not a reward for good behavior — it is inescapable love.",
+    "keywords": ["Spirit", "presence", "heavens", "depths", "guide", "hold", "flee"]
+  }
+]

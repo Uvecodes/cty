@@ -1,535 +1,1166 @@
-// Memory Verse Master - Game Logic
-// Handles verse display, quiz generation, scoring, and Firebase persistence
+(function () {
+'use strict';
 
-(function() {
-    'use strict';
+// ══════════════════════════════════════
+// DATA + STATE
+// ══════════════════════════════════════
+let VERSES = [], LEVELS = [];
 
-    // Game state
-    let currentVerse = null;
-    let currentQuiz = [];
-    let currentQuizIndex = 0;
-    let score = 0;
-    let streak = 0;
-    let level = 1;
-    let gameMode = 'practice';
-    let verses = [];
-    let timerInterval = null;
-    let timeRemaining = 10;
-    let startTime = null;
-    let userProgress = {
-        streak: 0,
-        lastPlayedDate: null,
-        highScore: 0,
-        level: 1
-    };
+const MODE_META = {
+  'fill-blank':  { icon: '📝', label: 'Fill in the Blanks' },
+  'arrange':     { icon: '🔀', label: 'Arrange the Words' },
+  'type-blank':  { icon: '⌨️', label: 'Type the Missing Word' },
+  'ref-match':   { icon: '📍', label: 'Match the Reference' },
+};
 
-    // DOM elements
-    const verseDisplay = document.getElementById('verseDisplay');
-    const quizSection = document.getElementById('quizSection');
-    const verseText = document.getElementById('verseText');
-    const verseRef = document.getElementById('verseRef');
-    const timerText = document.getElementById('timerText');
-    const timerCircle = document.getElementById('timerCircle');
-    const fillBlankText = document.getElementById('fillBlankText');
-    const quizOptions = document.getElementById('quizOptions');
-    const feedbackOverlay = document.getElementById('feedbackOverlay');
-    const feedbackIcon = document.getElementById('feedbackIcon');
-    const feedbackMessage = document.getElementById('feedbackMessage');
-    const feedbackPoints = document.getElementById('feedbackPoints');
-    const confettiContainer = document.getElementById('confettiContainer');
-    const scoreDisplay = document.getElementById('score');
-    const streakDisplay = document.getElementById('streak');
-    const levelDisplay = document.getElementById('level');
-    const startBtn = document.getElementById('startBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    const speedBonusIndicator = document.getElementById('speedBonus');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const practiceMode = document.getElementById('practiceMode');
-    const dailyMode = document.getElementById('dailyMode');
-    const feedbackContent = document.querySelector('.feedback-content');
+const THEME_ICONS = {
+  'Salvation':'✝️','Faith':'🕊️','Love':'❤️','Courage':'⚡','Trust':'🙏','Prayer':'🙌',
+  'Hope':'🌟','Peace':'☮️','God\'s Word':'📖','God\'s Nature':'✨','Strength':'💪',
+  'Compassion':'💧','Priorities':'🎯','Joy':'😊','Identity':'🌱','Transformation':'🦋',
+  'Character':'🌿','Praise':'🎵','Repentance':'💎','Justice':'⚖️','Sacrifice':'🕊️',
+  'Resurrection':'🌅','Life':'🌱','Wisdom':'👑','Rest':'🌙','Witness':'💡',
+  'Faithfulness':'🔒','Help':'🤝','Protection':'🛡️','Blessing':'🌈','Grace':'🎁',
+  'God\'s Presence':'🌍','Purpose':'🎯',
+};
 
-    // Wait for Firebase (init from API via firebase-config.js)
-    (window.firebaseReady || Promise.resolve()).then(function() {
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+let state = {
+  currentScreen: 'splash',
+  currentLevel: null,
+  currentVerse: null,
+  progress: { stars: {}, highScore: 0, streak: 0, lastDate: null },
 
-    // Load verses from JSON file
-    async function loadVerses() {
-        try {
-            const response = await fetch('./verses.json');
-            if (!response.ok) {
-                throw new Error('Failed to load verses');
-            }
-            verses = await response.json();
-            console.log(`Loaded ${verses.length} verses`);
-            loadingOverlay.classList.add('hidden');
-        } catch (error) {
-            console.error('Error loading verses:', error);
-            // Fallback to localStorage if available
-            const cachedVerses = localStorage.getItem('mvm_verses');
-            if (cachedVerses) {
-                verses = JSON.parse(cachedVerses);
-                loadingOverlay.classList.add('hidden');
-            } else {
-                alert('Failed to load verses. Please check your connection.');
-            }
-        }
+  // study phase
+  studyTimer: null,
+  studyTimeLeft: 0,
+
+  // quiz timer
+  quizTimer: null,
+  quizTimeLeft: 0,
+  quizStartTime: 0,
+  paused: false,
+  hintsLeft: 0,
+
+  // scoring
+  score: 0,
+  totalScore: 0,
+  correctCount: 0,
+  totalQuestions: 0,
+
+  // fill-blank
+  blanks: [],       // [{idx, word, correct, answered, options}]
+  currentBlank: 0,
+
+  // arrange
+  arrangeWords: [], // [{text, originalIdx}]
+  arrangeTarget: [],
+
+  // type-blank
+  typeBlanks: [],   // [{idx, word, correct, answered}]
+  currentTyped: 0,
+
+  // ref-match
+  refVerses: [],    // [{verse, choices, correctIdx, answered}]
+  currentRef: 0,
+
+  filterTag: 'all',
+};
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+async function init() {
+  try {
+    const [vRes, lRes] = await Promise.all([
+      fetch('./data/verses.json'),
+      fetch('./data/levels.json'),
+    ]);
+    VERSES = await vRes.json();
+    LEVELS = await lRes.json();
+  } catch (e) {
+    console.error('Failed to load data:', e);
+    VERSES = []; LEVELS = [];
+  }
+
+  loadProgress();
+
+  // Firebase (optional)
+  const fw = window.firebaseReady ? window.firebaseReady.catch(() => {}) : Promise.resolve();
+  fw.then(() => {
+    if (window.auth) window.auth.onAuthStateChanged(() => {});
+  });
+
+  bindNav();
+
+  // Splash animation
+  let pct = 0;
+  const bar = document.getElementById('splash-bar');
+  const iv = setInterval(() => {
+    pct += 2.5;
+    if (bar) bar.style.width = pct + '%';
+    if (pct >= 100) { clearInterval(iv); showScreen('home'); }
+  }, 40);
+}
+
+// ══════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById('screen-' + id);
+  if (s) s.classList.add('active');
+  state.currentScreen = id;
+  if (id === 'home') renderHomeStats();
+  if (id === 'levels') buildLevelGrid();
+}
+
+// ══════════════════════════════════════
+// NAV BINDINGS
+// ══════════════════════════════════════
+function bindNav() {
+  // Home
+  document.getElementById('btn-play').onclick = () => {
+    const next = nextUnlocked();
+    if (next) openPreLevel(next);
+    else showScreen('levels');
+  };
+  document.getElementById('btn-levels').onclick = () => showScreen('levels');
+  document.getElementById('btn-howto').onclick = () => showScreen('howto');
+
+  // Levels
+  document.getElementById('btn-levels-back').onclick = () => showScreen('home');
+
+  // Pre-level
+  document.getElementById('btn-pre-back').onclick = () => showScreen('levels');
+  document.getElementById('btn-start').onclick = () => startLevel(state.currentLevel);
+
+  // Game HUD
+  document.getElementById('btn-game-menu').onclick = togglePause;
+  document.getElementById('btn-hint').onclick = activateHint;
+  document.getElementById('btn-resume').onclick = togglePause;
+  document.getElementById('btn-hint-pause').onclick = () => { togglePause(); activateHint(); };
+  document.getElementById('btn-abandon').onclick = () => { stopAll(); showScreen('levels'); };
+  document.getElementById('btn-ready').onclick = endStudyEarly;
+
+  // Arrange
+  document.getElementById('btn-arrange-check').onclick = checkArrange;
+  document.getElementById('btn-arrange-clear').onclick = clearArrange;
+
+  // Type blank
+  document.getElementById('btn-type-submit').onclick = submitTyped;
+  document.getElementById('type-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitTyped();
+  });
+
+  // Complete screen
+  document.getElementById('btn-next-level').onclick = goNextLevel;
+  document.getElementById('btn-replay').onclick = () => startLevel(state.currentLevel);
+  document.getElementById('btn-complete-menu').onclick = () => showScreen('home');
+
+  // How to play
+  document.getElementById('btn-howto-back').onclick = () => showScreen('home');
+  document.getElementById('btn-howto-play').onclick = () => {
+    const next = nextUnlocked();
+    if (next) openPreLevel(next); else showScreen('levels');
+  };
+}
+
+// ══════════════════════════════════════
+// HOME STATS
+// ══════════════════════════════════════
+function renderHomeStats() {
+  const done = Object.keys(state.progress.stars).length;
+  const totalStars = Object.values(state.progress.stars).reduce((a,b) => a+b, 0);
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-stars').textContent = totalStars;
+  document.getElementById('stat-streak').textContent = state.progress.streak || 0;
+  document.getElementById('stat-best').textContent = state.progress.highScore || 0;
+
+  // Particles
+  const pc = document.getElementById('home-particles');
+  pc.innerHTML = '';
+  const icons = ['📖','✝️','🕊️','⭐','🙏','🌟','💡','🎵','✨','📜'];
+  icons.forEach((ic, i) => {
+    const s = document.createElement('span');
+    s.textContent = ic;
+    s.style.left = (5 + i * 10) + '%';
+    s.style.bottom = '0';
+    s.style.animationDuration = (8 + i % 5) + 's';
+    s.style.animationDelay = (i * 0.7) + 's';
+    pc.appendChild(s);
+  });
+}
+
+function nextUnlocked() {
+  for (let i = 0; i < LEVELS.length; i++) {
+    if (!state.progress.stars[LEVELS[i].id]) return LEVELS[i];
+  }
+  return LEVELS[0];
+}
+
+// ══════════════════════════════════════
+// LEVEL GRID
+// ══════════════════════════════════════
+function buildLevelGrid() {
+  const done = Object.keys(state.progress.stars).length;
+  document.getElementById('levels-progress-text').textContent = done + ' / ' + LEVELS.length;
+
+  // Filter tabs
+  const tags = ['all', ...new Set(LEVELS.map(l => l.tag.toLowerCase()))];
+  const filterEl = document.getElementById('levels-filter');
+  filterEl.innerHTML = '';
+  tags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-tab' + (tag === state.filterTag ? ' active' : '');
+    btn.textContent = tag === 'all' ? 'All Levels' : tag.charAt(0).toUpperCase() + tag.slice(1);
+    btn.onclick = () => { state.filterTag = tag; buildLevelGrid(); };
+    filterEl.appendChild(btn);
+  });
+
+  const grid = document.getElementById('levels-grid');
+  grid.innerHTML = '';
+  const filtered = state.filterTag === 'all'
+    ? LEVELS
+    : LEVELS.filter(l => l.tag.toLowerCase() === state.filterTag);
+
+  filtered.forEach(level => {
+    const unlocked = isUnlocked(level.id);
+    const stars = state.progress.stars[level.id] || 0;
+    const card = document.createElement('div');
+    card.className = 'level-card' + (!unlocked ? ' locked' : '') + (stars > 0 ? ' completed' : '');
+    const modeMeta = MODE_META[level.mode] || {};
+    const tagCls = level.tag.toLowerCase();
+    card.innerHTML = `
+      <span class="lc-num">Level ${level.id}</span>
+      <span class="lc-icon">${level.icon}</span>
+      <span class="lc-name">${level.name}</span>
+      <span class="lc-tag ${tagCls}">${level.tag}</span>
+      <span class="lc-mode">${modeMeta.icon || ''} ${modeMeta.label || level.mode}</span>
+      <div class="lc-stars">
+        ${[1,2,3].map(i => `<span class="${stars >= i ? 'earned' : ''}">⭐</span>`).join('')}
+      </div>
+      ${!unlocked ? '<span class="lc-lock">🔒</span>' : ''}
+    `;
+    if (unlocked) card.onclick = () => openPreLevel(level);
+    else card.onclick = () => showToast('Complete Level ' + (level.id - 1) + ' first!');
+    grid.appendChild(card);
+  });
+}
+
+function isUnlocked(levelId) {
+  if (levelId === 1) return true;
+  return !!state.progress.stars[levelId - 1];
+}
+
+// ══════════════════════════════════════
+// PRE-LEVEL
+// ══════════════════════════════════════
+function openPreLevel(level) {
+  state.currentLevel = level;
+  // Pick a random verse from the pool
+  const pool = level.versePool.map(id => VERSES.find(v => v.id === id)).filter(Boolean);
+  const verse = pool[Math.floor(Math.random() * pool.length)];
+  state.currentVerse = verse;
+
+  showScreen('prelevel');
+
+  const modeMeta = MODE_META[level.mode] || {};
+  document.getElementById('pre-tag').textContent = level.tag;
+  document.getElementById('pre-mode-badge').textContent = (modeMeta.icon || '') + ' ' + (modeMeta.label || level.mode);
+  document.getElementById('pre-title').textContent = level.name;
+  document.getElementById('pre-subtitle').textContent = level.subtitle;
+
+  document.getElementById('pre-verse-text').textContent = '\u201c' + verse.verse + '\u201d';
+  document.getElementById('pre-verse-ref').textContent = '— ' + verse.ref;
+  document.getElementById('pre-context-text').textContent = verse.context;
+
+  // Meta rows
+  const readRow = document.getElementById('pre-read-row');
+  if (level.mode === 'ref-match') {
+    readRow.style.display = 'none';
+  } else {
+    readRow.style.display = '';
+    document.getElementById('pre-read-time').textContent = level.readTime;
+  }
+  document.getElementById('pre-quiz-time').textContent = level.timeLimit;
+  document.getElementById('pre-hints-text').textContent =
+    level.hints === 0 ? 'No hints available' : `${level.hints} hint${level.hints > 1 ? 's' : ''} available`;
+
+  const blanksRow = document.getElementById('pre-blanks-row');
+  if (level.mode === 'fill-blank' || level.mode === 'type-blank') {
+    blanksRow.style.display = '';
+    document.getElementById('pre-blanks-text').textContent = `${level.blanks} word${level.blanks > 1 ? 's' : ''} to recall`;
+  } else {
+    blanksRow.style.display = 'none';
+  }
+
+  // Stars
+  const earned = state.progress.stars[level.id] || 0;
+  const starsEl = document.getElementById('pre-stars-earned');
+  starsEl.innerHTML = [1,2,3].map(i =>
+    `<span class="${earned >= i ? 'earned' : ''}">⭐</span>`
+  ).join('');
+}
+
+// ══════════════════════════════════════
+// START LEVEL
+// ══════════════════════════════════════
+function startLevel(level) {
+  state.currentLevel = level;
+  state.paused = false;
+  state.score = 0;
+  state.correctCount = 0;
+  state.totalQuestions = 0;
+  state.hintsLeft = level.hints;
+  state.quizTimeLeft = level.timeLimit;
+
+  document.getElementById('hud-level-name').textContent = level.icon + ' ' + level.name;
+  document.getElementById('hint-count').textContent = level.hints;
+  document.getElementById('btn-hint').disabled = level.hints === 0;
+  document.getElementById('pause-overlay').classList.add('hidden');
+  document.getElementById('answer-flash').classList.remove('show');
+
+  updateTimerRing(1);
+  updateProgress(0);
+
+  showScreen('game');
+
+  if (level.mode === 'ref-match') {
+    // No study phase for ref-match
+    startRefMatch();
+  } else {
+    startStudyPhase();
+  }
+}
+
+// ══════════════════════════════════════
+// STUDY PHASE
+// ══════════════════════════════════════
+function startStudyPhase() {
+  const level = state.currentLevel;
+  const verse = state.currentVerse;
+
+  showPhase('study');
+
+  // Populate study card
+  const themeIcon = THEME_ICONS[verse.theme] || '📖';
+  document.getElementById('study-theme-icon').textContent = themeIcon;
+  document.getElementById('study-era').textContent = verse.era;
+  document.getElementById('study-verse').textContent = '\u201c' + verse.verse + '\u201d';
+  document.getElementById('study-ref').textContent = '— ' + verse.ref;
+
+  state.studyTimeLeft = level.readTime;
+  document.getElementById('study-countdown').textContent = state.studyTimeLeft;
+  document.getElementById('study-countdown').className = 'study-bar-label';
+  document.getElementById('study-bar').style.width = '100%';
+
+  // Countdown
+  clearInterval(state.studyTimer);
+  state.studyTimer = setInterval(() => {
+    if (state.paused) return;
+    state.studyTimeLeft--;
+    const el = document.getElementById('study-countdown');
+    const bar = document.getElementById('study-bar');
+    el.textContent = state.studyTimeLeft;
+    bar.style.width = ((state.studyTimeLeft / level.readTime) * 100) + '%';
+
+    if (state.studyTimeLeft <= 3) el.className = 'study-bar-label urgent';
+    else if (state.studyTimeLeft <= 5) el.className = 'study-bar-label warn';
+
+    if (state.studyTimeLeft <= 0) {
+      clearInterval(state.studyTimer);
+      startQuizPhase();
     }
+  }, 1000);
+}
 
-    // Load user progress from Firebase or localStorage
-    async function loadUserProgress() {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                if (userDoc.exists) {
-                    const data = userDoc.data();
-                    userProgress = {
-                        streak: data.memoryVerseStreak || 0,
-                        lastPlayedDate: data.lastMemoryVerseDate || null,
-                        highScore: data.memoryVerseHighScore || 0,
-                        level: data.memoryVerseLevel || 1
-                    };
-                    updateStreak();
-                }
-            }
-        } catch (error) {
-            console.error('Error loading progress:', error);
-            // Fallback to localStorage
-            const savedProgress = localStorage.getItem('mvm_progress');
-            if (savedProgress) {
-                userProgress = JSON.parse(savedProgress);
-                updateStreak();
-            }
-        }
+function endStudyEarly() {
+  clearInterval(state.studyTimer);
+  startQuizPhase();
+}
+
+// ══════════════════════════════════════
+// QUIZ PHASE ROUTER
+// ══════════════════════════════════════
+function startQuizPhase() {
+  const level = state.currentLevel;
+  showPhase('quiz');
+
+  // Mode strip
+  const modeMeta = MODE_META[level.mode] || {};
+  document.getElementById('mode-icon').textContent = modeMeta.icon || '';
+  document.getElementById('mode-desc').textContent = modeMeta.label || level.mode;
+
+  // Hide all mode panels
+  ['mode-fill-blank', 'mode-arrange', 'mode-type-blank', 'mode-ref-match'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+
+  startQuizTimer();
+
+  if (level.mode === 'fill-blank') startFillBlank();
+  else if (level.mode === 'arrange') startArrange();
+  else if (level.mode === 'type-blank') startTypeBlank();
+  else if (level.mode === 'ref-match') startRefMatch();
+}
+
+// ══════════════════════════════════════
+// QUIZ TIMER
+// ══════════════════════════════════════
+function startQuizTimer() {
+  stopQuizTimer();
+  state.quizStartTime = Date.now();
+  state.quizTimer = setInterval(() => {
+    if (state.paused) return;
+    state.quizTimeLeft--;
+    const frac = Math.max(0, state.quizTimeLeft / state.currentLevel.timeLimit);
+    updateTimerRing(frac);
+    document.getElementById('hud-timer').textContent = state.quizTimeLeft;
+
+    const arc = document.getElementById('timer-arc');
+    if (state.quizTimeLeft <= 5) arc.className = 'timer-arc urgent';
+    else if (state.quizTimeLeft <= 15) arc.className = 'timer-arc warn';
+    else arc.className = 'timer-arc';
+
+    if (state.quizTimeLeft <= 0) {
+      stopQuizTimer();
+      timeUp();
     }
+  }, 1000);
+}
 
-    // Save user progress to Firebase and localStorage
-    async function saveUserProgress() {
-        try {
-            const user = auth.currentUser;
-            if (user) {
-                await db.collection('users').doc(user.uid).update({
-                    memoryVerseStreak: streak,
-                    lastMemoryVerseDate: new Date().toISOString(),
-                    memoryVerseHighScore: Math.max(userProgress.highScore, score),
-                    memoryVerseLevel: level
-                });
-            }
-        } catch (error) {
-            console.error('Error saving progress:', error);
-        }
-        
-        // Always save to localStorage as backup
-        localStorage.setItem('mvm_progress', JSON.stringify({
-            streak,
-            lastPlayedDate: new Date().toISOString(),
-            highScore: Math.max(userProgress.highScore, score),
-            level
-        }));
-        
-        // Cache verses to localStorage
-        localStorage.setItem('mvm_verses', JSON.stringify(verses));
+function stopQuizTimer() {
+  clearInterval(state.quizTimer);
+  state.quizTimer = null;
+}
+
+function updateTimerRing(frac) {
+  const circumference = 113.1;
+  const offset = circumference * (1 - frac);
+  document.getElementById('timer-arc').style.strokeDashoffset = offset;
+  document.getElementById('hud-timer').textContent = state.quizTimeLeft;
+}
+
+function timeUp() {
+  showToast('⏱ Time\'s up!');
+  setTimeout(() => completeLevel(false), 800);
+}
+
+// ══════════════════════════════════════
+// MODE: FILL BLANK
+// ══════════════════════════════════════
+function startFillBlank() {
+  const level = state.currentLevel;
+  const verse = state.currentVerse;
+  document.getElementById('mode-fill-blank').classList.remove('hidden');
+
+  // Build blanks
+  state.blanks = generateBlanks(verse, level.blanks, 'choices');
+  state.currentBlank = 0;
+  state.totalQuestions = state.blanks.length;
+
+  renderFillBlank();
+}
+
+function renderFillBlank() {
+  const verse = state.currentVerse;
+  const blanks = state.blanks;
+  const current = state.currentBlank;
+
+  // Verse display with blanks
+  const words = tokenizeVerse(verse.verse);
+  const fillVerse = document.getElementById('fill-verse');
+  fillVerse.innerHTML = '';
+
+  words.forEach((token, ti) => {
+    const blankIdx = blanks.findIndex(b => b.tokenIdx === ti);
+    if (blankIdx !== -1) {
+      const b = blanks[blankIdx];
+      const span = document.createElement('span');
+      span.className = 'blank-slot' +
+        (b.answered ? ' answered' : '') +
+        (blankIdx === current && !b.answered ? ' current-blank' : '');
+      span.textContent = b.answered ? b.correct : '___';
+      fillVerse.appendChild(span);
+      fillVerse.appendChild(document.createTextNode(' '));
+    } else {
+      fillVerse.appendChild(document.createTextNode(token + ' '));
     }
+  });
 
-    // Update streak display and check for streak reset
-    function updateStreak() {
-        streak = userProgress.streak || 0;
-        const lastPlayed = userProgress.lastPlayedDate ? new Date(userProgress.lastPlayedDate) : null;
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        if (lastPlayed) {
-            lastPlayed.setHours(0, 0, 0, 0);
-            const daysDiff = Math.floor((today - lastPlayed) / (1000 * 60 * 60 * 24));
-            
-            // Reset streak if more than 1 day has passed
-            if (daysDiff > 1) {
-                streak = 0;
-            }
-        }
-        
-        streakDisplay.textContent = streak;
-        level = userProgress.level || 1;
-        levelDisplay.textContent = level;
-    }
+  // Nav
+  document.getElementById('blank-current').textContent = current + 1;
+  document.getElementById('blank-total').textContent = blanks.length;
 
-    // Get verse based on mode
-    function getVerse() {
-        if (gameMode === 'daily') {
-            // Use day of year to select verse (modulo verse count)
-            const today = new Date();
-            const start = new Date(today.getFullYear(), 0, 0);
-            const diff = today - start;
-            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const index = dayOfYear % verses.length;
-            return verses[index];
-        } else {
-            // Practice mode: random verse
-            return verses[Math.floor(Math.random() * verses.length)];
-        }
-    }
+  // Progress
+  updateProgress(state.correctCount / state.totalQuestions);
 
-    // Generate fill-in-the-blank quiz from verse
-    function generateQuiz(verse) {
-        const words = verse.passage.split(/\s+/);
-        const keyWords = verse.keyWords || [];
-        
-        // Select 1-3 key words to blank out (more blanks as level increases)
-        const numBlanks = Math.min(Math.ceil(level / 3), 3);
-        const wordsToBlank = [];
-        const usedIndices = new Set();
-        
-        // Prioritize key words
-        for (const keyWord of keyWords) {
-            if (wordsToBlank.length >= numBlanks) break;
-            const index = words.findIndex((w, i) => 
-                normalizeWord(w) === normalizeWord(keyWord) && !usedIndices.has(i)
-            );
-            if (index !== -1) {
-                wordsToBlank.push({ index, word: words[index], correct: keyWord });
-                usedIndices.add(index);
-            }
-        }
-        
-        // Fill remaining blanks with random important words if needed
-        while (wordsToBlank.length < numBlanks && usedIndices.size < words.length) {
-            const importantWords = words.filter((w, i) => 
-                w.length > 4 && !usedIndices.has(i) && !/^[.,;:!?()]+$/.test(w)
-            );
-            if (importantWords.length === 0) break;
-            const randomWord = importantWords[Math.floor(Math.random() * importantWords.length)];
-            const index = words.indexOf(randomWord);
-            wordsToBlank.push({ index, word: randomWord, correct: normalizeWord(randomWord) });
-            usedIndices.add(index);
-        }
-        
-        // Generate distractors for each blank
-        const quiz = wordsToBlank.map(({ index, word, correct }) => {
-            const distractors = generateDistractors(correct, words);
-            const options = [correct, ...distractors].sort(() => Math.random() - 0.5);
-            return {
-                index,
-                originalWord: word,
-                correct,
-                options,
-                selectedIndex: null
-            };
-        });
-        
-        return quiz;
-    }
-
-    // Generate plausible distractors for a word
-    function generateDistractors(correctWord, allWords) {
-        const distractors = [];
-        const normalizedCorrect = normalizeWord(correctWord);
-        
-        // Strategy: use similar length words, common words, or words from the verse
-        const candidatePool = [
-            ...allWords.filter(w => {
-                const norm = normalizeWord(w);
-                return norm !== normalizedCorrect && 
-                       Math.abs(norm.length - normalizedCorrect.length) <= 2 &&
-                       w.length > 3;
-            }),
-            // Common distractors
-            'love', 'hope', 'faith', 'peace', 'joy', 'light', 'dark', 'life', 'death',
-            'heaven', 'earth', 'God', 'Lord', 'Christ', 'spirit', 'truth', 'word'
-        ];
-        
-        // Shuffle and pick unique distractors
-        const shuffled = candidatePool.sort(() => Math.random() - 0.5);
-        for (const word of shuffled) {
-            const norm = normalizeWord(word);
-            if (norm !== normalizedCorrect && !distractors.includes(norm)) {
-                distractors.push(norm);
-                if (distractors.length >= 3) break;
-            }
-        }
-        
-        // Fill with generic words if needed
-        while (distractors.length < 3) {
-            distractors.push(`word${distractors.length + 1}`);
-        }
-        
-        return distractors.slice(0, 3);
-    }
-
-    // Normalize word for comparison (remove punctuation, lowercase)
-    function normalizeWord(word) {
-        return word.toLowerCase().replace(/[.,;:!?()'"\[\]]/g, '');
-    }
-
-    // Calculate display time based on level (progressive difficulty)
-    function getDisplayTime() {
-        return Math.max(5, 15 - Math.floor(level / 2));
-    }
-
-    // Start the game
-    async function startGame() {
-        if (verses.length === 0) {
-            await loadVerses();
-        }
-        
-        score = 0;
-        currentQuizIndex = 0;
-        updateDisplay();
-        
-        // Get verse based on mode
-        currentVerse = getVerse();
-        currentQuiz = generateQuiz(currentVerse);
-        
-        // Show verse display phase
-        verseDisplay.classList.remove('hidden');
-        quizSection.classList.add('hidden');
-        nextBtn.classList.add('hidden');
-        
-        verseText.textContent = currentVerse.passage;
-        verseRef.textContent = currentVerse.ref;
-        
-        // Start timer
-        timeRemaining = getDisplayTime();
-        timerText.textContent = timeRemaining;
-        startTime = Date.now();
-        
-        const circumference = 2 * Math.PI * 54;
-        timerCircle.style.strokeDasharray = circumference;
-        
-        timerInterval = setInterval(() => {
-            timeRemaining--;
-            timerText.textContent = timeRemaining;
-            
-            const progress = timeRemaining / getDisplayTime();
-            timerCircle.style.strokeDashoffset = circumference * (1 - progress);
-            
-            if (timeRemaining <= 0) {
-                clearInterval(timerInterval);
-                showQuiz();
-            }
-        }, 1000);
-    }
-
-    // Show quiz phase
-    function showQuiz() {
-        verseDisplay.classList.add('hidden');
-        quizSection.classList.remove('hidden');
-        
-        // Check if speed bonus is still active (answered within 5 seconds of quiz start)
-        const timeElapsed = (Date.now() - startTime) / 1000;
-        const speedBonusActive = timeElapsed < 5;
-        speedBonusIndicator.classList.toggle('hidden', !speedBonusActive);
-        
-        renderQuiz();
-    }
-
-    // Render current quiz question
-    function renderQuiz() {
-        if (currentQuizIndex >= currentQuiz.length) {
-            // All questions answered
-            endRound();
-            return;
-        }
-        
-        const quiz = currentQuiz[currentQuizIndex];
-        const words = currentVerse.passage.split(/\s+/);
-        
-        // Render fill-in-the-blank text
-        fillBlankText.innerHTML = '';
-        words.forEach((word, index) => {
-            const span = document.createElement('span');
-            if (index === quiz.index) {
-                span.className = 'blank-word' + (quiz.selectedIndex !== null ? ' filled' : '');
-                span.textContent = quiz.selectedIndex !== null 
-                    ? quiz.options[quiz.selectedIndex] 
-                    : '____';
-                span.dataset.blankIndex = currentQuizIndex;
-            } else {
-                span.textContent = word + ' ';
-            }
-            fillBlankText.appendChild(span);
-        });
-        
-        // Render options
-        quizOptions.innerHTML = '';
-        quiz.options.forEach((option, optionIndex) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.textContent = option;
-            btn.dataset.optionIndex = optionIndex;
-            
-            if (quiz.selectedIndex === optionIndex) {
-                btn.classList.add('selected');
-            }
-            
-            if (quiz.selectedIndex !== null) {
-                // Already answered
-                if (optionIndex === quiz.options.indexOf(quiz.correct)) {
-                    btn.classList.add('correct');
-                } else if (optionIndex === quiz.selectedIndex && optionIndex !== quiz.options.indexOf(quiz.correct)) {
-                    btn.classList.add('incorrect');
-                }
-                btn.disabled = true;
-            } else {
-                btn.addEventListener('click', () => selectOption(optionIndex));
-            }
-            
-            quizOptions.appendChild(btn);
-        });
-        
-        // Update progress
-        progressFill.style.width = `${((currentQuizIndex + 1) / currentQuiz.length) * 100}%`;
-        progressText.textContent = `Question ${currentQuizIndex + 1} of ${currentQuiz.length}`;
-    }
-
-    // Handle option selection
-    function selectOption(optionIndex) {
-        const quiz = currentQuiz[currentQuizIndex];
-        quiz.selectedIndex = optionIndex;
-        
-        const isCorrect = normalizeWord(quiz.options[optionIndex]) === normalizeWord(quiz.correct);
-        const timeElapsed = (Date.now() - startTime) / 1000;
-        const speedBonus = timeElapsed < 5;
-        
-        // Calculate points
-        let points = 10;
-        if (speedBonus) points += 5;
-        if (streak > 0) points += Math.floor(streak / 3);
-        
-        if (isCorrect) {
-            score += points;
-            showFeedback(true, points);
-            createConfetti();
-            
-            // Update UI
-            setTimeout(() => {
-                currentQuizIndex++;
-                if (currentQuizIndex < currentQuiz.length) {
-                    renderQuiz();
-                } else {
-                    endRound();
-                }
-            }, 1500);
-        } else {
-            showFeedback(false, 0);
-            setTimeout(() => {
-                // Show correct answer
-                renderQuiz();
-            }, 1500);
-        }
-        
-        updateDisplay();
-    }
-
-    // Show feedback overlay
-    function showFeedback(isCorrect, points) {
-        feedbackOverlay.className = `feedback-overlay show ${isCorrect ? 'success' : 'error'}`;
-        feedbackContent.className = `feedback-content ${isCorrect ? 'success' : 'error'}`;
-        feedbackIcon.textContent = isCorrect ? '✓' : '✗';
-        feedbackMessage.textContent = isCorrect ? 'Correct! 🎉' : 'Try Again! 💪';
-        feedbackPoints.textContent = isCorrect ? `+${points}` : '';
-        
-        setTimeout(() => {
-            feedbackOverlay.classList.remove('show');
-        }, isCorrect ? 1500 : 2000);
-    }
-
-    // Create confetti animation
-    function createConfetti() {
-        const colors = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#3b82f6'];
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                confettiContainer.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 3000);
-            }, i * 20);
-        }
-    }
-
-    // End round
-    function endRound() {
-        // Calculate round score
-        const correctAnswers = currentQuiz.filter(q => 
-            normalizeWord(q.options[q.selectedIndex || -1]) === normalizeWord(q.correct)
-        ).length;
-        
-        if (correctAnswers === currentQuiz.length) {
-            // Perfect round
-            streak++;
-            if (streak % 5 === 0) {
-                level++;
-                levelDisplay.textContent = level;
-            }
-            updateStreak();
-            saveUserProgress();
-        } else {
-            // Streak broken
-            streak = 0;
-            updateStreak();
-        }
-        
-        nextBtn.classList.remove('hidden');
-        updateDisplay();
-    }
-
-    // Next round
-    function nextRound() {
-        startGame();
-    }
-
-    // Update display
-    function updateDisplay() {
-        scoreDisplay.textContent = score;
-        streakDisplay.textContent = streak;
-        levelDisplay.textContent = level;
-    }
-
-    // Event listeners
-    startBtn.addEventListener('click', startGame);
-    nextBtn.addEventListener('click', nextRound);
-    
-    practiceMode.addEventListener('click', () => {
-        gameMode = 'practice';
-        practiceMode.classList.add('active');
-        dailyMode.classList.remove('active');
+  // Choices for current blank
+  const grid = document.getElementById('choices-grid');
+  grid.innerHTML = '';
+  if (current < blanks.length && !blanks[current].answered) {
+    const b = blanks[current];
+    b.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.style.animationDelay = (oi * 0.06) + 's';
+      btn.onclick = () => selectFillBlank(opt, btn, b);
+      grid.appendChild(btn);
     });
-    
-    dailyMode.addEventListener('click', () => {
-        gameMode = 'daily';
-        dailyMode.classList.add('active');
-        practiceMode.classList.remove('active');
-    });
+  }
+}
 
-    // Initialize on page load
-    window.addEventListener('DOMContentLoaded', async () => {
-        await loadVerses();
-        await loadUserProgress();
-        updateDisplay();
-        
-        // Try to authenticate (if already logged in)
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                loadUserProgress();
-            }
-        });
-    });
+function selectFillBlank(chosen, btn, blank) {
+  const isCorrect = normalizeWord(chosen) === normalizeWord(blank.correct);
+  blank.answered = true;
 
-    // Expose for debugging
-    window.MVM = {
-        startGame,
-        loadVerses,
-        getVerse,
-        generateQuiz
-    };
-    }); // end firebaseReady.then
+  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    state.correctCount++;
+    const pts = calcPoints(true);
+    state.score += pts;
+    state.totalScore = (state.progress.highScore || 0);
+    showFlash(true, pts);
+    spawnSparks(btn);
+  } else {
+    btn.classList.add('wrong');
+    // Highlight correct
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (normalizeWord(b.textContent) === normalizeWord(blank.correct)) b.classList.add('correct');
+    });
+    showFlash(false, 0);
+  }
+
+  renderFillBlank(); // Update verse display
+
+  setTimeout(() => {
+    state.currentBlank++;
+    if (state.currentBlank >= state.blanks.length) {
+      stopQuizTimer();
+      setTimeout(completeLevel, 500);
+    } else {
+      renderFillBlank();
+    }
+  }, 1200);
+}
+
+// ══════════════════════════════════════
+// MODE: ARRANGE
+// ══════════════════════════════════════
+function startArrange() {
+  const verse = state.currentVerse;
+  document.getElementById('mode-arrange').classList.remove('hidden');
+
+  // Tokenize and shuffle
+  const words = tokenizeVerse(verse.verse);
+  state.arrangeWords = words.map((w, i) => ({ text: w, originalIdx: i, inTarget: false }));
+  shuffleArray(state.arrangeWords);
+  state.arrangeTarget = [];
+  state.totalQuestions = 1;
+
+  renderArrange();
+}
+
+function renderArrange() {
+  // Target area
+  const targetEl = document.getElementById('arrange-target');
+  targetEl.innerHTML = '';
+  if (state.arrangeTarget.length === 0) {
+    const ph = document.createElement('span');
+    ph.className = 'arrange-placeholder';
+    ph.textContent = 'Tap words below to place them here';
+    targetEl.appendChild(ph);
+  } else {
+    state.arrangeTarget.forEach((w, ti) => {
+      const tile = document.createElement('button');
+      tile.className = 'word-tile in-target';
+      tile.textContent = w.text;
+      tile.style.animationDelay = (ti * 0.04) + 's';
+      tile.onclick = () => removeFromTarget(ti);
+      targetEl.appendChild(tile);
+    });
+  }
+
+  // Bank
+  const bankEl = document.getElementById('arrange-bank');
+  bankEl.innerHTML = '';
+  state.arrangeWords.filter(w => !w.inTarget).forEach((w, bi) => {
+    const tile = document.createElement('button');
+    tile.className = 'word-tile';
+    tile.textContent = w.text;
+    tile.style.animationDelay = (bi * 0.04) + 's';
+    tile.onclick = () => addToTarget(w);
+    bankEl.appendChild(tile);
+  });
+}
+
+function addToTarget(word) {
+  word.inTarget = true;
+  state.arrangeTarget.push(word);
+  renderArrange();
+}
+
+function removeFromTarget(idx) {
+  const word = state.arrangeTarget.splice(idx, 1)[0];
+  word.inTarget = false;
+  renderArrange();
+}
+
+function clearArrange() {
+  state.arrangeTarget.forEach(w => w.inTarget = false);
+  state.arrangeTarget = [];
+  renderArrange();
+}
+
+function checkArrange() {
+  if (state.arrangeTarget.length === 0) { showToast('Place some words first!'); return; }
+
+  const correct = tokenizeVerse(state.currentVerse.verse);
+  const placed = state.arrangeTarget.map(w => normalizeWord(w.text));
+  const correctNorm = correct.map(w => normalizeWord(w));
+
+  const targetEl = document.getElementById('arrange-target');
+  const isCorrect = placed.length === correctNorm.length &&
+    placed.every((w, i) => w === correctNorm[i]);
+
+  if (isCorrect) {
+    targetEl.classList.add('correct-anim');
+    state.correctCount = 1;
+    const pts = calcPoints(true, 2);
+    state.score += pts;
+    showFlash(true, pts);
+    launchConfetti();
+    stopQuizTimer();
+    setTimeout(() => { targetEl.classList.remove('correct-anim'); completeLevel(); }, 1000);
+  } else {
+    targetEl.classList.add('wrong-anim');
+    showFlash(false, 0);
+    setTimeout(() => targetEl.classList.remove('wrong-anim'), 700);
+
+    // Give partial credit for percentage correct
+    let matches = 0;
+    const len = Math.max(placed.length, correctNorm.length);
+    for (let i = 0; i < Math.min(placed.length, correctNorm.length); i++) {
+      if (placed[i] === correctNorm[i]) matches++;
+    }
+    const pct = matches / len;
+    if (pct >= 0.8) showToast('Very close! ' + matches + '/' + correctNorm.length + ' words correct.');
+    else if (pct >= 0.5) showToast(matches + '/' + correctNorm.length + ' words in place. Keep trying!');
+    else showToast('Check the order again. ' + matches + ' words match.');
+  }
+}
+
+// ══════════════════════════════════════
+// MODE: TYPE BLANK
+// ══════════════════════════════════════
+function startTypeBlank() {
+  const level = state.currentLevel;
+  const verse = state.currentVerse;
+  document.getElementById('mode-type-blank').classList.remove('hidden');
+
+  state.typeBlanks = generateBlanks(verse, level.blanks, 'type');
+  state.currentTyped = 0;
+  state.totalQuestions = state.typeBlanks.length;
+
+  renderTypeBlank();
+  setTimeout(() => document.getElementById('type-input').focus(), 200);
+}
+
+function renderTypeBlank() {
+  const verse = state.currentVerse;
+  const blanks = state.typeBlanks;
+  const current = state.currentTyped;
+
+  // Verse display
+  const words = tokenizeVerse(verse.verse);
+  const typeVerse = document.getElementById('type-verse');
+  typeVerse.innerHTML = '';
+
+  words.forEach((token, ti) => {
+    const blankIdx = blanks.findIndex(b => b.tokenIdx === ti);
+    if (blankIdx !== -1) {
+      const b = blanks[blankIdx];
+      const span = document.createElement('span');
+      span.className = 'blank-slot' +
+        (b.answered ? ' answered' : '') +
+        (blankIdx === current && !b.answered ? ' current-blank' : '');
+      span.textContent = b.answered ? b.correct : '___';
+      typeVerse.appendChild(span);
+      typeVerse.appendChild(document.createTextNode(' '));
+    } else {
+      typeVerse.appendChild(document.createTextNode(token + ' '));
+    }
+  });
+
+  // Nav
+  document.getElementById('type-blank-num').textContent = current + 1;
+  document.getElementById('type-blank-total').textContent = blanks.length;
+
+  // Clear input
+  const input = document.getElementById('type-input');
+  input.value = '';
+  input.className = 'type-input';
+  input.placeholder = 'Type word ' + (current + 1) + ' of ' + blanks.length + '…';
+
+  updateProgress(state.correctCount / state.totalQuestions);
+}
+
+function submitTyped() {
+  const input = document.getElementById('type-input');
+  const typed = input.value.trim();
+  if (!typed) return;
+
+  const blank = state.typeBlanks[state.currentTyped];
+  if (!blank) return;
+
+  const isCorrect = fuzzyMatch(typed, blank.correct);
+  blank.answered = true;
+
+  if (isCorrect) {
+    input.classList.add('correct-input');
+    blank.correct = blank.correct; // keep original for display
+    state.correctCount++;
+    const pts = calcPoints(true);
+    state.score += pts;
+    showFlash(true, pts);
+    spawnSparks(input);
+  } else {
+    input.classList.add('wrong-input');
+    showFlash(false, 0, blank.correct);
+  }
+
+  renderTypeBlank();
+
+  setTimeout(() => {
+    state.currentTyped++;
+    if (state.currentTyped >= state.typeBlanks.length) {
+      stopQuizTimer();
+      setTimeout(completeLevel, 500);
+    } else {
+      renderTypeBlank();
+      setTimeout(() => document.getElementById('type-input').focus(), 100);
+    }
+  }, 1300);
+}
+
+// ══════════════════════════════════════
+// MODE: REF MATCH
+// ══════════════════════════════════════
+function startRefMatch() {
+  const level = state.currentLevel;
+  showPhase('quiz');
+
+  // Mode strip
+  const modeMeta = MODE_META['ref-match'];
+  document.getElementById('mode-icon').textContent = modeMeta.icon;
+  document.getElementById('mode-desc').textContent = modeMeta.label;
+  ['mode-fill-blank','mode-arrange','mode-type-blank'].forEach(id =>
+    document.getElementById(id).classList.add('hidden')
+  );
+  document.getElementById('mode-ref-match').classList.remove('hidden');
+
+  // Pick verses from pool
+  const pool = level.versePool.map(id => VERSES.find(v => v.id === id)).filter(Boolean);
+  const count = Math.min(pool.length, 4);
+  shuffleArray(pool);
+  const picked = pool.slice(0, count);
+
+  state.refVerses = picked;
+  state.currentRef = 0;
+  state.totalQuestions = picked.length;
+
+  startQuizTimer();
+  renderRefMatch();
+}
+
+function renderRefMatch() {
+  const refs = state.refVerses;
+  const idx = state.currentRef;
+  if (idx >= refs.length) {
+    stopQuizTimer();
+    completeLevel();
+    return;
+  }
+
+  const v = refs[idx];
+  document.getElementById('ref-verse-text').textContent = '\u201c' + v.verse + '\u201d';
+  document.getElementById('ref-current').textContent = idx + 1;
+  document.getElementById('ref-total').textContent = refs.length;
+  updateProgress(state.correctCount / state.totalQuestions);
+
+  // Build choices: correct + 3 distractors from pool
+  const pool = LEVELS.find(l => l.id === state.currentLevel.id).versePool
+    .map(id => VERSES.find(vv => vv.id === id)).filter(Boolean);
+  const distractors = pool.filter(p => p.id !== v.id);
+  shuffleArray(distractors);
+  const choices = [v, ...distractors.slice(0, 3)];
+  shuffleArray(choices);
+
+  const choicesEl = document.getElementById('ref-choices');
+  choicesEl.innerHTML = '';
+  choices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'ref-btn';
+    btn.textContent = choice.ref;
+    btn.onclick = () => selectRef(choice, btn, v);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function selectRef(chosen, btn, correct) {
+  const isCorrect = chosen.id === correct.id;
+  document.querySelectorAll('.ref-btn').forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    state.correctCount++;
+    const pts = calcPoints(true);
+    state.score += pts;
+    showFlash(true, pts);
+    spawnSparks(btn);
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.ref-btn').forEach(b => {
+      const refVerseObj = VERSES.find(v => v.ref === b.textContent);
+      if (refVerseObj && refVerseObj.id === correct.id) b.classList.add('correct');
+    });
+    showFlash(false, 0);
+  }
+
+  setTimeout(() => {
+    state.currentRef++;
+    if (state.currentRef >= state.refVerses.length) {
+      stopQuizTimer();
+      setTimeout(completeLevel, 300);
+    } else {
+      renderRefMatch();
+    }
+  }, 1300);
+}
+
+// ══════════════════════════════════════
+// HINT
+// ══════════════════════════════════════
+function activateHint() {
+  if (state.hintsLeft <= 0) { showToast('No hints left!'); return; }
+  state.hintsLeft--;
+  document.getElementById('hint-count').textContent = state.hintsLeft;
+  document.getElementById('btn-hint').disabled = state.hintsLeft === 0;
+
+  const mode = state.currentLevel.mode;
+  if (mode === 'fill-blank') {
+    const blank = state.blanks[state.currentBlank];
+    if (blank) showToast('💡 Hint: starts with "' + blank.correct[0].toUpperCase() + '"');
+  } else if (mode === 'type-blank') {
+    const blank = state.typeBlanks[state.currentTyped];
+    if (blank) showToast('💡 Hint: "' + blank.correct.slice(0, 2) + '…"');
+  } else if (mode === 'arrange') {
+    const correct = tokenizeVerse(state.currentVerse.verse);
+    showToast('💡 First word: "' + correct[0] + '"');
+  } else if (mode === 'ref-match') {
+    const v = state.refVerses[state.currentRef];
+    if (v) showToast('💡 Book: ' + v.ref.split(' ')[0]);
+  }
+}
+
+// ══════════════════════════════════════
+// PAUSE
+// ══════════════════════════════════════
+function togglePause() {
+  state.paused = !state.paused;
+  document.getElementById('pause-overlay').classList.toggle('hidden', !state.paused);
+}
+
+function stopAll() {
+  clearInterval(state.studyTimer);
+  stopQuizTimer();
+  state.paused = false;
+}
+
+// ══════════════════════════════════════
+// COMPLETE LEVEL
+// ══════════════════════════════════════
+function completeLevel(success = true) {
+  stopAll();
+  const level = state.currentLevel;
+  const verse = state.currentVerse;
+  const timeUsed = level.timeLimit - state.quizTimeLeft;
+
+  // Stars
+  let stars = 1;
+  const accuracy = state.totalQuestions > 0 ? state.correctCount / state.totalQuestions : 0;
+  if (accuracy === 1 && timeUsed < level.starThresholds[0]) stars = 3;
+  else if (accuracy >= 0.67 && timeUsed < level.starThresholds[1]) stars = 2;
+  else stars = 1;
+
+  if (!success) stars = 1;
+
+  // Score
+  const prevStars = state.progress.stars[level.id] || 0;
+  if (stars > prevStars) state.progress.stars[level.id] = stars;
+  if (state.score > (state.progress.highScore || 0)) state.progress.highScore = state.score;
+
+  // Streak
+  const today = new Date().toDateString();
+  if (state.progress.lastDate !== today) {
+    state.progress.streak = (state.progress.streak || 0) + 1;
+    state.progress.lastDate = today;
+  }
+  saveProgress();
+
+  // Show complete screen
+  showScreen('complete');
+
+  // Stars animation
+  const starsEl = document.getElementById('complete-stars');
+  starsEl.innerHTML = [1,2,3].map(i =>
+    `<span class="${stars >= i ? 'earned' : ''}" style="animation-delay:${(i-1)*0.2}s">⭐</span>`
+  ).join('');
+
+  document.getElementById('complete-title').textContent = stars === 3 ? '🌟 Perfect!' : stars === 2 ? 'Well Done!' : 'Level Complete!';
+  document.getElementById('complete-score').textContent = state.score.toLocaleString();
+  document.getElementById('complete-time').textContent = formatTime(timeUsed);
+
+  // Verse reveal
+  document.getElementById('complete-verse-text').textContent = '\u201c' + verse.verse + '\u201d';
+  document.getElementById('complete-verse-ref').textContent = '— ' + verse.ref;
+
+  // Lesson
+  document.getElementById('lesson-text').textContent = verse.lesson;
+
+  // Next button
+  const nextId = level.id + 1;
+  const nextLevel = LEVELS.find(l => l.id === nextId);
+  document.getElementById('btn-next-level').style.display = nextLevel ? '' : 'none';
+
+  if (stars >= 2) launchConfetti();
+}
+
+function goNextLevel() {
+  const next = LEVELS.find(l => l.id === state.currentLevel.id + 1);
+  if (next) openPreLevel(next);
+  else showScreen('levels');
+}
+
+// ══════════════════════════════════════
+// HELPERS — QUIZ GENERATION
+// ══════════════════════════════════════
+function tokenizeVerse(text) {
+  // Split on spaces, keep punctuation attached to words
+  return text.split(/\s+/).filter(Boolean);
+}
+
+function generateBlanks(verse, count, kind) {
+  const words = tokenizeVerse(verse.verse);
+  const keywords = verse.keywords || [];
+
+  // Find candidate indices (prioritize keywords)
+  const candidates = [];
+  keywords.forEach(kw => {
+    const idx = words.findIndex((w, i) =>
+      normalizeWord(w) === normalizeWord(kw) && !candidates.some(c => c.tokenIdx === i)
+    );
+    if (idx !== -1) candidates.push({ tokenIdx: idx, word: words[idx], correct: normalizeWord(words[idx]) });
+  });
+
+  // Fill remaining with long words
+  if (candidates.length < count) {
+    const used = new Set(candidates.map(c => c.tokenIdx));
+    words.forEach((w, i) => {
+      if (candidates.length >= count) return;
+      if (used.has(i)) return;
+      const norm = normalizeWord(w);
+      if (norm.length >= 4 && !/^\d+$/.test(norm)) {
+        candidates.push({ tokenIdx: i, word: w, correct: norm });
+        used.add(i);
+      }
+    });
+  }
+
+  // Trim to requested count
+  const selected = candidates.slice(0, count);
+
+  // For fill-blank mode, generate choices
+  if (kind === 'choices') {
+    return selected.map(b => ({
+      tokenIdx: b.tokenIdx,
+      word: b.word,
+      correct: b.correct,
+      answered: false,
+      options: buildChoices(b.correct, words),
+    }));
+  }
+  return selected.map(b => ({ tokenIdx: b.tokenIdx, word: b.word, correct: b.correct, answered: false }));
+}
+
+function buildChoices(correct, allWords) {
+  const pool = new Set();
+
+  // Words from verse (different from correct)
+  allWords.forEach(w => {
+    const n = normalizeWord(w);
+    if (n !== correct && n.length >= 3) pool.add(n);
+  });
+
+  // Common Bible words as fillers
+  const fillers = [
+    'God','Lord','love','grace','faith','peace','hope','light','heart','soul',
+    'life','truth','word','spirit','glory','prayer','mercy','eternal','saved','blessed',
+    'strength','kingdom','righteous','servant','mighty','afraid','still','trust','never',
+  ];
+  fillers.forEach(f => {
+    if (normalizeWord(f) !== correct) pool.add(normalizeWord(f));
+  });
+
+  const candidates = [...pool].filter(w => w !== correct);
+  shuffleArray(candidates);
+
+  const chosen = candidates.slice(0, 3);
+  const options = [correct, ...chosen];
+  shuffleArray(options);
+  return options;
+}
+
+function normalizeWord(w) {
+  return (w || '').toLowerCase().replace(/[.,;:!?()\u2018\u2019\u201c\u201d\u2014\u2013\-]/g, '').trim();
+}
+
+function fuzzyMatch(typed, correct) {
+  const t = normalizeWord(typed);
+  const c = normalizeWord(correct);
+  if (t === c) return true;
+  // Allow 1 character difference for words ≥ 5 chars
+  if (c.length >= 5 && levenshtein(t, c) <= 1) return true;
+  return false;
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m+1 }, (_, i) => Array.from({ length: n+1 }, (_, j) => i === 0 ? j : j === 0 ? i : 0));
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+// ══════════════════════════════════════
+// SCORING
+// ══════════════════════════════════════
+function calcPoints(correct, multiplier = 1) {
+  if (!correct) return 0;
+  const base = 15;
+  const timeBonus = Math.floor(state.quizTimeLeft / state.currentLevel.timeLimit * 10);
+  return (base + timeBonus) * multiplier;
+}
+
+// ══════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════
+function showPhase(name) {
+  document.getElementById('phase-study').classList.toggle('hidden', name !== 'study');
+  document.getElementById('phase-quiz').classList.toggle('hidden', name !== 'quiz');
+}
+
+function updateProgress(frac) {
+  document.getElementById('hud-progress-bar').style.width = (frac * 100) + '%';
+}
+
+function showFlash(correct, pts, hint) {
+  const el = document.getElementById('answer-flash');
+  el.className = 'answer-flash show ' + (correct ? 'correct-flash' : 'wrong-flash');
+  document.getElementById('flash-icon').textContent = correct ? '✓' : '✗';
+  document.getElementById('flash-msg').textContent = correct
+    ? ['Great!', 'Excellent!', 'Correct!', 'Perfect!', 'Nice one!'][Math.floor(Math.random()*5)]
+    : (hint ? 'Answer: ' + hint : 'Wrong!');
+  document.getElementById('flash-pts').textContent = correct ? '+' + pts : '';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 1000);
+}
+
+function spawnSparks(fromEl) {
+  const layer = document.getElementById('sparks-layer');
+  const r = fromEl.getBoundingClientRect();
+  const cx = r.left + r.width / 2;
+  const cy = r.top + r.height / 2;
+  const colors = ['#f5c518','#2ecc71','#3498db','#9b59b6','#e74c3c','#1abc9c'];
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const angle = (i / 12) * 2 * Math.PI;
+    const dist = 50 + Math.random() * 40;
+    s.style.cssText = `left:${cx}px;top:${cy}px;width:8px;height:8px;
+      background:${colors[i % colors.length]};
+      --tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;
+      animation-duration:${0.5 + Math.random()*0.3}s;`;
+    layer.appendChild(s);
+    setTimeout(() => s.remove(), 900);
+  }
+}
+
+function launchConfetti() {
+  const layer = document.getElementById('confetti-layer');
+  const colors = ['#f5c518','#e74c3c','#2ecc71','#3498db','#9b59b6','#e67e22','#1abc9c'];
+  for (let i = 0; i < 70; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-10px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width = (5 + Math.random() * 8) + 'px';
+      el.style.height = (5 + Math.random() * 8) + 'px';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      el.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+      el.style.animationDelay = (Math.random() * 0.3) + 's';
+      layer.appendChild(el);
+      setTimeout(() => el.remove(), 6000);
+    }, i * 25);
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ══════════════════════════════════════
+// SAVE / LOAD
+// ══════════════════════════════════════
+function saveProgress() {
+  localStorage.setItem('mvmProgress', JSON.stringify(state.progress));
+}
+function loadProgress() {
+  try {
+    const s = localStorage.getItem('mvmProgress');
+    if (s) state.progress = { ...state.progress, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function formatTime(secs) {
+  if (secs < 60) return secs + 's';
+  return Math.floor(secs / 60) + 'm ' + (secs % 60) + 's';
+}
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// ══════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
 })();

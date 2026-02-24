@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Eden & The Flood",
+    "emoji": "🌍",
+    "color": "#22c55e",
+    "bgGradient": "linear-gradient(135deg, #052e16, #14532d, #166534)",
+    "particleColor": "#86efac",
+    "description": "The world begins. God creates everything perfect — then the first choices are made.",
+    "unlockCost": 0,
+    "bossId": "boss_serpent",
+    "characters": ["adam","eve","cain","noah","enoch"]
+  },
+  {
+    "id": 2,
+    "name": "Desert Wanderers",
+    "emoji": "🏜️",
+    "color": "#f59e0b",
+    "bgGradient": "linear-gradient(135deg, #451a03, #78350f, #92400e)",
+    "particleColor": "#fcd34d",
+    "description": "Through fire, flood, and famine — God leads His people across the wilderness.",
+    "unlockCost": 500,
+    "bossId": "boss_pharaoh",
+    "characters": ["abraham","sarah","joseph","moses","joshua"]
+  },
+  {
+    "id": 3,
+    "name": "Kingdom Rising",
+    "emoji": "👑",
+    "color": "#a855f7",
+    "bgGradient": "linear-gradient(135deg, #2e1065, #4c1d95, #5b21b6)",
+    "particleColor": "#d8b4fe",
+    "description": "Giants fall, songs fill the air, and a nation finds its king.",
+    "unlockCost": 1200,
+    "bossId": "boss_goliath",
+    "characters": ["samson","samuel","david","jonathan","solomon"]
+  },
+  {
+    "id": 4,
+    "name": "Prophets & Fire",
+    "emoji": "🔥",
+    "color": "#ef4444",
+    "bgGradient": "linear-gradient(135deg, #450a0a, #7f1d1d, #991b1b)",
+    "particleColor": "#fca5a5",
+    "description": "Bold voices, fiery furnaces, giant fish — God's messengers never back down.",
+    "unlockCost": 2200,
+    "bossId": "boss_false_prophet",
+    "characters": ["elijah","elisha","daniel","esther","jonah"]
+  },
+  {
+    "id": 5,
+    "name": "The Living King",
+    "emoji": "⭐",
+    "color": "#3b82f6",
+    "bgGradient": "linear-gradient(135deg, #0c1445, #1e3a8a, #1d4ed8)",
+    "particleColor": "#93c5fd",
+    "description": "Heaven touches earth. The promised Messiah walks among us.",
+    "unlockCost": 3500,
+    "bossId": "boss_pharisee",
+    "characters": ["john_baptist","mary","peter","mary_magdalene","jesus"]
+  },
+  {
+    "id": 6,
+    "name": "The Early Church",
+    "emoji": "✝️",
+    "color": "#dc2626",
+    "bgGradient": "linear-gradient(135deg, #3b0764, #6b21a8, #7c3aed)",
+    "particleColor": "#c4b5fd",
+    "description": "Chains, shipwrecks, and crowds — nothing stops the Good News from spreading.",
+    "unlockCost": 5000,
+    "bossId": "boss_caesar",
+    "characters": ["stephen","paul","lydia","timothy","barnabas"]
+  }
+]

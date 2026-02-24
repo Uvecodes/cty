@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Bible Jigsaw Journey | CTY</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SCREEN: SPLASH
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-splash">
+  <div class="splash-bg"></div>
+  <div class="splash-content">
+    <div class="splash-icon">🧩</div>
+    <h1 class="splash-title">Bible Jigsaw<br><span>Journey</span></h1>
+    <p class="splash-tagline">Piece Together God's Story</p>
+    <div class="splash-bar-wrap"><div class="splash-bar" id="splash-bar"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: HOME
+══════════════════════════════════════ -->
+<div class="screen" id="screen-home">
+  <div class="home-bg"></div>
+  <div class="home-particles" id="home-particles"></div>
+  <div class="home-content">
+    <div class="home-logo">
+      <span class="home-icon">🧩</span>
+      <h1>Bible Jigsaw<br><span>Journey</span></h1>
+    </div>
+    <p class="home-sub">20 Biblical scenes · Escalating challenges · Deep scripture truths</p>
+    <div class="home-btns">
+      <button class="btn-primary" id="btn-play">▶ Start Journey</button>
+      <button class="btn-secondary" id="btn-levels">🗺 Level Map</button>
+    </div>
+    <div class="home-stats" id="home-stats">
+      <div class="stat-box"><span class="stat-num" id="stat-done">0</span><span class="stat-label">Solved</span></div>
+      <div class="stat-box"><span class="stat-num" id="stat-stars">0</span><span class="stat-label">Stars</span></div>
+      <div class="stat-box"><span class="stat-num" id="stat-era">—</span><span class="stat-label">Era</span></div>
+    </div>
+    <button class="btn-ghost" id="btn-howto">? How to Play</button>
+  </div>
+  <a class="back-link" href="../../games.html">← Back to Games</a>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: LEVEL SELECT
+══════════════════════════════════════ -->
+<div class="screen" id="screen-levels">
+  <div class="levels-header">
+    <button class="btn-nav" id="btn-levels-back">←</button>
+    <h2>Level Map</h2>
+    <span id="levels-progress-text">0 / 20</span>
+  </div>
+  <div class="levels-era-tabs" id="era-tabs"></div>
+  <div class="levels-grid" id="levels-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: PRE-LEVEL
+══════════════════════════════════════ -->
+<div class="screen" id="screen-prelevel">
+  <button class="btn-nav" id="btn-pre-back">←</button>
+  <div class="pre-inner">
+    <div class="pre-scene-preview" id="pre-canvas-wrap">
+      <canvas id="pre-canvas"></canvas>
+      <div class="pre-grid-label" id="pre-grid-label"></div>
+    </div>
+    <div class="pre-info">
+      <span class="pre-tag" id="pre-tag"></span>
+      <h2 class="pre-title" id="pre-title"></h2>
+      <p class="pre-subtitle" id="pre-subtitle"></p>
+      <div class="pre-meta">
+        <div class="pre-meta-row">
+          <span class="meta-icon">📐</span>
+          <span id="pre-grid-size"></span>
+        </div>
+        <div class="pre-meta-row">
+          <span class="meta-icon">⏱</span>
+          <span id="pre-time"></span>
+        </div>
+        <div class="pre-meta-row">
+          <span class="meta-icon">💡</span>
+          <span id="pre-hints"></span>
+        </div>
+        <div class="pre-meta-row" id="pre-rotation-row">
+          <span class="meta-icon">🔄</span>
+          <span>Pieces may be rotated — tap a piece twice to rotate</span>
+        </div>
+      </div>
+      <blockquote class="pre-verse" id="pre-verse"></blockquote>
+      <cite class="pre-ref" id="pre-ref"></cite>
+      <div class="pre-stars" id="pre-stars-display"></div>
+      <button class="btn-primary btn-large" id="btn-start">🧩 Start Puzzle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: GAME
+══════════════════════════════════════ -->
+<div class="screen" id="screen-game">
+  <!-- HUD -->
+  <div class="game-hud">
+    <button class="hud-btn" id="btn-game-menu">☰</button>
+    <div class="hud-center">
+      <span class="hud-title" id="hud-title"></span>
+      <div class="hud-progress-wrap">
+        <div class="hud-progress-bar" id="hud-progress-bar"></div>
+      </div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-timer" id="hud-timer">3:30</div>
+      <button class="hud-btn hud-hint" id="btn-hint" title="Hint">💡 <span id="hint-count">3</span></button>
+    </div>
+  </div>
+
+  <!-- Puzzle Canvas -->
+  <canvas id="puzzle-canvas"></canvas>
+
+  <!-- Piece Tray -->
+  <div class="piece-tray" id="piece-tray">
+    <div class="tray-label">Pieces</div>
+    <div class="tray-inner" id="tray-inner"></div>
+  </div>
+
+  <!-- Pause Menu -->
+  <div class="pause-overlay hidden" id="pause-overlay">
+    <div class="pause-box">
+      <h3>⏸ Paused</h3>
+      <button class="btn-primary" id="btn-resume">▶ Resume</button>
+      <button class="btn-secondary" id="btn-hint-pause">💡 Use Hint</button>
+      <button class="btn-ghost" id="btn-abandon">✕ Quit Level</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: COMPLETE
+══════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-bg" id="complete-bg"></div>
+  <div class="complete-content">
+    <div class="complete-stars" id="complete-stars"></div>
+    <h2 class="complete-title" id="complete-title">Puzzle Complete!</h2>
+    <div class="complete-score-row">
+      <div class="score-chip">🏆 <span id="complete-score">0</span> pts</div>
+      <div class="score-chip">⏱ <span id="complete-time">0s</span></div>
+    </div>
+    <div class="fact-card" id="fact-card">
+      <div class="fact-card-header">
+        <span class="fact-icon">📖</span>
+        <span class="fact-scene-name" id="fact-scene-name"></span>
+      </div>
+      <p class="fact-text" id="fact-text"></p>
+      <blockquote class="fact-verse" id="fact-verse"></blockquote>
+      <cite class="fact-ref" id="fact-ref"></cite>
+      <div class="fact-lesson-wrap">
+        <span class="lesson-label">Key Truth</span>
+        <p class="fact-lesson" id="fact-lesson"></p>
+      </div>
+    </div>
+    <div class="complete-btns">
+      <button class="btn-primary" id="btn-next-level">Next Level →</button>
+      <button class="btn-secondary" id="btn-replay">↺ Replay</button>
+      <button class="btn-ghost" id="btn-complete-menu">🏠 Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: HOW TO PLAY
+══════════════════════════════════════ -->
+<div class="screen" id="screen-howto">
+  <button class="btn-nav" id="btn-howto-back">←</button>
+  <div class="howto-content">
+    <h2>🧩 How to Play</h2>
+    <div class="howto-steps">
+      <div class="howto-step">
+        <span class="step-num">1</span>
+        <div>
+          <h4>Drag pieces to the board</h4>
+          <p>Pick up any piece from the tray on the right and drag it to where you think it belongs on the puzzle board.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">2</span>
+        <div>
+          <h4>Pieces snap into place</h4>
+          <p>When you drop a piece near its correct position, it will snap and lock into place with a satisfying effect.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">3</span>
+        <div>
+          <h4>Rotate pieces on harder levels</h4>
+          <p>From Level 13 onwards, pieces start in random rotations. <strong>Double-tap or right-click</strong> a piece to rotate it 90°.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">4</span>
+        <div>
+          <h4>Use hints wisely</h4>
+          <p>The 💡 hint button briefly shows a ghost image of where all unplaced pieces should go. Hints are limited!</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">5</span>
+        <div>
+          <h4>Race the clock for stars</h4>
+          <p>Finish quickly for 3 stars. Running out of time gives you 1 star. Earn all 3 stars on every level for a perfect run.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">6</span>
+        <div>
+          <h4>Discover Bible truths</h4>
+          <p>Each solved puzzle reveals a deep Bible fact about the scene. Collect all 20 facts to understand the complete story of Scripture.</p>
+        </div>
+      </div>
+    </div>
+    <div class="howto-difficulty">
+      <h4>Difficulty Levels</h4>
+      <div class="diff-row"><span class="diff-chip easy">3×3</span><span>Levels 1–3 · Beginner (9 pieces)</span></div>
+      <div class="diff-row"><span class="diff-chip medium">4×4</span><span>Levels 4–7 · Intermediate (16 pieces)</span></div>
+      <div class="diff-row"><span class="diff-chip hard">5×5</span><span>Levels 8–10 · Challenging (25 pieces)</span></div>
+      <div class="diff-row"><span class="diff-chip harder">6×6</span><span>Levels 11–15 · Hard (36 pieces + rotation)</span></div>
+      <div class="diff-row"><span class="diff-chip expert">7×7</span><span>Levels 16–19 · Expert (49 pieces + rotation)</span></div>
+      <div class="diff-row"><span class="diff-chip master">8×8</span><span>Level 20 · Master (64 pieces + rotation, no hints)</span></div>
+    </div>
+    <button class="btn-primary" id="btn-howto-play">▶ Start Playing</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     GLOBAL OVERLAYS
+══════════════════════════════════════ -->
+<div class="confetti-layer" id="confetti-layer"></div>
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="../../../js/firebase-config.js"></script>
+<script src="./game.js"></script>
+</body>
+</html>

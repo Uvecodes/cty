@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadExistingAvatar();
         initializeDeleteButton();
         initializeAvatarPreview();
+        loadShopHistory();
     };
     if (window.firebaseReady) {
         window.firebaseReady.then(runAfterFirebase);
@@ -675,6 +676,54 @@ function showNotification(message, type = 'info') {
         setTimeout(() => {
             notification.remove();
         }, 3000);
+    }
+}
+
+// ─── Shop History ─────────────────────────────────────────────────────────────
+async function loadShopHistory() {
+    const section = document.getElementById('shop-history-section');
+    const list = document.getElementById('shop-history-list');
+    if (!section || !list) return;
+
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    try {
+        const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+        if (!userDoc.exists) return;
+
+        const shopHistory = userDoc.data().shopHistory || [];
+        section.style.display = '';
+
+        if (shopHistory.length === 0) {
+            list.innerHTML = '<p class="shop-history-empty">No orders yet. <a href="../shop/shop.html">Visit the shop!</a></p>';
+            return;
+        }
+
+        // Sort newest first
+        const sorted = [...shopHistory].sort((a, b) => new Date(b.purchasedAt) - new Date(a.purchasedAt));
+
+        list.innerHTML = '';
+        sorted.forEach(order => {
+            const date = new Date(order.purchasedAt).toLocaleDateString(undefined, {
+                year: 'numeric', month: 'short', day: 'numeric'
+            });
+            const sizeLabel = order.size ? ` · Size ${order.size}` : '';
+            const qtyLabel = (order.quantity && order.quantity > 1) ? ` × ${order.quantity}` : '';
+
+            const item = document.createElement('div');
+            item.className = 'shop-history-item';
+            item.innerHTML = `
+                <div class="shi-left">
+                    <span class="shi-name">${order.product_name}${qtyLabel}${sizeLabel}</span>
+                    <span class="shi-date">${date}</span>
+                </div>
+                <span class="shi-amount">$${Number(order.amount).toFixed(2)}</span>
+            `;
+            list.appendChild(item);
+        });
+    } catch (err) {
+        // Silently fail — shop history is non-critical
     }
 }
 

@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1, "title": "Garden of Eden", "subtitle": "God's Perfect Creation",
+    "scene": 1, "grid": 3, "timeLimit": 210, "hints": 3, "rotation": false,
+    "tag": "Creation", "era": "The Beginning",
+    "scripture": "Genesis 2:8-9",
+    "verse": "Now the Lord God had planted a garden in the east, in Eden; and there he put the man he had formed.",
+    "fact": "The Garden of Eden was God's perfect environment for humanity — every tree was beautiful and its fruit was good to eat. God placed Adam there to work it and take care of it, giving him purpose from the very start. Four rivers flowed from this garden, suggesting it was located at the heart of the ancient world. The Hebrew word 'Eden' means delight or pleasure.",
+    "lesson": "God's original design for humanity was beauty, purpose, meaningful work, and intimate fellowship with Him."
+  },
+  {
+    "id": 2, "title": "Noah's Ark", "subtitle": "Salvation Through Obedience",
+    "scene": 2, "grid": 3, "timeLimit": 200, "hints": 3, "rotation": false,
+    "tag": "Covenant", "era": "The Beginning",
+    "scripture": "Genesis 7:1",
+    "verse": "The Lord then said to Noah, 'Go into the ark, you and your whole family, because I have found you righteous in this generation.'",
+    "fact": "Noah's Ark was a massive vessel — approximately 137 metres long, 23 metres wide, and 14 metres high. It took Noah roughly 100 years to build. Noah's obedience to build something that had never been seen before, for a flood that had never happened, is one of the greatest acts of faith in human history. The ark had three decks and could hold thousands of animals.",
+    "lesson": "Radical obedience to God, even when it looks foolish to others, leads to salvation and a new beginning."
+  },
+  {
+    "id": 3, "title": "The Rainbow Promise", "subtitle": "God's Eternal Covenant",
+    "scene": 3, "grid": 3, "timeLimit": 190, "hints": 3, "rotation": false,
+    "tag": "Covenant", "era": "The Beginning",
+    "scripture": "Genesis 9:13-15",
+    "verse": "'I have set my rainbow in the clouds, and it will be the sign of the covenant between me and the earth.'",
+    "fact": "After the flood, God made a covenant — a solemn binding promise — with all living creatures on earth. The rainbow became the visible sign of this promise that He would never again destroy the earth by flood. This was the first recorded covenant between God and humanity. Every rainbow you see is a reminder of God's faithfulness to His word.",
+    "lesson": "God keeps His promises. His covenants are eternal, and creation itself carries His signature."
+  },
+  {
+    "id": 4, "title": "Abraham's Stars", "subtitle": "A Promise as Vast as the Sky",
+    "scene": 4, "grid": 4, "timeLimit": 240, "hints": 3, "rotation": false,
+    "tag": "Faith", "era": "The Patriarchs",
+    "scripture": "Genesis 15:5",
+    "verse": "He took him outside and said, 'Look up at the sky and count the stars — if indeed you can count them. So shall your offspring be.'",
+    "fact": "God called Abram (later renamed Abraham) to leave his homeland at age 75, with no children and no clear destination. Under the night sky, God promised this elderly, childless man that his descendants would be as numerous as the stars. Astronomers estimate 100 billion stars are visible from Earth — God was painting a picture of an impossible promise that He would keep anyway.",
+    "lesson": "God specialises in the impossible. He makes promises based on His power, not our circumstances."
+  },
+  {
+    "id": 5, "title": "Joseph's Dream", "subtitle": "From Pit to Palace",
+    "scene": 5, "grid": 4, "timeLimit": 230, "hints": 3, "rotation": false,
+    "tag": "Providence", "era": "The Patriarchs",
+    "scripture": "Genesis 37:3 & 50:20",
+    "verse": "'You intended to harm me, but God intended it for good — to accomplish what is now being done, the saving of many lives.'",
+    "fact": "Joseph was the eleventh of twelve sons, the favourite of his father Jacob, who gave him an ornate robe (the famous coat of many colours). His brothers were so jealous they sold him as a slave for 20 pieces of silver. Yet through slavery, false accusation, and prison, God was weaving a plan that would make Joseph second-in-command of Egypt and save the entire region from famine — including the very brothers who betrayed him.",
+    "lesson": "What people mean for harm, God can transform into His greatest plan. No betrayal can derail God's purpose for your life."
+  },
+  {
+    "id": 6, "title": "The Burning Bush", "subtitle": "Holy Ground",
+    "scene": 6, "grid": 4, "timeLimit": 220, "hints": 2, "rotation": false,
+    "tag": "Calling", "era": "Exodus",
+    "scripture": "Exodus 3:2-4",
+    "verse": "There the angel of the Lord appeared to him in flames of fire from within a bush. Moses saw that though the bush was on fire it did not burn up.",
+    "fact": "Moses was a fugitive shepherd when God appeared to him in a burning bush at Mount Horeb (Sinai). The bush burned but was not consumed — a picture of God's holiness that is powerful yet life-giving. God told Moses he was standing on 'holy ground' and commissioned him to lead Israel out of 400 years of slavery in Egypt. Moses was 80 years old when he received this calling — proof that God's timing is never too late.",
+    "lesson": "God calls the unlikely, the broken, and the runaway. His holiness and presence transform ordinary ground into sacred purpose."
+  },
+  {
+    "id": 7, "title": "Parting of the Red Sea", "subtitle": "The God Who Makes a Way",
+    "scene": 7, "grid": 4, "timeLimit": 210, "hints": 2, "rotation": false,
+    "tag": "Deliverance", "era": "Exodus",
+    "scripture": "Exodus 14:21-22",
+    "verse": "Moses stretched out his hand over the sea, and all that night the Lord drove the sea back with a strong east wind and turned it into dry land.",
+    "fact": "The Israelites were trapped — the Red Sea in front and the Egyptian army behind. In one of the most dramatic miracles in Scripture, God divided the sea, creating walls of water on both sides while Israel crossed on dry ground. When the Egyptians pursued, the waters crashed back and destroyed the army. This event became the defining moment of Israel's identity — God as rescuer and deliverer. It is referenced more than any other event in the Old Testament.",
+    "lesson": "When you are cornered and the enemy is closing in, God can make a way through the very thing that looks like it will destroy you."
+  },
+  {
+    "id": 8, "title": "Ten Commandments", "subtitle": "The Law on the Mountain",
+    "scene": 8, "grid": 5, "timeLimit": 270, "hints": 2, "rotation": false,
+    "tag": "Law", "era": "Exodus",
+    "scripture": "Exodus 20:1-3",
+    "verse": "'I am the Lord your God, who brought you out of Egypt, out of the land of slavery. You shall have no other gods before me.'",
+    "fact": "Mount Sinai trembled with thunder, lightning, thick cloud, and trumpet blasts as God descended on it in fire. Moses climbed the mountain and received the Ten Commandments — God's foundational moral law. The commandments covered both our relationship with God (worship, Sabbath, reverence) and with others (honour parents, do not murder, steal, lie, or covet). Jesus later summarised all 10 as: love God with all your heart, and love your neighbour as yourself.",
+    "lesson": "God's law is not about restriction — it is about protection, freedom, and showing us what love actually looks like in practice."
+  },
+  {
+    "id": 9, "title": "Manna from Heaven", "subtitle": "Daily Bread in the Desert",
+    "scene": 9, "grid": 5, "timeLimit": 260, "hints": 2, "rotation": false,
+    "tag": "Provision", "era": "Exodus",
+    "scripture": "Exodus 16:14-15",
+    "verse": "When the dew was gone, thin flakes like frost on the ground appeared on the desert floor. When the Israelites saw it, they said, 'What is it?' — for they did not know what it was.",
+    "fact": "In the Sinai Desert, God fed approximately two million people with bread that fell from heaven every morning for 40 years. The Israelites called it 'manna' (meaning 'what is it?'). Each family gathered just enough for that day — if they collected extra it went bad overnight. On Fridays they could gather double for the Sabbath. This daily miracle was God teaching His people to trust Him one day at a time. Jesus later called Himself 'the true bread from heaven' (John 6:35).",
+    "lesson": "God provides daily — not all at once. He wants us to depend on Him today, and trust Him again tomorrow."
+  },
+  {
+    "id": 10, "title": "Walls of Jericho", "subtitle": "Victory Through Obedience",
+    "scene": 10, "grid": 5, "timeLimit": 255, "hints": 2, "rotation": false,
+    "tag": "Victory", "era": "Conquest",
+    "scripture": "Joshua 6:20",
+    "verse": "When the trumpets sounded, the army shouted, and at the sound of the trumpet, when the men gave a loud shout, the wall collapsed.",
+    "fact": "Jericho was a heavily fortified city with thick double walls. God's battle plan was unconventional: march around the city once a day for six days, then seven times on the seventh day with priests blowing trumpets, then everyone shouts. No weapons, no siege equipment — just obedience and worship. The walls collapsed and Israel took the city. Archaeologists have found evidence of the city's collapse at layers consistent with Joshua's timeline. Rahab, a Canaanite woman who hid the spies, was saved — and became an ancestor of Jesus.",
+    "lesson": "God's strategies often look foolish to human logic. Obedience is the strategy that always works."
+  },
+  {
+    "id": 11, "title": "David and Goliath", "subtitle": "The Giant Slayer",
+    "scene": 11, "grid": 6, "timeLimit": 300, "hints": 2, "rotation": false,
+    "tag": "Courage", "era": "The Kingdom",
+    "scripture": "1 Samuel 17:45",
+    "verse": "David said to the Philistine, 'You come against me with sword and spear and javelin, but I come against you in the name of the Lord Almighty.'",
+    "fact": "Goliath stood over 2.9 metres tall (9 feet 9 inches), wore 57kg of armour, and had a spear like a weaver's beam. He challenged Israel for 40 days and no one dared fight him. David — a teenage shepherd boy — ran toward the giant with a sling and five smooth stones. He chose five stones not because he doubted God, but because Goliath had four brothers. David hit the giant in the only unprotected spot — the forehead — with one stone. David ran toward his problem while everyone else ran away. That is still the model for courage today.",
+    "lesson": "The giants in your life are not too big to fight — they're too big to miss. Run toward your Goliath in the name of the Lord."
+  },
+  {
+    "id": 12, "title": "Solomon's Temple", "subtitle": "A House for God's Glory",
+    "scene": 12, "grid": 6, "timeLimit": 290, "hints": 2, "rotation": false,
+    "tag": "Wisdom", "era": "The Kingdom",
+    "scripture": "1 Kings 8:10-11",
+    "verse": "When the priests withdrew from the Holy Place, the cloud filled the temple of the Lord. And the priests could not perform their service because of the cloud, for the glory of the Lord filled his temple.",
+    "fact": "Solomon's Temple took seven years to build and was considered one of the greatest structures of the ancient world. It used 30,000 labourers, 80,000 stonecutters, 70,000 carriers, and 3,600 supervisors. The walls were lined with cedar, overlaid with gold. The temple housed the Ark of the Covenant in the Most Holy Place. When Solomon dedicated it, God's glory was so powerful the priests could not stand and minister. The temple represented the truth that God desires to dwell among His people.",
+    "lesson": "When we build with God's purpose and wisdom at the centre, His presence and glory fill what we create."
+  },
+  {
+    "id": 13, "title": "Elijah's Fire", "subtitle": "The God Who Answers by Fire",
+    "scene": 13, "grid": 6, "timeLimit": 280, "hints": 1, "rotation": true,
+    "tag": "Power", "era": "The Prophets",
+    "scripture": "1 Kings 18:38",
+    "verse": "Then the fire of the Lord fell and burned up the sacrifice, the wood, the stones and the soil, and also licked up the water in the trench.",
+    "fact": "Israel had abandoned God and was worshipping Baal. Elijah challenged 450 prophets of Baal to a contest on Mount Carmel: prepare a sacrifice, and the God who answers by fire is the true God. The Baal prophets cried out all day — nothing happened. Then Elijah dug a trench, soaked the altar with twelve jars of water until it overflowed, and prayed a simple prayer. Fire fell from heaven, consumed the sacrifice, the wood, the stones, and the soil, and evaporated the water. The people fell on their faces and declared 'The Lord, He is God!'",
+    "lesson": "God does not need advantageous conditions to demonstrate His power. Sometimes He soaks the altar first to show His fire is real."
+  },
+  {
+    "id": 14, "title": "Daniel and the Lions", "subtitle": "Faith That Cannot Be Silenced",
+    "scene": 14, "grid": 6, "timeLimit": 270, "hints": 1, "rotation": true,
+    "tag": "Faith", "era": "The Prophets",
+    "scripture": "Daniel 6:22",
+    "verse": "'My God sent his angel, and he shut the mouths of the lions. They have not hurt me, because I was found innocent in his sight.'",
+    "fact": "Daniel was a government official in Babylon who prayed to God three times a day. When his enemies convinced King Darius to make this illegal (punishable by the lions' den), Daniel knew the law — and prayed anyway with his windows open. He was thrown to the lions and the king spent the night fasting, unable to sleep. At dawn, Darius ran to the den and found Daniel unharmed. The Bible notes the lions had not touched him 'because he trusted in his God.' Daniel's accusers were thrown in and the lions overpowered them immediately.",
+    "lesson": "When you must choose between obeying God and obeying culture, choose God. He is the Lion tamer."
+  },
+  {
+    "id": 15, "title": "Jonah and the Whale", "subtitle": "There Is No Running from Grace",
+    "scene": 15, "grid": 6, "timeLimit": 260, "hints": 1, "rotation": true,
+    "tag": "Mercy", "era": "The Prophets",
+    "scripture": "Jonah 2:1-2",
+    "verse": "From inside the fish Jonah prayed to the Lord his God: 'In my distress I called to the Lord, and he answered me.'",
+    "fact": "God called Jonah to preach to Nineveh, the capital of Assyria — Israel's greatest enemy. Jonah boarded a ship headed in the opposite direction. God sent a violent storm, and Jonah told the sailors to throw him overboard to save the ship. A great fish swallowed him and he remained inside for three days and nights before being vomited onto dry land. Jonah preached in Nineveh, the entire city repented, and God relented. Jesus used Jonah's three days in the fish as a sign of His own death and resurrection (Matthew 12:40).",
+    "lesson": "You cannot run from God's calling. His mercy pursues you — and even the detours become part of His story."
+  },
+  {
+    "id": 16, "title": "Star of Bethlehem", "subtitle": "The Night That Changed Everything",
+    "scene": 16, "grid": 7, "timeLimit": 330, "hints": 1, "rotation": true,
+    "tag": "Birth of Jesus", "era": "The Gospels",
+    "scripture": "Matthew 2:9-10",
+    "verse": "The star they had seen when it rose went ahead of them until it stopped over the place where the child was. When they saw the star, they were overjoyed.",
+    "fact": "The birth of Jesus fulfilled over 300 Old Testament prophecies, including being born in Bethlehem (Micah 5:2), born of a virgin (Isaiah 7:14), and preceded by a messenger (Isaiah 40:3). The wise men (Magi) were likely astronomers from Persia who had studied the Jewish scriptures and recognised the star's significance. They brought gold (royalty), frankincense (deity), and myrrh (burial) — gifts that prophetically described who Jesus was. God announced the birth to shepherds (the working poor) and wise men (the educated wealthy), showing Jesus came for everyone.",
+    "lesson": "Jesus entered the world not in a palace but in a stable — God deliberately chose the humble entrance to reach all of humanity."
+  },
+  {
+    "id": 17, "title": "Sermon on the Mount", "subtitle": "The Upside-Down Kingdom",
+    "scene": 17, "grid": 7, "timeLimit": 320, "hints": 1, "rotation": true,
+    "tag": "Teaching", "era": "The Gospels",
+    "scripture": "Matthew 5:3-5",
+    "verse": "'Blessed are the poor in spirit, for theirs is the kingdom of heaven. Blessed are those who mourn, for they will be comforted. Blessed are the meek, for they will inherit the earth.'",
+    "fact": "The Sermon on the Mount (Matthew 5-7) is considered the greatest ethical and spiritual discourse ever delivered. Jesus redefined what it means to be truly blessed — not wealth, power, or popularity, but humility, mercy, purity, and peacemaking. He raised the standard of the Law (it's not enough not to murder — don't harbour anger; not enough not to commit adultery — guard your thoughts). He introduced the Lord's Prayer, taught on worry, on judging others, and the Golden Rule. Crowds were 'astonished at his teaching, for he taught as one who had authority' (Matthew 7:28-29).",
+    "lesson": "The Kingdom of God operates by completely different values to the world. The last are first, the weak are strong, and love is the greatest power."
+  },
+  {
+    "id": 18, "title": "Walking on Water", "subtitle": "Eyes on Jesus",
+    "scene": 18, "grid": 7, "timeLimit": 310, "hints": 1, "rotation": true,
+    "tag": "Faith", "era": "The Gospels",
+    "scripture": "Matthew 14:28-30",
+    "verse": "'Lord, if it's you,' Peter replied, 'tell me to come to you on the water.' 'Come,' he said. Then Peter got down out of the boat, walked on the water and came toward Jesus.",
+    "fact": "The disciples were in a boat in the middle of the Sea of Galilee during a night storm when they saw Jesus walking toward them on the water. Peter — impulsive, brave Peter — asked to come to Jesus on the water. And Jesus said one word: 'Come.' Peter stepped out of the boat and walked on water. He only sank when he took his eyes off Jesus and looked at the waves. Jesus immediately reached out His hand and caught him. There is something important here: Peter walked on water. He is the only other human being in history to do so — and it happened because he took Jesus at His word.",
+    "lesson": "You will only walk on water if you step out of the boat. And when you sink, Jesus is already reaching out to catch you."
+  },
+  {
+    "id": 19, "title": "The Last Supper", "subtitle": "A New Covenant in My Blood",
+    "scene": 19, "grid": 7, "timeLimit": 300, "hints": 1, "rotation": true,
+    "tag": "Sacrifice", "era": "The Gospels",
+    "scripture": "Luke 22:19-20",
+    "verse": "'This is my body given for you; do this in remembrance of me.' In the same way, after the supper he took the cup, saying, 'This cup is the new covenant in my blood, which is poured out for you.'",
+    "fact": "The Last Supper was a Passover meal — the same meal that had commemorated Israel's rescue from Egypt for 1,400 years. Jesus took the Passover symbols and gave them entirely new meaning: the bread represented His body that would be broken, the cup represented His blood that would establish a new covenant. He knew Judas would betray Him, Peter would deny Him, and all would abandon Him — and He washed their feet anyway. John 13:1 says, 'Having loved his own who were in the world, he loved them to the end.' The Last Supper has been observed by Christians every week for 2,000 years.",
+    "lesson": "Jesus knew the full cost of love and chose it anyway. He loves us not based on our performance but to the very end."
+  },
+  {
+    "id": 20, "title": "The Resurrection", "subtitle": "Death Could Not Hold Him",
+    "scene": 20, "grid": 8, "timeLimit": 360, "hints": 0, "rotation": true,
+    "tag": "Resurrection", "era": "The Gospels",
+    "scripture": "John 20:1-4",
+    "verse": "Early on the first day of the week, while it was still dark, Mary Magdalene went to the tomb and saw that the stone had been removed from the entrance.",
+    "fact": "The resurrection of Jesus is the most attested event in ancient history, with multiple independent sources including Roman historians Tacitus and Josephus. After being crucified and buried, Jesus rose bodily from the dead on the third day — exactly as He had predicted three times. The stone sealing the tomb weighed an estimated 1-2 tonnes and was guarded by Roman soldiers, yet it was found rolled away. Over 500 people saw the risen Jesus over 40 days (1 Corinthians 15:6). Every apostle who claimed to be an eyewitness chose death over denying the resurrection — people die for what they believe is true, but they rarely die for what they know to be a lie.",
+    "lesson": "The resurrection is not just a historical event — it is the proof that death has been defeated, and that what Jesus promised He can deliver."
+  }
+]

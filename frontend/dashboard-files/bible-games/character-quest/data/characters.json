@@ -1,0 +1,242 @@
+[
+  {
+    "id": "adam", "name": "Adam", "title": "The First Man", "era": 1, "rarity": "common",
+    "emoji": "🌱", "color": "#22c55e",
+    "stats": { "faith": 6, "wisdom": 5, "courage": 4, "strength": 7 },
+    "bio": "Created in God's image from the dust of the earth — the very first human.",
+    "unlockCost": 0, "unlocked": true,
+    "totalQuests": 9
+  },
+  {
+    "id": "eve", "name": "Eve", "title": "Mother of All Living", "era": 1, "rarity": "common",
+    "emoji": "🍎", "color": "#16a34a",
+    "stats": { "faith": 5, "wisdom": 6, "courage": 5, "strength": 4 },
+    "bio": "The first woman, created as Adam's companion and the mother of all humanity.",
+    "unlockCost": 0, "unlocked": true,
+    "totalQuests": 9
+  },
+  {
+    "id": "cain", "name": "Cain", "title": "The Wanderer", "era": 1, "rarity": "common",
+    "emoji": "⚠️", "color": "#dc2626",
+    "stats": { "faith": 2, "wisdom": 3, "courage": 5, "strength": 8 },
+    "bio": "Adam's firstborn son, whose jealousy led to history's first great sin.",
+    "unlockCost": 80, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "noah", "name": "Noah", "title": "Builder of the Ark", "era": 1, "rarity": "common",
+    "emoji": "🚢", "color": "#0284c7",
+    "stats": { "faith": 9, "wisdom": 7, "courage": 8, "strength": 7 },
+    "bio": "Found righteous before God in a corrupt world and trusted with saving all life on earth.",
+    "unlockCost": 120, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "enoch", "name": "Enoch", "title": "He Who Walked With God", "era": 1, "rarity": "rare",
+    "emoji": "✨", "color": "#f59e0b",
+    "stats": { "faith": 10, "wisdom": 8, "courage": 7, "strength": 5 },
+    "bio": "The man who walked so closely with God that he never saw death — God simply took him.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "abraham", "name": "Abraham", "title": "Father of Nations", "era": 2, "rarity": "rare",
+    "emoji": "⭐", "color": "#f59e0b",
+    "stats": { "faith": 10, "wisdom": 8, "courage": 9, "strength": 6 },
+    "bio": "Left everything he knew to follow God into the unknown — and became the father of nations.",
+    "unlockCost": 0, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "sarah", "name": "Sarah", "title": "Princess of Faith", "era": 2, "rarity": "rare",
+    "emoji": "👑", "color": "#f472b6",
+    "stats": { "faith": 8, "wisdom": 7, "courage": 7, "strength": 5 },
+    "bio": "Laughed at the impossible promise — then held the miracle child in her arms at 90.",
+    "unlockCost": 150, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "joseph", "name": "Joseph", "title": "The Dreamer", "era": 2, "rarity": "rare",
+    "emoji": "🌈", "color": "#8b5cf6",
+    "stats": { "faith": 9, "wisdom": 10, "courage": 8, "strength": 6 },
+    "bio": "Thrown into a pit, sold into slavery, imprisoned — yet God's hand never left him.",
+    "unlockCost": 180, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "moses", "name": "Moses", "title": "Deliverer of Israel", "era": 2, "rarity": "rare",
+    "emoji": "🔥", "color": "#ef4444",
+    "stats": { "faith": 9, "wisdom": 9, "courage": 8, "strength": 7 },
+    "bio": "From a basket in the Nile to parting the Red Sea — God chose the reluctant voice.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "joshua", "name": "Joshua", "title": "Conqueror of Canaan", "era": 2, "rarity": "rare",
+    "emoji": "🛡️", "color": "#0ea5e9",
+    "stats": { "faith": 9, "wisdom": 8, "courage": 10, "strength": 9 },
+    "bio": "Spy, soldier, successor to Moses — he shouted down the walls of Jericho.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "samson", "name": "Samson", "title": "The Mighty Judge", "era": 3, "rarity": "common",
+    "emoji": "💪", "color": "#f59e0b",
+    "stats": { "faith": 5, "wisdom": 3, "courage": 9, "strength": 10 },
+    "bio": "The strongest man alive — but strength without wisdom leads to chains.",
+    "unlockCost": 0, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "samuel", "name": "Samuel", "title": "The Listening Prophet", "era": 3, "rarity": "rare",
+    "emoji": "📯", "color": "#a3e635",
+    "stats": { "faith": 10, "wisdom": 9, "courage": 8, "strength": 5 },
+    "bio": "Heard God calling his name as a child and spent his whole life answering.",
+    "unlockCost": 180, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "david", "name": "David", "title": "King & Psalmist", "era": 3, "rarity": "epic",
+    "emoji": "🎵", "color": "#a855f7",
+    "stats": { "faith": 9, "wisdom": 8, "courage": 10, "strength": 8 },
+    "bio": "Shepherd boy, giant-slayer, poet-king — a man after God's own heart.",
+    "unlockCost": 250, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "jonathan", "name": "Jonathan", "title": "The Loyal Friend", "era": 3, "rarity": "rare",
+    "emoji": "🤝", "color": "#06b6d4",
+    "stats": { "faith": 8, "wisdom": 7, "courage": 9, "strength": 8 },
+    "bio": "Gave up a throne for friendship — the Bible's greatest picture of selfless loyalty.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "solomon", "name": "Solomon", "title": "The Wisest King", "era": 3, "rarity": "epic",
+    "emoji": "💎", "color": "#fbbf24",
+    "stats": { "faith": 7, "wisdom": 10, "courage": 6, "strength": 7 },
+    "bio": "Asked for wisdom when he could have had anything — and became the richest, wisest man alive.",
+    "unlockCost": 300, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "elijah", "name": "Elijah", "title": "The Prophet of Fire", "era": 4, "rarity": "rare",
+    "emoji": "⚡", "color": "#ef4444",
+    "stats": { "faith": 10, "wisdom": 8, "courage": 10, "strength": 7 },
+    "bio": "Called down fire from heaven and ran from a queen — the bravest coward God ever loved.",
+    "unlockCost": 0, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "elisha", "name": "Elisha", "title": "Man of Miracles", "era": 4, "rarity": "rare",
+    "emoji": "🪄", "color": "#22c55e",
+    "stats": { "faith": 10, "wisdom": 9, "courage": 8, "strength": 6 },
+    "bio": "Asked for double the Spirit — and performed twice as many miracles as his master.",
+    "unlockCost": 180, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "daniel", "name": "Daniel", "title": "The Brave Dreamer", "era": 4, "rarity": "epic",
+    "emoji": "🦁", "color": "#f59e0b",
+    "stats": { "faith": 10, "wisdom": 10, "courage": 10, "strength": 7 },
+    "bio": "Refused to eat the king's food, interpreted dreams, and survived lions and fire.",
+    "unlockCost": 280, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "esther", "name": "Esther", "title": "Queen of Courage", "era": 4, "rarity": "epic",
+    "emoji": "👸", "color": "#ec4899",
+    "stats": { "faith": 9, "wisdom": 9, "courage": 10, "strength": 6 },
+    "bio": "An orphan girl who became queen and risked her life to save an entire nation.",
+    "unlockCost": 280, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "jonah", "name": "Jonah", "title": "The Reluctant Prophet", "era": 4, "rarity": "rare",
+    "emoji": "🐳", "color": "#0284c7",
+    "stats": { "faith": 5, "wisdom": 6, "courage": 4, "strength": 5 },
+    "bio": "Ran from God, swallowed by a whale, and learned that mercy is bigger than any city.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "john_baptist", "name": "John the Baptist", "title": "Voice in the Wilderness", "era": 5, "rarity": "rare",
+    "emoji": "📢", "color": "#f59e0b",
+    "stats": { "faith": 10, "wisdom": 8, "courage": 10, "strength": 6 },
+    "bio": "Lived in the desert eating locusts, prepared the world for the greatest arrival in history.",
+    "unlockCost": 0, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "mary", "name": "Mary", "title": "Mother of Jesus", "era": 5, "rarity": "epic",
+    "emoji": "🕊️", "color": "#a78bfa",
+    "stats": { "faith": 10, "wisdom": 9, "courage": 9, "strength": 7 },
+    "bio": "A young girl who said yes to the most impossible calling the world had ever seen.",
+    "unlockCost": 300, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "peter", "name": "Peter", "title": "The Rock", "era": 5, "rarity": "epic",
+    "emoji": "⛰️", "color": "#0ea5e9",
+    "stats": { "faith": 8, "wisdom": 6, "courage": 8, "strength": 9 },
+    "bio": "Impulsive, loud, failed three times — then preached to 3,000 people in one sermon.",
+    "unlockCost": 280, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "mary_magdalene", "name": "Mary Magdalene", "title": "First at the Tomb", "era": 5, "rarity": "rare",
+    "emoji": "🌹", "color": "#f43f5e",
+    "stats": { "faith": 10, "wisdom": 7, "courage": 9, "strength": 5 },
+    "bio": "Healed from seven demons, she became the first person to see the risen Jesus.",
+    "unlockCost": 220, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "jesus", "name": "Jesus", "title": "Son of God", "era": 5, "rarity": "legendary",
+    "emoji": "✝️", "color": "#fbbf24",
+    "stats": { "faith": 10, "wisdom": 10, "courage": 10, "strength": 10 },
+    "bio": "God in human form. Healer, teacher, Saviour — the only one who conquered death.",
+    "unlockCost": 500, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "stephen", "name": "Stephen", "title": "The First Martyr", "era": 6, "rarity": "epic",
+    "emoji": "🌟", "color": "#f59e0b",
+    "stats": { "faith": 10, "wisdom": 9, "courage": 10, "strength": 6 },
+    "bio": "Full of the Spirit, he preached the most powerful sermon ever heard — then forgave his killers.",
+    "unlockCost": 0, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "paul", "name": "Paul", "title": "Apostle to the Nations", "era": 6, "rarity": "epic",
+    "emoji": "📜", "color": "#7c3aed",
+    "stats": { "faith": 10, "wisdom": 10, "courage": 10, "strength": 7 },
+    "bio": "From persecutor to preacher — shipwrecked, beaten, imprisoned, yet unstoppable.",
+    "unlockCost": 300, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "lydia", "name": "Lydia", "title": "Europe's First Convert", "era": 6, "rarity": "rare",
+    "emoji": "🪡", "color": "#ec4899",
+    "stats": { "faith": 9, "wisdom": 8, "courage": 7, "strength": 6 },
+    "bio": "A businesswoman by the river whose heart God opened — and Europe's Christian story began.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "timothy", "name": "Timothy", "title": "Paul's Faithful Son", "era": 6, "rarity": "rare",
+    "emoji": "📖", "color": "#0ea5e9",
+    "stats": { "faith": 9, "wisdom": 8, "courage": 7, "strength": 5 },
+    "bio": "Young, timid, but mentored by Paul — became a leader the whole church respected.",
+    "unlockCost": 200, "unlocked": false,
+    "totalQuests": 9
+  },
+  {
+    "id": "barnabas", "name": "Barnabas", "title": "Son of Encouragement", "era": 6, "rarity": "common",
+    "emoji": "🤗", "color": "#22c55e",
+    "stats": { "faith": 9, "wisdom": 7, "courage": 8, "strength": 6 },
+    "bio": "When no one trusted the converted Saul, Barnabas stood up for him and changed history.",
+    "unlockCost": 150, "unlocked": false,
+    "totalQuests": 9
+  }
+]

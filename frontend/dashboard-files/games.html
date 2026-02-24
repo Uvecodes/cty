@@ -4,154 +4,298 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fun Games | Catch Them Young</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/games.css"> 
   <link rel="stylesheet" href="../css/dashboard.css">
-  <link rel="stylesheet" href="../css/dark-mode.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- PWA meta tags -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CTY Bible">
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
 
-
-                            <!-- font link -->
-
-         <link rel="preconnect" href="https://fonts.googleapis.com">
-         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-         <link href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap" rel="stylesheet">
-  <!-- PWA mets tags -->
-        <link rel="manifest" href="../manifest.json">
-        <meta name="theme-color" content="#4CAF50">
-        <!-- ios support -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
-        <meta name="apple-mobile-web-app-title" content="CTY Bible">
-        <link rel="apple-touch-icon" href="../assets/icons/icon-192x192.png">
-  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  
-  <!-- Inline Styles for Games Page -->
-  
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #0d1117;
+      color: #e8eaf0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .games-nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      height: 60px;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .games-nav .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 900; font-size: 1.15rem; color: #f5c518;
+      text-decoration: none;
+    }
+    .games-nav .nav-logo img { height: 32px; }
+    .btn-back {
+      padding: 8px 20px; border-radius: 50px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e8eaf0; font-family: inherit; font-size: .9rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.13); }
+
+    /* ── HERO ── */
+    .games-hero {
+      text-align: center;
+      padding: 60px 24px 40px;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f5c518, #e07b20);
+      color: #1a1000; font-size: .75rem; font-weight: 900;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 50px; margin-bottom: 14px;
+    }
+    .games-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900; color: #fff;
+      line-height: 1.15; margin-bottom: 12px;
+    }
+    .games-hero h1 span { color: #f5c518; }
+    .games-hero p {
+      color: #9ca3af; font-size: 1.05rem; max-width: 520px; margin: 0 auto 8px;
+    }
+    .hero-stats {
+      display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .hero-stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 12px 24px; text-align: center;
+    }
+    .hero-stat .s-num { display: block; font-size: 1.5rem; font-weight: 900; color: #f5c518; }
+    .hero-stat .s-lbl { font-size: .78rem; color: #9ca3af; font-weight: 700; }
+
+    /* ── FLOATING BG ── */
+    .floaty {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .floaty span {
+      position: absolute; font-size: clamp(1.5rem, 3vw, 2.5rem);
+      opacity: 0.06; animation: fg-float linear infinite;
+    }
+    @keyframes fg-float {
+      0%   { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* ── GRID ── */
+    .games-section {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+    .section-label {
+      font-size: .75rem; font-weight: 900; letter-spacing: .12em;
+      text-transform: uppercase; color: #f5c518;
+      margin-bottom: 20px;
+    }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    /* ── CARD ── */
+    .game-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      padding: 28px 24px 22px;
+      cursor: pointer; text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: transform .22s, box-shadow .22s, border-color .22s;
+      position: relative; overflow: hidden;
+    }
+    .game-card::before {
+      content: ''; position: absolute;
+      inset: 0; border-radius: inherit;
+      background: var(--card-glow, rgba(245,197,24,0.08));
+      opacity: 0; transition: opacity .25s;
+    }
+    .game-card:hover { transform: translateY(-4px); border-color: rgba(245,197,24,0.35); }
+    .game-card:hover::before { opacity: 1; }
+    .game-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+
+    .card-icon {
+      font-size: 2.8rem; line-height: 1;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+    }
+    .card-badge {
+      display: inline-block; font-size: .68rem; font-weight: 900;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 10px; border-radius: 50px;
+      background: var(--badge-bg, rgba(245,197,24,0.15));
+      color: var(--badge-color, #f5c518);
+      border: 1px solid var(--badge-border, rgba(245,197,24,0.3));
+    }
+    .card-title {
+      font-size: 1.22rem; font-weight: 900; color: #fff;
+      line-height: 1.25; margin-top: 4px;
+    }
+    .card-desc {
+      font-size: .88rem; color: #9ca3af; line-height: 1.6; flex: 1;
+    }
+    .card-meta {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;
+    }
+    .card-tag {
+      font-size: .72rem; font-weight: 700;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px; padding: 2px 10px; color: #c9cdd8;
+    }
+    .card-arrow {
+      position: absolute; right: 20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem; color: rgba(255,255,255,0.15);
+      transition: color .2s, transform .2s;
+    }
+    .game-card:hover .card-arrow { color: #f5c518; transform: translateY(-50%) translateX(3px); }
+
+    /* Color variants */
+    .card-green  { --card-glow: rgba(46,204,113,0.09);  --badge-bg: rgba(46,204,113,0.15);  --badge-color: #2ecc71; --badge-border: rgba(46,204,113,0.3); }
+    .card-blue   { --card-glow: rgba(52,152,219,0.09);  --badge-bg: rgba(52,152,219,0.15);  --badge-color: #3498db; --badge-border: rgba(52,152,219,0.3); }
+    .card-purple { --card-glow: rgba(155,89,182,0.09);  --badge-bg: rgba(155,89,182,0.15);  --badge-color: #9b59b6; --badge-border: rgba(155,89,182,0.3); }
+    .card-teal   { --card-glow: rgba(26,188,156,0.09);  --badge-bg: rgba(26,188,156,0.15);  --badge-color: #1abc9c; --badge-border: rgba(26,188,156,0.3); }
+
+    /* ── FOOTER ── */
+    .games-footer {
+      text-align: center; padding: 24px;
+      color: #4b5563; font-size: .82rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav class="dashboard-navbar">
-    <div class="navbar-left">
-      <img id="navbarLogo" src="../assets/images/official-logo.svg" class="logo" alt="Catch Them Young">
-    </div>
-    <!-- <div class="navbar-right">
-      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-      <div class="user-avatar">
-        <img src="../assets/icons/default-avatar.png" alt="User Avatar" id="user-avatar-img">
-      </div> -->
-      <a href="./dashboard.html" class="btn btn-secondary">Back</a>
-    </div>
-  </nav>
 
-  <!-- Floating Background Elements -->
-  <div class="floating-elements">
-    <div class="floating-element">🎮</div>
-    <div class="floating-element">🎯</div>
-    <div class="floating-element">🏆</div>
-    <div class="floating-element">⭐</div>
+<!-- Floating BG -->
+<div class="floaty" aria-hidden="true">
+  <span style="left:8%;animation-duration:18s;animation-delay:0s">🎮</span>
+  <span style="left:20%;animation-duration:22s;animation-delay:3s">⭐</span>
+  <span style="left:35%;animation-duration:16s;animation-delay:7s">🏆</span>
+  <span style="left:55%;animation-duration:20s;animation-delay:1s">🧩</span>
+  <span style="left:70%;animation-duration:14s;animation-delay:5s">📖</span>
+  <span style="left:85%;animation-duration:24s;animation-delay:9s">🎯</span>
+</div>
+
+<!-- Nav -->
+<nav class="games-nav">
+  <a class="nav-logo" href="./dashboard.html">
+    <img src="../assets/images/official-logo.svg" alt="CTY" onerror="this.style.display='none'">
+    CTY Bible
+  </a>
+  <a class="btn-back" href="./dashboard.html">← Dashboard</a>
+</nav>
+
+<!-- Hero -->
+<div class="games-hero" style="position:relative;z-index:1">
+  <div class="hero-badge">🎮 Games Zone</div>
+  <h1>Play · Learn · <span>Grow in Faith</span></h1>
+  <p>Dive into exciting Bible games that challenge your mind and deepen your knowledge of Scripture.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="s-num">4</span><span class="s-lbl">Games Available</span></div>
+    <div class="hero-stat"><span class="s-num">270+</span><span class="s-lbl">Quests &amp; Puzzles</span></div>
+    <div class="hero-stat"><span class="s-num">20</span><span class="s-lbl">Bible Scenes</span></div>
   </div>
+</div>
 
-  <!-- Main Content -->
-  <div class="games-container">
-    <!-- Header Section -->
-    <div class="games-header">
-      <h1 class="games-title">🎮 Fun Games Zone</h1>
-      <p class="games-subtitle">Get ready for exciting educational games that make learning fun and engaging!</p>
-    </div>
+<!-- Games Grid -->
+<div class="games-section">
+  <div class="section-label">🔥 Available Now</div>
+  <div class="games-grid">
 
-    <!-- Coming Soon Section -->
-    <div class="coming-soon-section">
-      <div class="coming-soon-badge">🚀 Coming Soon!</div>
-      <h2 class="coming-soon-title">Something Amazing is Brewing!</h2>
-      <p class="coming-soon-description">
-        We're working hard to bring you the most fun and educational games ever! 
-        Get ready to challenge your mind, compete with friends, and earn amazing rewards.
-      </p>
-      
-      <!-- Progress Bar -->
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+    <!-- Bible Jigsaw Journey -->
+    <a class="game-card card-teal" href="./bible-games/jigsaw/index.html">
+      <span class="card-arrow">→</span>
+      <div class="card-icon">🧩</div>
+      <span class="card-badge">New!</span>
+      <div class="card-title">Bible Jigsaw Journey</div>
+      <p class="card-desc">Piece together 20 iconic biblical scenes — from Eden to the Resurrection. 64 unique puzzles with escalating difficulty, rotation mechanics, and rich scriptural facts.</p>
+      <div class="card-meta">
+        <span class="card-tag">20 Levels</span>
+        <span class="card-tag">Ages 12+</span>
+        <span class="card-tag">Canvas Puzzle</span>
       </div>
-      
-      <button class="cta-button" onclick="notifyMe()">Notify Me When Ready!</button>
-    </div>
+    </a>
 
-    <!-- Games Preview -->
-    <div class="games-preview">
-      <div class="game-card">
-        <div class="game-icon">🧩</div>
-        <h3 class="game-title">Bible Puzzle Challenge</h3>
-        <p class="game-description">
-          Solve interactive puzzles based on Bible stories and teachings. 
-          Test your knowledge while having fun!
-        </p>
-        <div class="game-status">In Development</div>
+    <!-- Character Quest -->
+    <a class="game-card card-purple" href="./bible-games/character-quest/index.html">
+      <span class="card-arrow">→</span>
+      <div class="card-icon">🦸</div>
+      <span class="card-badge">RPG Adventure</span>
+      <div class="card-title">Character Quest</div>
+      <p class="card-desc">Journey through the Bible with 30 characters across 4 eras. Answer quests — trivia, riddles, who-said-it challenges — to earn XP, unlock bosses, and discover scripture truths.</p>
+      <div class="card-meta">
+        <span class="card-tag">270 Quests</span>
+        <span class="card-tag">30 Characters</span>
+        <span class="card-tag">4 Eras</span>
       </div>
-      
-      <div class="game-card">
-        <div class="game-icon">🎯</div>
-        <h3 class="game-title">Memory Verse Master</h3>
-        <p class="game-description">
-          Challenge your memory with exciting games that help you 
-          remember Bible verses and important lessons.
-        </p>
-        <div class="game-status">Coming Soon</div>
+    </a>
+
+    <!-- Bible Puzzle Challenge -->
+    <a class="game-card card-blue" href="./bible-games/bible-puzzle-challenge/index.html">
+      <span class="card-arrow">→</span>
+      <div class="card-icon">🎯</div>
+      <span class="card-badge">Quiz Game</span>
+      <div class="card-title">Bible Puzzle Challenge</div>
+      <p class="card-desc">Put your Bible knowledge to the test with multiple-choice puzzles spanning Old &amp; New Testament stories, prophecies, and key teachings across multiple worlds.</p>
+      <div class="card-meta">
+        <span class="card-tag">Multiple Worlds</span>
+        <span class="card-tag">All Ages</span>
+        <span class="card-tag">Quiz</span>
       </div>
-      
-      <div class="game-card">
-        <div class="game-icon">🏆</div>
-        <h3 class="game-title">Character Quest</h3>
-        <p class="game-description">
-          Embark on adventures with Bible characters and learn 
-          valuable life lessons through interactive storytelling.
-        </p>
-        <div class="game-status">Planning Phase</div>
+    </a>
+
+    <!-- Memory Verse Master -->
+    <a class="game-card card-green" href="./bible-games/memory-verse-master/index.html">
+      <span class="card-arrow">→</span>
+      <div class="card-icon">📖</div>
+      <span class="card-badge">Memory Game</span>
+      <div class="card-title">Memory Verse Master</div>
+      <p class="card-desc">Train your memory with carefully selected scripture verses. Fill in the blanks, match references, and build your verse arsenal — one chapter at a time.</p>
+      <div class="card-meta">
+        <span class="card-tag">Scripture</span>
+        <span class="card-tag">Memory</span>
+        <span class="card-tag">All Ages</span>
       </div>
-    </div>
+    </a>
+
   </div>
+</div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast hidden"></div>
+<div class="games-footer">
+  Catch Them Young Bible Academy &mdash; All games use local progress saving
+</div>
 
-  <!-- Scripts -->
-  <script src="../js/firebase-config.js"></script>
-   <script src="../js/dark-mode.js"></script>
-  <script>
-    // Simple notification function
-    function notifyMe() {
-      const toast = document.getElementById("toast");
-      if (toast) {
-        toast.textContent = "🎉 You'll be notified when games are ready!";
-        toast.className = "toast show success";
-        
-        setTimeout(() => {
-          toast.classList.remove("show");
-          setTimeout(() => {
-            toast.classList.add("hidden");
-          }, 300);
-        }, 3000);
-      }
-    }
-    
-    // Theme toggle function (placeholder)
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-      const themeBtn = document.querySelector('.theme-toggle');
-      if (themeBtn) {
-        themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-      }
-    }
-    
-    // Logout function (placeholder)
-    function logout() {
-      // This would integrate with Firebase auth
-      window.location.href = '../authentication/login.html';
-    }
-  </script>
+<!-- Scripts -->
+<script src="../js/firebase-config.js"></script>
 </body>
 </html>
-

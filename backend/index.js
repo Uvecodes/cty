@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3001;
 // Import routes
 const authRoutes = require('./routes/auth');
 const versesRoutes = require('./routes/verses');
+const supportRoutes = require('./routes/support');
+const shopRoutes = require('./routes/shop');
 
 // ===================================================
 // CORS Configuration
@@ -16,7 +18,9 @@ const versesRoutes = require('./routes/verses');
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://127.0.0.1:5500',
+  'http://127.0.0.1:5501',
   'http://localhost:5500',
+  'http://localhost:5501',
   'http://localhost:3000',
 ].filter(Boolean);
 
@@ -80,6 +84,8 @@ app.get('/api/firebase-config', (req, res) => {
 // ===================================================
 app.use('/api/auth', authRoutes);
 app.use('/api/verses', versesRoutes);
+app.use('/api/support', supportRoutes);
+app.use('/api/shop', shopRoutes);
 
 // ===================================================
 // EmailJS Initialization

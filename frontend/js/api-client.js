@@ -1,8 +1,9 @@
 // API Client for backend communication
 // Handles API calls, token management, and error handling
 
-// const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001/api';
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001/api' ;//|| 'https://cty-7cyi.onrender.com/api';
+const API_BASE_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+  ? 'http://localhost:3001/api'
+  : 'https://cty-7cyi.onrender.com/api';
 
 /**
  * Get current user's Firebase ID token

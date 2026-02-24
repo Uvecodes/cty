@@ -1,117 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Verse Master 🎯</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Memory Verse Master | CTY</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container">
-        <!-- Header -->
-        <header class="game-header">
-            <h1 class="game-title">✨ Memory Verse Master ✨</h1>
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-label">Score</span>
-                    <span class="stat-value" id="score">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Streak</span>
-                    <span class="stat-value streak-display" id="streak">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Level</span>
-                    <span class="stat-value" id="level">1</span>
-                </div>
-            </div>
-        </header>
 
-        <!-- Main Game Area -->
-        <main class="game-main">
-            <!-- Verse Display Phase -->
-            <section class="verse-display-section" id="verseDisplay">
-                <div class="verse-card card-entrance">
-                    <div class="timer-container">
-                        <div class="timer-circle">
-                            <svg class="timer-svg" viewBox="0 0 120 120">
-                                <circle class="timer-bg" cx="60" cy="60" r="54"></circle>
-                                <circle class="timer-progress" cx="60" cy="60" r="54" id="timerCircle"></circle>
-                            </svg>
-                            <span class="timer-text" id="timerText">10</span>
-                        </div>
-                    </div>
-                    <div class="verse-content">
-                        <p class="verse-text" id="verseText"></p>
-                        <p class="verse-reference" id="verseRef"></p>
-                    </div>
-                    <div class="verse-hint">
-                        <p>👀 Read carefully! The verse will disappear soon...</p>
-                    </div>
-                </div>
-            </section>
+<!-- ══════════════════════════════════════
+     SCREEN: SPLASH
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-splash">
+  <div class="splash-bg"></div>
+  <div class="splash-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="splash-content">
+    <div class="splash-book">📖</div>
+    <h1 class="splash-title">Memory Verse<br><span>Master</span></h1>
+    <p class="splash-tagline">Hide God's Word in Your Heart</p>
+    <div class="splash-bar-wrap"><div class="splash-bar" id="splash-bar"></div></div>
+  </div>
+</div>
 
-            <!-- Quiz Phase -->
-            <section class="quiz-section hidden" id="quizSection">
-                <div class="quiz-card card-entrance">
-                    <div class="quiz-header">
-                        <h2>Fill in the blanks! 🎯</h2>
-                        <div class="speed-bonus-indicator" id="speedBonus">⚡ Speed Bonus Active!</div>
-                    </div>
-                    <div class="quiz-content">
-                        <div class="fill-blank-text" id="fillBlankText"></div>
-                        <div class="quiz-options" id="quizOptions"></div>
-                    </div>
-                    <div class="quiz-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <span class="progress-text" id="progressText">Question 1 of 1</span>
-                    </div>
-                </div>
-            </section>
+<!-- ══════════════════════════════════════
+     SCREEN: HOME
+══════════════════════════════════════ -->
+<div class="screen" id="screen-home">
+  <div class="home-bg"></div>
+  <div class="home-particles" id="home-particles"></div>
+  <div class="home-content">
+    <div class="home-logo">
+      <span class="home-icon">📖</span>
+      <div>
+        <h1>Memory Verse<br><span>Master</span></h1>
+        <p class="home-sub">30 levels · 60 Bible verses · 4 game modes</p>
+      </div>
+    </div>
+    <div class="home-stats" id="home-stats">
+      <div class="stat-box">
+        <span class="stat-num" id="stat-done">0</span>
+        <span class="stat-lbl">Cleared</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-stars">0</span>
+        <span class="stat-lbl">Stars</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-streak">0</span>
+        <span class="stat-lbl">Streak</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-best">0</span>
+        <span class="stat-lbl">Best Score</span>
+      </div>
+    </div>
+    <div class="home-btns">
+      <button class="btn-primary" id="btn-play">▶ Continue Journey</button>
+      <button class="btn-secondary" id="btn-levels">🗺 Level Map</button>
+    </div>
+    <button class="btn-ghost" id="btn-howto">? How to Play</button>
+  </div>
+  <a class="back-link" href="../../games.html">← Back to Games</a>
+</div>
 
-            <!-- Feedback Overlay -->
-            <div class="feedback-overlay" id="feedbackOverlay">
-                <div class="feedback-content">
-                    <div class="feedback-icon" id="feedbackIcon">✓</div>
-                    <div class="feedback-message" id="feedbackMessage">Correct!</div>
-                    <div class="feedback-points" id="feedbackPoints">+10</div>
-                </div>
-            </div>
+<!-- ══════════════════════════════════════
+     SCREEN: LEVEL SELECT
+══════════════════════════════════════ -->
+<div class="screen" id="screen-levels">
+  <div class="levels-header">
+    <button class="btn-nav" id="btn-levels-back">←</button>
+    <h2>Level Map</h2>
+    <span id="levels-progress-text">0 / 30</span>
+  </div>
+  <div class="levels-filter" id="levels-filter"></div>
+  <div class="levels-grid" id="levels-grid"></div>
+</div>
 
-            <!-- Confetti Container -->
-            <div class="confetti-container" id="confettiContainer"></div>
-        </main>
-
-        <!-- Controls -->
-        <footer class="game-footer">
-            <div class="mode-selector">
-                <button class="mode-btn active" data-mode="practice" id="practiceMode">Practice</button>
-                <button class="mode-btn" data-mode="daily" id="dailyMode">Daily Verse</button>
-            </div>
-            <div class="action-buttons">
-                <button class="btn btn-primary" id="startBtn">Start Game 🚀</button>
-                <button class="btn btn-secondary hidden" id="nextBtn">Next Round →</button>
-            </div>
-        </footer>
-
-        <!-- Loading State -->
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <p>Loading verses...</p>
+<!-- ══════════════════════════════════════
+     SCREEN: PRE-LEVEL
+══════════════════════════════════════ -->
+<div class="screen" id="screen-prelevel">
+  <button class="btn-nav" id="btn-pre-back">←</button>
+  <div class="pre-inner">
+    <div class="pre-left">
+      <div class="pre-verse-card" id="pre-verse-card">
+        <div class="pre-verse-label">📖 Verse Preview</div>
+        <p class="pre-verse-text" id="pre-verse-text"></p>
+        <p class="pre-verse-ref" id="pre-verse-ref"></p>
+      </div>
+      <div class="pre-context-card">
+        <p class="pre-context-title">🏛 Context</p>
+        <p class="pre-context-text" id="pre-context-text"></p>
+      </div>
+    </div>
+    <div class="pre-right">
+      <div class="pre-badge-row">
+        <span class="pre-tag" id="pre-tag"></span>
+        <span class="pre-mode-badge" id="pre-mode-badge"></span>
+      </div>
+      <h2 class="pre-title" id="pre-title"></h2>
+      <p class="pre-subtitle" id="pre-subtitle"></p>
+      <div class="pre-meta">
+        <div class="meta-row" id="pre-read-row">
+          <span class="meta-icon">👁</span>
+          <span>Read time: <strong id="pre-read-time"></strong> seconds</span>
         </div>
+        <div class="meta-row">
+          <span class="meta-icon">⏱</span>
+          <span>Quiz timer: <strong id="pre-quiz-time"></strong> seconds</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-icon">💡</span>
+          <span id="pre-hints-text"></span>
+        </div>
+        <div class="meta-row" id="pre-blanks-row">
+          <span class="meta-icon">📝</span>
+          <span id="pre-blanks-text"></span>
+        </div>
+      </div>
+      <div class="pre-stars-earned" id="pre-stars-earned"></div>
+      <button class="btn-primary btn-large" id="btn-start">📖 Start Level</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: GAME
+══════════════════════════════════════ -->
+<div class="screen" id="screen-game">
+
+  <!-- HUD -->
+  <div class="game-hud">
+    <button class="hud-btn" id="btn-game-menu">☰</button>
+    <div class="hud-center">
+      <span class="hud-level-name" id="hud-level-name"></span>
+      <div class="hud-progress-wrap">
+        <div class="hud-progress-bar" id="hud-progress-bar"></div>
+      </div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-timer-ring" id="hud-timer-ring">
+        <svg viewBox="0 0 44 44" class="timer-svg">
+          <circle class="timer-track" cx="22" cy="22" r="18"/>
+          <circle class="timer-arc" cx="22" cy="22" r="18" id="timer-arc"/>
+        </svg>
+        <span class="timer-num" id="hud-timer">30</span>
+      </div>
+      <button class="hud-btn hud-hint" id="btn-hint" title="Hint">
+        💡<span class="hint-badge" id="hint-count">2</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PHASE: STUDY (verse memorisation) -->
+  <div class="phase" id="phase-study">
+    <div class="study-card">
+      <div class="study-bar-wrap">
+        <div class="study-bar-track">
+          <div class="study-bar-fill" id="study-bar"></div>
+        </div>
+        <span class="study-bar-label" id="study-countdown">10</span>
+      </div>
+      <div class="study-icon-row">
+        <span class="study-theme-icon" id="study-theme-icon">📖</span>
+        <span class="study-era" id="study-era"></span>
+      </div>
+      <p class="study-verse" id="study-verse"></p>
+      <p class="study-ref" id="study-ref"></p>
+      <div class="study-footer">
+        <span class="study-hint-text">Memorise this verse — it disappears soon!</span>
+        <button class="btn-ready" id="btn-ready">Ready ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE: QUIZ -->
+  <div class="phase hidden" id="phase-quiz">
+
+    <!-- Mode label strip -->
+    <div class="mode-strip" id="mode-strip">
+      <span class="mode-icon" id="mode-icon"></span>
+      <span class="mode-desc" id="mode-desc"></span>
     </div>
 
-    <!-- Scripts -->
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
-    <!-- Firebase Config -->
-    <script src="../../../js/firebase-config.js"></script>
-    <!-- Game Logic -->
-    <script src="./game.js"></script>
+    <!-- ── MODE: FILL BLANK ── -->
+    <div class="mode-panel hidden" id="mode-fill-blank">
+      <div class="fill-verse-wrap">
+        <div class="fill-verse" id="fill-verse"></div>
+      </div>
+      <div class="fill-blank-nav">
+        <span class="blank-nav-label">Blank <span id="blank-current">1</span> of <span id="blank-total">3</span></span>
+      </div>
+      <div class="choices-grid" id="choices-grid"></div>
+    </div>
+
+    <!-- ── MODE: ARRANGE ── -->
+    <div class="mode-panel hidden" id="mode-arrange">
+      <div class="arrange-target-wrap">
+        <div class="arrange-label">Build the verse ↓</div>
+        <div class="arrange-target" id="arrange-target">
+          <span class="arrange-placeholder">Tap words below to place them here</span>
+        </div>
+        <button class="btn-arrange-check" id="btn-arrange-check">Check ✓</button>
+      </div>
+      <div class="arrange-bank-wrap">
+        <div class="arrange-bank" id="arrange-bank"></div>
+      </div>
+      <button class="btn-ghost btn-arrange-clear" id="btn-arrange-clear">↩ Clear all</button>
+    </div>
+
+    <!-- ── MODE: TYPE BLANK ── -->
+    <div class="mode-panel hidden" id="mode-type-blank">
+      <div class="type-verse-wrap">
+        <div class="type-verse" id="type-verse"></div>
+      </div>
+      <div class="type-input-wrap">
+        <input
+          id="type-input"
+          class="type-input"
+          type="text"
+          placeholder="Type the missing word…"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <button class="btn-type-submit" id="btn-type-submit">Check →</button>
+      </div>
+      <div class="type-nav">
+        Blank <span id="type-blank-num">1</span> of <span id="type-blank-total">3</span>
+      </div>
+    </div>
+
+    <!-- ── MODE: REF MATCH ── -->
+    <div class="mode-panel hidden" id="mode-ref-match">
+      <div class="ref-verse-card">
+        <p class="ref-verse-text" id="ref-verse-text"></p>
+      </div>
+      <p class="ref-instruction">Which reference is this verse from?</p>
+      <div class="ref-choices" id="ref-choices"></div>
+      <div class="ref-progress">
+        Verse <span id="ref-current">1</span> of <span id="ref-total">4</span>
+      </div>
+    </div>
+
+  </div><!-- /phase-quiz -->
+
+  <!-- Correct/Wrong flash -->
+  <div class="answer-flash" id="answer-flash">
+    <div class="flash-icon" id="flash-icon">✓</div>
+    <div class="flash-msg" id="flash-msg">Correct!</div>
+    <div class="flash-pts" id="flash-pts">+15</div>
+  </div>
+
+  <!-- Pause overlay -->
+  <div class="pause-overlay hidden" id="pause-overlay">
+    <div class="pause-box">
+      <h3>⏸ Paused</h3>
+      <button class="btn-primary" id="btn-resume">▶ Resume</button>
+      <button class="btn-secondary" id="btn-hint-pause">💡 Use Hint</button>
+      <button class="btn-ghost" id="btn-abandon">✕ Quit Level</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: COMPLETE
+══════════════════════════════════════ -->
+<div class="screen" id="screen-complete">
+  <div class="complete-bg" id="complete-bg"></div>
+  <div class="complete-content">
+    <div class="complete-stars" id="complete-stars"></div>
+    <h2 class="complete-title" id="complete-title">Level Complete!</h2>
+    <div class="complete-score-row">
+      <div class="score-chip">🏆 <span id="complete-score">0</span> pts</div>
+      <div class="score-chip">⚡ <span id="complete-time">0s</span> avg</div>
+    </div>
+
+    <!-- Full verse reveal -->
+    <div class="complete-verse-card" id="complete-verse-card">
+      <div class="complete-verse-label">📖 The Full Verse</div>
+      <p class="complete-verse-text" id="complete-verse-text"></p>
+      <p class="complete-verse-ref" id="complete-verse-ref"></p>
+    </div>
+
+    <!-- Lesson card -->
+    <div class="lesson-card" id="lesson-card">
+      <div class="lesson-header">
+        <span class="lesson-icon">🌟</span>
+        <span class="lesson-title">Key Truth</span>
+      </div>
+      <p class="lesson-text" id="lesson-text"></p>
+    </div>
+
+    <div class="complete-btns">
+      <button class="btn-primary" id="btn-next-level">Next Level →</button>
+      <button class="btn-secondary" id="btn-replay">↺ Replay</button>
+      <button class="btn-ghost" id="btn-complete-menu">🏠 Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN: HOW TO PLAY
+══════════════════════════════════════ -->
+<div class="screen" id="screen-howto">
+  <button class="btn-nav" id="btn-howto-back">←</button>
+  <div class="howto-content">
+    <h2>📖 How to Play</h2>
+    <div class="howto-steps">
+      <div class="howto-step">
+        <span class="step-num">1</span>
+        <div>
+          <h4>Study the verse</h4>
+          <p>A Bible verse appears for a limited time. Read it carefully — some levels give you only 3 seconds!</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">2</span>
+        <div>
+          <h4>Four game modes</h4>
+          <p>Each level uses one of four challenge types — Fill Blank, Arrange Words, Type the Answer, or Match the Reference.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">3</span>
+        <div>
+          <h4>Fill Blank mode</h4>
+          <p>Key words are hidden. Select the correct word from 4 choices. Higher levels have more blanks and less time!</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">4</span>
+        <div>
+          <h4>Arrange mode</h4>
+          <p>All the words are shuffled. Tap them in the correct order to rebuild the verse perfectly.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">5</span>
+        <div>
+          <h4>Type Blank mode</h4>
+          <p>No choices given — type the exact missing word from memory. Minor spelling variations are accepted.</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">6</span>
+        <div>
+          <h4>Ref Match mode</h4>
+          <p>Read the verse and pick the correct Bible reference from 4 options. Fast and precise — no study time!</p>
+        </div>
+      </div>
+      <div class="howto-step">
+        <span class="step-num">7</span>
+        <div>
+          <h4>Earn 3 stars</h4>
+          <p>Answer quickly for 3 stars. Every level reveals the verse's deep context and key truth after you complete it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="howto-modes">
+      <h4>Difficulty Levels</h4>
+      <div class="mode-row"><span class="mode-chip beginner">Beginner</span><span>Levels 1–3 · 1 blank · 12s read time</span></div>
+      <div class="mode-row"><span class="mode-chip easy">Easy</span><span>Levels 4–6 · 2 blanks · 10s read time</span></div>
+      <div class="mode-row"><span class="mode-chip medium">Medium</span><span>Levels 7–12 · 3–4 blanks · 7–9s</span></div>
+      <div class="mode-row"><span class="mode-chip hard">Hard</span><span>Levels 13–20 · 4–5 blanks · 5–7s</span></div>
+      <div class="mode-row"><span class="mode-chip expert">Expert</span><span>Levels 21–26 · 5–6 blanks · 5s</span></div>
+      <div class="mode-row"><span class="mode-chip master">Master</span><span>Levels 27–30 · 6 blanks · 3–4s · No hints</span></div>
+    </div>
+    <button class="btn-primary" id="btn-howto-play">▶ Start Playing</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     GLOBAL OVERLAYS
+══════════════════════════════════════ -->
+<div class="confetti-layer" id="confetti-layer"></div>
+<div class="sparks-layer" id="sparks-layer"></div>
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="../../../js/firebase-config.js"></script>
+<script src="./game.js"></script>
 </body>
 </html>

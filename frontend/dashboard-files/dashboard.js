@@ -98,6 +98,7 @@
   }
 
   // Function to start progress bar refresh interval
+  
   function startProgressBarRefresh() {
     // Update progress bar every 5 seconds
     const refreshInterval = setInterval(async () => {

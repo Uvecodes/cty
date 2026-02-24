@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "name": "Creation",
+    "emoji": "🌍",
+    "color": "#4CAF50",
+    "bgGradient": "linear-gradient(135deg, #e8f5e9, #c8e6c9)",
+    "description": "Learn how God made the world!",
+    "sticker": "🌟",
+    "stickerName": "Creation Star",
+    "levels": [
+      {"level": 1, "name": "Days 1 to 3",       "questions": ["w1q1","w1q2","w1q3","w1q4","w1q5"]},
+      {"level": 2, "name": "Days 4 to 7",        "questions": ["w1q6","w1q7","w1q8","w1q9","w1q10"]},
+      {"level": 3, "name": "Garden of Eden",     "questions": ["w1q11","w1q12","w1q13","w1q14","w1q15"]},
+      {"level": 4, "name": "Adam & Eve",         "questions": ["w1q16","w1q17","w1q18","w1q19","w1q20"]},
+      {"level": 5, "name": "Creation Master",    "questions": ["w1q21","w1q22","w1q23","w1q24","w1q25"]}
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Noah's Ark",
+    "emoji": "🚢",
+    "color": "#2196F3",
+    "bgGradient": "linear-gradient(135deg, #e3f2fd, #bbdefb)",
+    "description": "The story of Noah and the big flood!",
+    "sticker": "🌈",
+    "stickerName": "Rainbow Promise",
+    "levels": [
+      {"level": 1, "name": "Building the Ark",   "questions": ["w2q1","w2q2","w2q3","w2q4","w2q5"]},
+      {"level": 2, "name": "Flood & Rainbow",    "questions": ["w2q6","w2q7","w2q8","w2q9","w2q10"]},
+      {"level": 3, "name": "God's Covenant",     "questions": ["w2q11","w2q12","w2q13","w2q14","w2q15"]},
+      {"level": 4, "name": "Animals & Ark",      "questions": ["w2q16","w2q17","w2q18","w2q19","w2q20"]},
+      {"level": 5, "name": "Ark Master",         "questions": ["w2q21","w2q22","w2q23","w2q24","w2q25"]}
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Baby Moses",
+    "emoji": "🧺",
+    "color": "#FF9800",
+    "bgGradient": "linear-gradient(135deg, #fff3e0, #ffe0b2)",
+    "description": "Moses saved from the river to free a nation!",
+    "sticker": "🔥",
+    "stickerName": "Burning Bush",
+    "levels": [
+      {"level": 1, "name": "Basket & Burning Bush", "questions": ["w3q1","w3q2","w3q3","w3q4","w3q5"]},
+      {"level": 2, "name": "Crossing the Sea",      "questions": ["w3q6","w3q7","w3q8","w3q9","w3q10"]},
+      {"level": 3, "name": "Pharaoh & Plagues",     "questions": ["w3q11","w3q12","w3q13","w3q14","w3q15"]},
+      {"level": 4, "name": "Desert Journey",        "questions": ["w3q16","w3q17","w3q18","w3q19","w3q20"]},
+      {"level": 5, "name": "Moses Master",          "questions": ["w3q21","w3q22","w3q23","w3q24","w3q25"]}
+    ]
+  },
+  {
+    "id": 4,
+    "name": "David & Goliath",
+    "emoji": "🪨",
+    "color": "#9C27B0",
+    "bgGradient": "linear-gradient(135deg, #f3e5f5, #e1bee7)",
+    "description": "A small boy vs. a giant — God wins!",
+    "sticker": "👑",
+    "stickerName": "David's Crown",
+    "levels": [
+      {"level": 1, "name": "Shepherd Boy",       "questions": ["w4q1","w4q2","w4q3","w4q4","w4q5"]},
+      {"level": 2, "name": "Giant Defeated",     "questions": ["w4q6","w4q7","w4q8","w4q9","w4q10"]},
+      {"level": 3, "name": "King David",         "questions": ["w4q11","w4q12","w4q13","w4q14","w4q15"]},
+      {"level": 4, "name": "Songs & Psalms",     "questions": ["w4q16","w4q17","w4q18","w4q19","w4q20"]},
+      {"level": 5, "name": "David Master",       "questions": ["w4q21","w4q22","w4q23","w4q24","w4q25"]}
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Daniel & Lions",
+    "emoji": "🦁",
+    "color": "#F44336",
+    "bgGradient": "linear-gradient(135deg, #ffebee, #ffcdd2)",
+    "description": "Daniel was brave because he trusted God!",
+    "sticker": "🙏",
+    "stickerName": "Brave Prayer",
+    "levels": [
+      {"level": 1, "name": "Daniel Prays",       "questions": ["w5q1","w5q2","w5q3","w5q4","w5q5"]},
+      {"level": 2, "name": "Lions' Den",         "questions": ["w5q6","w5q7","w5q8","w5q9","w5q10"]},
+      {"level": 3, "name": "Fiery Furnace",      "questions": ["w5q11","w5q12","w5q13","w5q14","w5q15"]},
+      {"level": 4, "name": "Dreams & Visions",   "questions": ["w5q16","w5q17","w5q18","w5q19","w5q20"]},
+      {"level": 5, "name": "Daniel Master",      "questions": ["w5q21","w5q22","w5q23","w5q24","w5q25"]}
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Baby Jesus",
+    "emoji": "⭐",
+    "color": "#FFD700",
+    "bgGradient": "linear-gradient(135deg, #fffde7, #fff9c4)",
+    "description": "Jesus is born — the best news ever!",
+    "sticker": "🎄",
+    "stickerName": "Christmas Joy",
+    "levels": [
+      {"level": 1, "name": "Angels & Stable",      "questions": ["w6q1","w6q2","w6q3","w6q4","w6q5"]},
+      {"level": 2, "name": "Shepherds & Wise Men", "questions": ["w6q6","w6q7","w6q8","w6q9","w6q10"]},
+      {"level": 3, "name": "Flight to Egypt",      "questions": ["w6q11","w6q12","w6q13","w6q14","w6q15"]},
+      {"level": 4, "name": "John the Baptist",     "questions": ["w6q16","w6q17","w6q18","w6q19","w6q20"]},
+      {"level": 5, "name": "Christmas Master",     "questions": ["w6q21","w6q22","w6q23","w6q24","w6q25"]}
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Jesus' Miracles",
+    "emoji": "✨",
+    "color": "#00BCD4",
+    "bgGradient": "linear-gradient(135deg, #e0f7fa, #b2ebf2)",
+    "description": "Jesus did amazing miracles!",
+    "sticker": "🐟",
+    "stickerName": "Miracle Fish",
+    "levels": [
+      {"level": 1, "name": "Loaves & Water",     "questions": ["w7q1","w7q2","w7q3","w7q4","w7q5"]},
+      {"level": 2, "name": "Storms & Healing",   "questions": ["w7q6","w7q7","w7q8","w7q9","w7q10"]},
+      {"level": 3, "name": "Raised to Life",     "questions": ["w7q11","w7q12","w7q13","w7q14","w7q15"]},
+      {"level": 4, "name": "Sight & Faith",      "questions": ["w7q16","w7q17","w7q18","w7q19","w7q20"]},
+      {"level": 5, "name": "Miracles Master",    "questions": ["w7q21","w7q22","w7q23","w7q24","w7q25"]}
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Good Shepherd",
+    "emoji": "🐑",
+    "color": "#8BC34A",
+    "bgGradient": "linear-gradient(135deg, #f1f8e9, #dcedc8)",
+    "description": "Jesus loves us like a shepherd loves his sheep!",
+    "sticker": "💚",
+    "stickerName": "Love Leaf",
+    "levels": [
+      {"level": 1, "name": "100 Sheep",          "questions": ["w8q1","w8q2","w8q3","w8q4","w8q5"]},
+      {"level": 2, "name": "Lost & Found",       "questions": ["w8q6","w8q7","w8q8","w8q9","w8q10"]},
+      {"level": 3, "name": "I Am Sayings",       "questions": ["w8q11","w8q12","w8q13","w8q14","w8q15"]},
+      {"level": 4, "name": "Love & Forgiveness", "questions": ["w8q16","w8q17","w8q18","w8q19","w8q20"]},
+      {"level": 5, "name": "Shepherd Master",    "questions": ["w8q21","w8q22","w8q23","w8q24","w8q25"]}
+    ]
+  }
+]

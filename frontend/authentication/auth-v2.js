@@ -79,9 +79,10 @@ async function register(event) {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('confirm-password').value;
+  const denomination = document.getElementById('denomination').value;
 
   // Validation
-  if (!name || !age || !email || !password || !confirmPassword) {
+  if (!name || !age || !email || !password || !confirmPassword || !denomination) {
     showToast('Please fill all fields.');
     return;
   }
@@ -98,7 +99,7 @@ async function register(event) {
     const response = await fetch(`${window.API_BASE}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name, age: parseInt(age) })
+      body: JSON.stringify({ email, password, name, age: parseInt(age), denomination })
     });
 
     const data = await response.json();
@@ -242,20 +243,8 @@ function setupAuthMonitor() {
 // Event Listeners
 // ===================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  // Wait for Firebase to be ready (initialized by firebase-config.js)
-  if (window.firebaseReady) {
-    await window.firebaseReady;
-  } else {
-    // Fallback: wait for firebase-ready event if promise not available
-    await new Promise((resolve) => {
-      window.addEventListener('firebase-ready', resolve, { once: true });
-    });
-  }
-
-  // Then set up auth monitor and form listeners
-  setupAuthMonitor();
-
-
+  // Attach form listeners immediately so native form submission is always blocked,
+  // regardless of whether Firebase finishes initialising in time.
   const signupForm = document.getElementById('signupForm');
   if (signupForm) signupForm.addEventListener('submit', register);
 
@@ -268,5 +257,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       forgotPassword();
     });
+  }
+
+  // Wait for Firebase to be ready before setting up the auth state monitor
+  try {
+    if (window.firebaseReady) {
+      await window.firebaseReady;
+    } else {
+      await new Promise((resolve) => {
+        window.addEventListener('firebase-ready', resolve, { once: true });
+      });
+    }
+    setupAuthMonitor();
+  } catch (e) {
+    console.error('Firebase initialisation failed — auth monitor not started:', e);
   }
 });

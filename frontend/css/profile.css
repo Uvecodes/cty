@@ -747,4 +747,91 @@
 .preview-close-btn:hover {
   background: white;
   transform: rotate(90deg);
-} 
+}
+
+/* =============================================
+   Shop History Section
+   ============================================= */
+.shop-history-section {
+  padding: 0 1rem 3rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.shop-history-card {
+  margin-top: 0;
+}
+
+.shop-history-icon {
+  font-style: normal;
+  margin-right: 0.4rem;
+}
+
+.shop-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.shop-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: var(--color-gray, #f5f6fa);
+  border-radius: 0.75rem;
+  gap: 1rem;
+  transition: background 0.15s;
+}
+
+.shop-history-item:hover {
+  background: #eaf5e4;
+}
+
+.shi-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.shi-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-dark, #22223b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shi-date {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.shi-amount {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #e65100;
+  flex-shrink: 0;
+}
+
+.shop-history-empty {
+  color: #999;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.shop-history-empty a {
+  color: var(--color-green, #58cc02);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Dark mode */
+.dark-mode .shop-history-item { background: #1e1e1e; }
+.dark-mode .shop-history-item:hover { background: #252e20; }
+.dark-mode .shi-name { color: #e0e0e0; }
+.dark-mode .shi-date { color: #aaa; }

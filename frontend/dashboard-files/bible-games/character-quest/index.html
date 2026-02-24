@@ -1,163 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Quest - Bible Adventure 🗡️</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Character Quest | CTY Bible Adventure</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container">
-        <!-- Particle Background -->
-        <div class="particles" id="particles"></div>
 
-        <!-- Welcome Screen -->
-        <section class="screen welcome-screen active" id="welcomeScreen">
-            <div class="welcome-content">
-                <h1 class="game-title animate-title">⚔️ Character Quest ⚔️</h1>
-                <p class="game-subtitle animate-subtitle">Embark on Epic Bible Adventures</p>
-                <div class="welcome-animation">
-                    <div class="sword-icon">🗡️</div>
-                    <div class="shield-icon">🛡️</div>
-                </div>
-                <button class="btn btn-primary btn-large animate-btn" id="startBtn">
-                    Begin Your Journey
-                </button>
+<div class="game-wrap" id="game-wrap">
+  <canvas class="particle-canvas" id="particle-canvas"></canvas>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 1 — SPLASH / BOOT
+  ══════════════════════════════════════ -->
+  <div class="screen active" id="screen-splash">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <span class="splash-sword">⚔️</span>
+        <h1 class="splash-title">Character<br><span>Quest</span></h1>
+        <span class="splash-shield">🛡️</span>
+      </div>
+      <p class="splash-sub">Bible Adventure for Champions</p>
+      <div class="splash-loader">
+        <div class="loader-bar" id="loader-bar"></div>
+      </div>
+      <p class="splash-loading-text" id="splash-loading-text">Loading your adventure...</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 2 — HOME
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-home">
+    <div class="home-bg-layer" id="home-bg-layer"></div>
+    <div class="home-inner">
+      <div class="player-card" id="player-card">
+        <div class="player-avatar" id="player-avatar">⚔️</div>
+        <div class="player-info">
+          <div class="player-level-row">
+            <span class="player-level-badge" id="player-level-badge">Lv 1</span>
+            <span class="player-title" id="player-title">Seeker</span>
+          </div>
+          <div class="player-xp-wrap">
+            <div class="player-xp-bar">
+              <div class="player-xp-fill" id="player-xp-fill" style="width:0%"></div>
             </div>
-        </section>
-
-        <!-- Character Selection Screen -->
-        <section class="screen character-screen" id="characterScreen">
-            <div class="screen-header">
-                <h2 class="screen-title">Choose Your Hero</h2>
-                <div class="faith-points-display">
-                    <span class="fp-icon">✨</span>
-                    <span class="fp-label">Faith Points:</span>
-                    <span class="fp-value" id="totalFP">0</span>
-                </div>
-            </div>
-            <div class="characters-grid" id="charactersGrid">
-                <!-- Character cards will be generated here -->
-            </div>
-            <button class="btn btn-secondary" id="backToWelcomeBtn">Back</button>
-        </section>
-
-        <!-- Quest Screen -->
-        <section class="screen quest-screen" id="questScreen">
-            <div class="quest-header">
-                <div class="character-info">
-                    <div class="character-avatar" id="questCharacterAvatar">👤</div>
-                    <div class="character-name" id="questCharacterName">Hero</div>
-                </div>
-                <div class="quest-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="questProgressFill"></div>
-                    </div>
-                    <span class="progress-text" id="questProgressText">Quest 1 of 3</span>
-                </div>
-            </div>
-
-            <div class="quest-content">
-                <div class="quest-card">
-                    <h3 class="quest-title" id="questTitle">Quest Title</h3>
-                    <p class="quest-description" id="questDescription">Quest description goes here...</p>
-                    <div class="quest-choices" id="questChoices">
-                        <!-- Choice buttons will be generated here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="quest-footer">
-                <div class="fp-display">
-                    <span class="fp-icon">✨</span>
-                    <span class="fp-label">Faith Points:</span>
-                    <span class="fp-value" id="currentFP">0</span>
-                </div>
-                <button class="btn btn-secondary hidden" id="continueQuestBtn">Continue →</button>
-            </div>
-        </section>
-
-        <!-- Result/Revelation Screen -->
-        <section class="screen result-screen" id="resultScreen">
-            <div class="result-content">
-                <div class="result-icon" id="resultIcon">✓</div>
-                <h3 class="result-title" id="resultTitle">Excellent!</h3>
-                <p class="result-message" id="resultMessage">You made the right choice!</p>
-                
-                <div class="scripture-revelation">
-                    <div class="scripture-header">📖 Scripture</div>
-                    <div class="scripture-reference" id="scriptureRef">1 Samuel 17:45-47</div>
-                    <div class="scripture-text" id="scriptureText">"The scripture text will appear here..."</div>
-                </div>
-
-                <div class="fp-reward">
-                    <div class="fp-reward-label">Faith Points Earned</div>
-                    <div class="fp-reward-value" id="fpReward">+10 ✨</div>
-                </div>
-
-                <div class="result-actions">
-                    <button class="btn btn-primary" id="nextQuestBtn">Next Quest →</button>
-                    <button class="btn btn-secondary" id="retryQuestBtn">Try Again</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Completion Screen -->
-        <section class="screen completion-screen" id="completionScreen">
-            <div class="completion-content">
-                <div class="completion-animation">
-                    <div class="trophy-icon">🏆</div>
-                    <div class="confetti-container" id="completionConfetti"></div>
-                </div>
-                <h2 class="completion-title">Quest Complete! 🎉</h2>
-                <p class="completion-message" id="completionMessage">You've completed all quests for this character!</p>
-                
-                <div class="completion-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">✨</div>
-                        <div class="stat-value" id="completionFP">0</div>
-                        <div class="stat-label">Faith Points</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-value" id="completionQuests">0</div>
-                        <div class="stat-label">Quests</div>
-                    </div>
-                </div>
-
-                <div class="testimony-badge" id="testimonyBadge">
-                    <div class="badge-icon">🎖️</div>
-                    <div class="badge-text">Character Testimony Unlocked!</div>
-                </div>
-
-                <div class="completion-actions">
-                    <button class="btn btn-primary" id="selectCharacterBtn">Choose Another Hero</button>
-                    <button class="btn btn-secondary" id="replayCharacterBtn">Replay Quests</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Save Indicator -->
-        <div class="save-indicator" id="saveIndicator">
-            <span class="save-text">Saving progress...</span>
+            <span class="player-xp-text" id="player-xp-text">0 / 200 XP</span>
+          </div>
         </div>
-
-        <!-- Loading Overlay -->
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <p>Loading your adventure...</p>
+        <div class="player-fp">
+          <span class="fp-gem">✨</span>
+          <span id="home-fp-count">0</span>
         </div>
+      </div>
+
+      <div class="streak-bar" id="streak-bar">
+        <span class="streak-flame" id="streak-flame">🔥</span>
+        <span class="streak-text" id="streak-text">0 day streak</span>
+      </div>
+
+      <div class="daily-banner" id="daily-banner">
+        <div class="daily-icon">📅</div>
+        <div class="daily-info">
+          <div class="daily-label">Daily Challenge</div>
+          <div class="daily-sub" id="daily-sub">Available now!</div>
+        </div>
+        <button class="daily-go-btn" id="daily-go-btn">GO ▶</button>
+      </div>
+
+      <div class="home-btns">
+        <button class="btn-home-play" id="btn-home-play">▶ Play!</button>
+        <button class="btn-home-heroes" id="btn-home-heroes">📖 Hall of Heroes</button>
+      </div>
+
+      <a href="../../games.html" class="btn-back-link">← Back to Games</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 3 — ERA MAP
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-era-map">
+    <div class="era-map-header">
+      <button class="btn-nav-back" id="back-era-to-home">←</button>
+      <h2 class="screen-title-sm">Choose an Era</h2>
+      <div class="header-fp"><span>✨</span><span id="era-fp-count">0</span></div>
+    </div>
+    <div class="era-scroll-wrap">
+      <div class="era-path" id="era-path">
+        <!-- Era nodes injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 4 — ERA HUB
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-era-hub">
+    <div class="era-hub-bg" id="era-hub-bg"></div>
+    <div class="era-hub-header">
+      <button class="btn-nav-back" id="back-hub-to-era">←</button>
+      <div class="era-hub-title-wrap">
+        <span class="era-hub-emoji" id="era-hub-emoji">🌍</span>
+        <h2 class="era-hub-title" id="era-hub-title">Era Name</h2>
+      </div>
+      <div class="header-fp"><span>✨</span><span id="hub-fp-count">0</span></div>
+    </div>
+    <p class="era-hub-desc" id="era-hub-desc">Description</p>
+    <div class="era-characters-grid" id="era-characters-grid">
+      <!-- Character cards injected by JS -->
+    </div>
+    <button class="btn-boss" id="btn-boss" disabled>
+      <span class="boss-emoji" id="boss-btn-emoji">⚔️</span>
+      <span>Boss Battle</span>
+      <span class="boss-lock-icon" id="boss-lock-icon">🔒</span>
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 5 — CHARACTER CARD (3D flip reveal)
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-char-card">
+    <div class="char-card-header">
+      <button class="btn-nav-back" id="back-card-to-hub">←</button>
+      <span class="char-card-era-badge" id="char-card-era-badge">Era 1</span>
+      <div class="header-fp"><span>✨</span><span id="card-fp-count">0</span></div>
+    </div>
+    <div class="char-3d-scene" id="char-3d-scene">
+      <div class="char-3d-card" id="char-3d-card">
+        <div class="char-card-front" id="char-card-front">
+          <div class="char-rarity-glow" id="char-rarity-glow"></div>
+          <div class="char-big-emoji" id="char-big-emoji">⚔️</div>
+          <h2 class="char-card-name" id="char-card-name">Character</h2>
+          <p class="char-card-title" id="char-card-title">Title</p>
+          <div class="char-stats-row" id="char-stats-row">
+            <div class="char-stat"><span class="stat-label">Faith</span><div class="stat-bar"><div class="stat-fill faith-fill" id="stat-faith"></div></div></div>
+            <div class="char-stat"><span class="stat-label">Wisdom</span><div class="stat-bar"><div class="stat-fill wisdom-fill" id="stat-wisdom"></div></div></div>
+            <div class="char-stat"><span class="stat-label">Courage</span><div class="stat-bar"><div class="stat-fill courage-fill" id="stat-courage"></div></div></div>
+            <div class="char-stat"><span class="stat-label">Strength</span><div class="stat-bar"><div class="stat-fill strength-fill" id="stat-strength"></div></div></div>
+          </div>
+          <p class="char-card-tap-hint">Tap to flip ▶</p>
+        </div>
+        <div class="char-card-back" id="char-card-back">
+          <div class="char-bio-text" id="char-bio-text">Bio text here.</div>
+          <div class="char-back-ref" id="char-back-ref">Scripture reference</div>
+          <p class="char-card-tap-hint">Tap to flip back ◀</p>
+        </div>
+      </div>
+    </div>
+    <div class="tier-select-row" id="tier-select-row">
+      <button class="tier-btn active" data-tier="seeker" id="tier-btn-seeker">Seeker<br><small>Q1–3</small></button>
+      <button class="tier-btn locked" data-tier="explorer" id="tier-btn-explorer">Explorer<br><small>Q4–6</small></button>
+      <button class="tier-btn locked" data-tier="warrior" id="tier-btn-warrior">Warrior<br><small>Q7–9</small></button>
+    </div>
+    <button class="btn-start-quest" id="btn-start-quest">Begin Quest ▶</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 6 — QUEST (question area)
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-quest">
+    <div class="quest-header">
+      <button class="btn-nav-back" id="back-quest-to-card">←</button>
+      <div class="quest-progress-wrap">
+        <div class="quest-progress-track"><div class="quest-progress-bar" id="quest-progress-bar"></div></div>
+      </div>
+      <span class="quest-counter" id="quest-counter">1/3</span>
     </div>
 
-    <!-- Scripts -->
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
-    <!-- Firebase Config -->
-    <script src="../../../js/firebase-config.js"></script>
-    <!-- Game Logic -->
-    <script src="./game.js"></script>
+    <div class="quest-character-strip">
+      <span class="quest-char-emoji" id="quest-char-emoji">⚔️</span>
+      <span class="quest-char-name" id="quest-char-name">Character</span>
+      <span class="quest-tier-tag" id="quest-tier-tag">Seeker</span>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <p class="question-scenario" id="question-scenario"></p>
+      <p class="question-text" id="question-text">Loading...</p>
+    </div>
+
+    <!-- DECISION / WHO-SAID answer area -->
+    <div class="answer-area hidden" id="area-choice">
+      <div class="choices-grid" id="choices-grid"></div>
+    </div>
+
+    <!-- FILL-IN answer area -->
+    <div class="answer-area hidden" id="area-fill-in">
+      <div class="fill-verse" id="fill-verse"></div>
+      <div class="fill-options" id="fill-options"></div>
+    </div>
+
+    <!-- TIMELINE answer area -->
+    <div class="answer-area hidden" id="area-timeline">
+      <p class="timeline-hint">Tap events in the correct order ↓</p>
+      <div class="timeline-events" id="timeline-events"></div>
+      <div class="timeline-slots" id="timeline-slots"></div>
+      <button class="btn-timeline-reset" id="btn-timeline-reset">Reset ↺</button>
+    </div>
+
+    <!-- SCRAMBLE answer area -->
+    <div class="answer-area hidden" id="area-scramble">
+      <div class="scramble-slots" id="scramble-slots"></div>
+      <div class="scramble-words" id="scramble-words"></div>
+      <button class="btn-scramble-reset" id="btn-scramble-reset">Reset ↺</button>
+    </div>
+
+    <!-- FAST-FACTS answer area -->
+    <div class="answer-area hidden" id="area-fast-facts">
+      <div class="ff-counter-wrap">
+        <div class="ff-timer-ring" id="ff-timer-ring">
+          <svg class="ff-timer-svg" viewBox="0 0 44 44">
+            <circle class="ff-ring-bg" cx="22" cy="22" r="18" />
+            <circle class="ff-ring-fill" id="ff-ring-fill" cx="22" cy="22" r="18" />
+          </svg>
+          <span class="ff-timer-text" id="ff-timer-text">8</span>
+        </div>
+        <span class="ff-score-text" id="ff-score-text">0 / 10</span>
+      </div>
+      <div class="ff-statement-card" id="ff-statement-card">
+        <p class="ff-statement" id="ff-statement">Statement here</p>
+      </div>
+      <div class="ff-tf-btns">
+        <button class="btn-ff-true" id="btn-ff-true">✅ TRUE</button>
+        <button class="btn-ff-false" id="btn-ff-false">❌ FALSE</button>
+      </div>
+    </div>
+
+    <!-- DEEP-DIVE answer area -->
+    <div class="answer-area hidden" id="area-deep-dive">
+      <div class="dd-part-indicator" id="dd-part-indicator">Part 1 of 4</div>
+      <div class="dd-choices" id="dd-choices"></div>
+      <div class="dd-hint-row">
+        <button class="btn-dd-hint" id="btn-dd-hint">💡 Hint (-5 FP)</button>
+        <span class="dd-hint-text hidden" id="dd-hint-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 7 — RESULT OVERLAY
+  ══════════════════════════════════════ -->
+  <div class="screen feedback-overlay hidden" id="screen-result">
+    <div class="result-card" id="result-card">
+      <div class="result-icon-wrap">
+        <div class="result-big-icon" id="result-big-icon">🎉</div>
+      </div>
+      <h2 class="result-title" id="result-title">Amazing!</h2>
+      <p class="result-msg" id="result-msg">Correct!</p>
+      <div class="scripture-card" id="scripture-card">
+        <div class="scripture-label">📖 Scripture</div>
+        <div class="scripture-ref" id="result-scripture-ref">Reference</div>
+        <div class="scripture-quote" id="result-scripture-text">Verse text here</div>
+      </div>
+      <div class="result-rewards" id="result-rewards">
+        <span class="reward-chip xp-chip" id="result-xp">+50 XP</span>
+        <span class="reward-chip fp-chip" id="result-fp">+10 ✨</span>
+      </div>
+      <div class="result-feedback" id="result-feedback">Feedback text</div>
+      <button class="btn-result-next" id="btn-result-next">Continue ▶</button>
+      <button class="btn-result-retry hidden" id="btn-result-retry">Try Again ↺</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 8 — BOSS BATTLE
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-boss">
+    <div class="boss-bg" id="boss-bg"></div>
+    <div class="boss-header">
+      <div class="boss-hp-row" id="boss-hp-row">
+        <span class="boss-round-label" id="boss-round-label">Round 1</span>
+        <div class="player-hp" id="player-hp">
+          <span class="hp-heart active" id="hp1">❤️</span>
+          <span class="hp-heart active" id="hp2">❤️</span>
+          <span class="hp-heart active" id="hp3">❤️</span>
+        </div>
+      </div>
+      <div class="boss-progress-wrap">
+        <div class="boss-progress-bar" id="boss-progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="boss-character-area" id="boss-character-area">
+      <div class="boss-emoji-display" id="boss-emoji-display">👑</div>
+      <div class="boss-name-display" id="boss-name-display">Boss</div>
+      <div class="boss-taunt" id="boss-taunt">Prepare yourself!</div>
+    </div>
+
+    <div class="boss-card-select" id="boss-card-select">
+      <p class="boss-card-label">Choose your hero card:</p>
+      <div class="boss-card-row" id="boss-card-row"></div>
+    </div>
+
+    <div class="boss-question-area" id="boss-question-area">
+      <div class="boss-question-card">
+        <p class="boss-question-text" id="boss-question-text">Question loads here</p>
+        <div class="boss-choices" id="boss-choices"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 9 — BOSS DEFEAT
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-boss-defeat">
+    <div class="defeat-inner">
+      <div class="defeat-confetti" id="defeat-confetti"></div>
+      <div class="trophy-3d" id="trophy-3d">🏆</div>
+      <h2 class="defeat-title">ERA COMPLETE!</h2>
+      <p class="defeat-boss-name" id="defeat-boss-name">Boss Defeated!</p>
+      <div class="badge-unlock-wrap" id="badge-unlock-wrap">
+        <p class="badge-unlock-label">New Badge Unlocked!</p>
+        <div class="badge-big" id="badge-big">🌈</div>
+        <div class="badge-name" id="badge-name">Badge Name</div>
+      </div>
+      <div class="defeat-rewards">
+        <span class="reward-chip xp-chip" id="defeat-xp">+500 XP</span>
+        <span class="reward-chip fp-chip" id="defeat-fp">+100 ✨</span>
+      </div>
+      <div class="defeat-btns">
+        <button class="btn-play-big" id="btn-defeat-continue">Next Era ▶</button>
+        <button class="btn-outline-sm" id="btn-defeat-map">Era Map</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 10 — HALL OF HEROES
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-heroes">
+    <div class="heroes-header">
+      <button class="btn-nav-back" id="back-heroes-to-home">←</button>
+      <h2 class="screen-title-sm">Hall of Heroes</h2>
+      <div class="heroes-filter-row" id="heroes-filter-row">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="common">Common</button>
+        <button class="filter-btn" data-filter="rare">Rare</button>
+        <button class="filter-btn" data-filter="epic">Epic</button>
+        <button class="filter-btn" data-filter="legendary">Legendary</button>
+      </div>
+    </div>
+    <div class="heroes-grid" id="heroes-grid">
+      <!-- Hero cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN 11 — DAILY CHALLENGE
+  ══════════════════════════════════════ -->
+  <div class="screen" id="screen-daily">
+    <div class="daily-header">
+      <button class="btn-nav-back" id="back-daily-to-home">←</button>
+      <h2 class="screen-title-sm">Daily Challenge</h2>
+      <div class="daily-streak-display">
+        <span>🔥</span><span id="daily-streak-num">0</span>
+      </div>
+    </div>
+    <div class="daily-frame">
+      <div class="daily-question-card">
+        <div class="daily-badge-row">
+          <span class="daily-badge">📅 Today's Challenge</span>
+          <span class="daily-xp-badge">3× XP</span>
+        </div>
+        <p class="question-text" id="daily-question-text">Loading...</p>
+        <div class="answer-area" id="daily-answer-area"></div>
+      </div>
+    </div>
+    <div class="daily-next-wrap">
+      <span class="daily-next-label">Next challenge in:</span>
+      <span class="daily-countdown" id="daily-countdown">--:--:--</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       LEVEL-UP POPUP (overlay)
+  ══════════════════════════════════════ -->
+  <div class="levelup-overlay hidden" id="levelup-overlay">
+    <div class="levelup-burst" id="levelup-burst"></div>
+    <div class="levelup-card">
+      <div class="levelup-icon">⬆️</div>
+      <h2 class="levelup-title">LEVEL UP!</h2>
+      <div class="levelup-level" id="levelup-level">Level 2</div>
+      <div class="levelup-new-title" id="levelup-new-title">Wanderer</div>
+      <button class="btn-levelup-ok" id="btn-levelup-ok">Awesome! 🎉</button>
+    </div>
+  </div>
+
+  <!-- Save indicator -->
+  <div class="save-dot hidden" id="save-dot">💾 Saving…</div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="../../../js/firebase-config.js"></script>
+<script src="./game.js"></script>
 </body>
 </html>

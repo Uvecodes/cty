@@ -67,6 +67,28 @@
   outline: none;
   box-shadow: 0 0 0 2px #eafbe7;
 }
+#signup-page .form-group select {
+  padding: 0.7em 1em;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 0.8em;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #f8f8f8;
+  color: var(--color-dark);
+  transition: border 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px rgba(34, 34, 59, 0.04);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1em center;
+  cursor: pointer;
+}
+#signup-page .form-group select:focus {
+  border: 1.5px solid var(--color-green);
+  outline: none;
+  box-shadow: 0 0 0 2px #eafbe7;
+}
 #signup-page button[type="submit"] {
   margin-top: 0.5rem;
   padding: 0.9em 0;

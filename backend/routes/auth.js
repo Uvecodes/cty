@@ -17,6 +17,8 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
+const VALID_DENOMINATIONS = ['catholic', 'anglican', 'pentecostal', 'lutheran', 'baptist', 'seventh_day_adventist', 'methodist'];
+
 /**
  * POST /api/auth/register
  * Register a new user
@@ -26,10 +28,11 @@ router.post('/register', [
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('age').isInt({ min: 4, max: 17 }).withMessage('Age must be between 4 and 17'),
+  body('denomination').isIn(VALID_DENOMINATIONS).withMessage('Invalid denomination'),
   handleValidationErrors
 ], async (req, res) => {
   try {
-    const { email, password, name, age } = req.body;
+    const { email, password, name, age, denomination } = req.body;
 
     // Check if user already exists
     try {
@@ -58,6 +61,7 @@ router.post('/register', [
       name,
       age: parseInt(age),
       email,
+      denomination,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       contentState: {} // Initialize empty content state
     }, { merge: true });
@@ -225,7 +229,8 @@ router.post('/forgot-password', [
 
     // Generate password reset link
     const resetLink = await auth.generatePasswordResetLink(email, {
-      url: process.env.PASSWORD_RESET_REDIRECT_URL || 'http://localhost:5500/frontend/authentication/login.html',
+      url: process.env.PASSWORD_RESET_REDIRECT_URL
+        || `${process.env.FRONTEND_URL || 'http://localhost:5500/frontend'}/authentication/login.html`,
       handleCodeInApp: false
     });
 

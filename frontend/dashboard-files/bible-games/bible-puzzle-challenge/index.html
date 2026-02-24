@@ -1,238 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bible Puzzle Challenge 🧩</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Bible Puzzle Challenge | CTY</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-container">
-        <!-- Animated Background -->
-        <div class="animated-bg"></div>
-        <div class="particles" id="particles"></div>
 
-        <!-- Home Screen -->
-        <section class="screen home-screen active" id="homeScreen">
-            <video class="home-bg-video" autoplay loop muted playsinline>
-                <source src="../../../assets/videos/cty-hero-bg.mp4" type="video/mp4">
-            </video>
-            <div class="home-content">
-                <div class="logo-container">
-                    <h1 class="game-logo animate-logo">🧩 Bible Puzzle</h1>
-                    <p class="game-subtitle animate-subtitle">Challenge Your Mind, Strengthen Your Faith</p>
-                </div>
-                
-                <div class="stats-dashboard">
-                    <div class="stat-card">
-                        <div class="stat-icon">✨</div>
-                        <div class="stat-value" id="wisdomTokens">0</div>
-                        <div class="stat-label">Wisdom Tokens</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🏆</div>
-                        <div class="stat-value" id="completedPuzzles">0</div>
-                        <div class="stat-label">Completed</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🔥</div>
-                        <div class="stat-value" id="streakDays">0</div>
-                        <div class="stat-label">Day Streak</div>
-                    </div>
-                </div>
-
-                <div class="main-actions">
-                    <button class="btn btn-primary btn-large daily-btn" id="dailyChallengeBtn">
-                        <span class="btn-icon">⭐</span>
-                        <span>Daily Challenge</span>
-                        <span class="btn-badge" id="dailyBadge">NEW</span>
-                    </button>
-                    <button class="btn btn-secondary btn-large" id="browsePuzzlesBtn">
-                        <span class="btn-icon">📚</span>
-                        Browse Puzzles
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Puzzle Selection Screen -->
-        <section class="screen selection-screen" id="selectionScreen">
-            <div class="screen-header">
-                <button class="back-btn" id="backToHomeBtn">← Back</button>
-                <h2 class="screen-title">Choose Your Challenge</h2>
-                <div class="wisdom-display">
-                    <span class="token-icon">✨</span>
-                    <span id="wisdomDisplay">0</span>
-                </div>
-            </div>
-
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-type="all">All</button>
-                <button class="filter-tab" data-type="verseScramble">Scramble</button>
-                <button class="filter-tab" data-type="missingWord">Missing Word</button>
-                <button class="filter-tab" data-type="bookSequence">Book Order</button>
-                <button class="filter-tab" data-type="scriptureMatch">Match</button>
-            </div>
-
-            <div class="difficulty-selector">
-                <span class="difficulty-label">Difficulty:</span>
-                <button class="difficulty-btn active" data-difficulty="all">All</button>
-                <button class="difficulty-btn" data-difficulty="1">Easy</button>
-                <button class="difficulty-btn" data-difficulty="2">Medium</button>
-                <button class="difficulty-btn" data-difficulty="3">Hard</button>
-            </div>
-
-            <div class="puzzles-grid" id="puzzlesGrid">
-                <!-- Puzzle cards will be generated here -->
-            </div>
-        </section>
-
-        <!-- Puzzle Game Screen -->
-        <section class="screen puzzle-screen" id="puzzleScreen">
-            <div class="puzzle-header">
-                <button class="back-btn" id="backToSelectionBtn">← Back</button>
-                <div class="puzzle-info">
-                    <div class="puzzle-type-badge" id="puzzleTypeBadge">Scramble</div>
-                    <div class="difficulty-badge" id="puzzleDifficultyBadge">Easy</div>
-                </div>
-                <div class="puzzle-controls">
-                    <button class="hint-btn" id="hintBtn" title="Use a hint (costs 1 Wisdom Token)">
-                        <span>💡</span>
-                        <span class="hint-text">Hint</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="puzzle-content">
-                <div class="verse-reference" id="puzzleReference">John 3:16</div>
-                
-                <!-- Verse Scramble Puzzle -->
-                <div class="puzzle-type verse-scramble-puzzle" id="verseScramblePuzzle">
-                    <div class="instruction-text">Drag the words to arrange them in the correct order:</div>
-                    <div class="word-bank" id="wordBank">
-                        <!-- Words will be rendered here -->
-                    </div>
-                    <div class="answer-area" id="answerArea">
-                        <div class="answer-slot" data-index="0"></div>
-                        <div class="answer-slot" data-index="1"></div>
-                        <div class="answer-slot" data-index="2"></div>
-                        <div class="answer-slot" data-index="3"></div>
-                        <div class="answer-slot" data-index="4"></div>
-                        <div class="answer-slot" data-index="5"></div>
-                    </div>
-                </div>
-
-                <!-- Missing Word Puzzle -->
-                <div class="puzzle-type missing-word-puzzle hidden" id="missingWordPuzzle">
-                    <div class="instruction-text">Fill in the missing words:</div>
-                    <div class="verse-with-blanks" id="verseWithBlanks">
-                        <!-- Verse with blanks will be rendered here -->
-                    </div>
-                    <div class="word-options" id="wordOptions">
-                        <!-- Word options will be rendered here -->
-                    </div>
-                </div>
-
-                <!-- Book Sequence Puzzle -->
-                <div class="puzzle-type book-sequence-puzzle hidden" id="bookSequencePuzzle">
-                    <div class="instruction-text">Arrange the books/events in the correct order:</div>
-                    <div class="sequence-bank" id="sequenceBank">
-                        <!-- Items will be rendered here -->
-                    </div>
-                    <div class="sequence-answer" id="sequenceAnswer">
-                        <!-- Answer slots will be rendered here -->
-                    </div>
-                </div>
-
-                <!-- Scripture Match Puzzle -->
-                <div class="puzzle-type scripture-match-puzzle hidden" id="scriptureMatchPuzzle">
-                    <div class="instruction-text">Match each verse to its correct reference:</div>
-                    <div class="match-container">
-                        <div class="verses-column" id="versesColumn">
-                            <!-- Verses will be rendered here -->
-                        </div>
-                        <div class="references-column" id="referencesColumn">
-                            <!-- References will be rendered here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="puzzle-footer">
-                <button class="btn btn-secondary" id="checkAnswerBtn">Check Answer</button>
-                <button class="btn btn-primary hidden" id="nextPuzzleBtn">Next Puzzle →</button>
-            </div>
-        </section>
-
-        <!-- Result Screen -->
-        <section class="screen result-screen" id="resultScreen">
-            <div class="result-content">
-                <div class="result-icon" id="resultIcon">✓</div>
-                <h2 class="result-title" id="resultTitle">Perfect! 🎉</h2>
-                <p class="result-message" id="resultMessage">You solved the puzzle correctly!</p>
-
-                <div class="verse-revelation">
-                    <div class="verse-ref" id="resultVerseRef">John 3:16</div>
-                    <div class="verse-text" id="resultVerseText">"For God so loved the world..."</div>
-                </div>
-
-                <div class="rewards-section">
-                    <div class="reward-item">
-                        <span class="reward-icon">✨</span>
-                        <span class="reward-text" id="rewardTokens">+5 Wisdom Tokens</span>
-                    </div>
-                    <div class="reward-item">
-                        <span class="reward-icon">📖</span>
-                        <span class="reward-text">Scripture Insight Unlocked!</span>
-                    </div>
-                </div>
-
-                <div class="result-actions">
-                    <button class="btn btn-primary" id="continueBtn">Continue</button>
-                    <button class="btn btn-secondary" id="retryBtn">Try Again</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Completion Animation Overlay -->
-        <div class="completion-overlay" id="completionOverlay">
-            <div class="confetti-container" id="confettiContainer"></div>
-        </div>
-
-        <!-- Hint Modal -->
-        <div class="hint-modal" id="hintModal">
-            <div class="hint-content">
-                <div class="hint-icon">💡</div>
-                <h3>Hint</h3>
-                <p id="hintText">This is a hint for the puzzle.</p>
-                <div class="hint-actions">
-                    <button class="btn btn-primary" id="useHintBtn">Use Hint (1 Token)</button>
-                    <button class="btn btn-secondary" id="closeHintBtn">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Save Indicator -->
-        <div class="save-indicator" id="saveIndicator">
-            <span>Saving progress...</span>
-        </div>
-
-        <!-- Loading Overlay -->
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <p>Loading puzzles...</p>
-        </div>
+<!-- ══════════════════════════════════════
+     SCREEN 1 — HOME
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="home-bg"></div>
+  <div class="home-inner">
+    <div class="leo-mascot" id="leo-home">🦁</div>
+    <div class="home-bubble">Hi! I'm Leo!<br>Ready to play?</div>
+    <h1 class="game-title">Bible Puzzle<br><span>Challenge</span></h1>
+    <div class="star-row">⭐⭐⭐</div>
+    <button class="btn-play" id="btn-play">▶ Play!</button>
+    <div class="home-coins">
+      <span class="coin-icon">🌟</span>
+      <span id="home-coin-count">0</span> Stars
     </div>
+    <button class="btn-stickers" id="btn-stickers">📚 Stickers</button>
+    <a href="../../games.html" class="btn-back-home">← Back</a>
+  </div>
+</div>
 
-    <!-- Scripts -->
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
-    <!-- Firebase Config -->
-    <script src="../../../js/firebase-config.js"></script>
-    <!-- Game Logic -->
-    <script src="./game.js"></script>
+<!-- ══════════════════════════════════════
+     SCREEN 2 — WORLD MAP
+══════════════════════════════════════ -->
+<div class="screen" id="screen-worlds">
+  <div class="screen-header">
+    <button class="btn-nav-back" id="back-to-home">←</button>
+    <h2 class="screen-title">Pick a World</h2>
+    <div class="header-coins"><span class="coin-icon">🌟</span><span id="world-coin-count">0</span></div>
+  </div>
+  <div class="leo-small" id="leo-worlds">🦁</div>
+  <div class="worlds-grid" id="worlds-grid">
+    <!-- World cards injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — LEVEL MAP
+══════════════════════════════════════ -->
+<div class="screen" id="screen-levels">
+  <div class="screen-header">
+    <button class="btn-nav-back" id="back-to-worlds">←</button>
+    <h2 class="screen-title" id="level-screen-title">World Name</h2>
+    <div class="header-coins"><span class="coin-icon">🌟</span><span id="level-coin-count">0</span></div>
+  </div>
+  <div class="world-hero">
+    <div class="world-hero-emoji" id="world-hero-emoji">🌍</div>
+    <p class="world-hero-desc" id="world-hero-desc">Description here</p>
+  </div>
+  <div class="levels-list" id="levels-list">
+    <!-- Level buttons injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — QUESTION
+══════════════════════════════════════ -->
+<div class="screen" id="screen-question">
+  <div class="question-header">
+    <button class="btn-nav-back" id="back-to-levels">←</button>
+    <div class="progress-track">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="q-counter" id="q-counter">1/5</div>
+  </div>
+
+  <!-- Leo narration -->
+  <div class="leo-narrate-row">
+    <div class="leo-narrate" id="leo-narrate">🦁</div>
+    <div class="narrate-bubble" id="narrate-bubble">Tap Leo to hear the question!</div>
+    <button class="btn-speak" id="btn-speak" title="Read question aloud">🔊</button>
+  </div>
+
+  <div class="question-card" id="question-card">
+    <p class="question-text" id="question-text">Loading...</p>
+  </div>
+
+  <!-- PICTURE-PICK answer area -->
+  <div class="answer-area hidden" id="area-picture-pick">
+    <div class="big-choices" id="choices-picture-pick"></div>
+  </div>
+
+  <!-- WHO-IS-THIS answer area -->
+  <div class="answer-area hidden" id="area-who-is-this">
+    <div class="clue-display" id="clue-display"></div>
+    <div class="name-choices" id="choices-who-is-this"></div>
+  </div>
+
+  <!-- HEAR-TAP answer area -->
+  <div class="answer-area hidden" id="area-hear-tap">
+    <div class="sentence-display" id="sentence-display"></div>
+    <div class="word-tiles" id="choices-hear-tap"></div>
+  </div>
+
+  <!-- ORDER-IT answer area -->
+  <div class="answer-area hidden" id="area-order-it">
+    <p class="order-instruction">Tap in the right order!</p>
+    <div class="order-items" id="order-items"></div>
+    <div class="order-slots" id="order-slots"></div>
+    <button class="btn-reset-order" id="btn-reset-order">Reset ↺</button>
+  </div>
+
+  <!-- TRUE-FALSE answer area -->
+  <div class="answer-area hidden" id="area-true-false">
+    <div class="tf-choices">
+      <button class="btn-tf btn-true" id="btn-true">✅ TRUE</button>
+      <button class="btn-tf btn-false" id="btn-false">❌ FALSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — FEEDBACK OVERLAY
+══════════════════════════════════════ -->
+<div class="screen feedback-overlay hidden" id="screen-feedback">
+  <div class="feedback-card" id="feedback-card">
+    <div class="feedback-big-icon" id="feedback-icon">🎉</div>
+    <h2 class="feedback-title" id="feedback-title">Great job!</h2>
+    <p class="feedback-msg" id="feedback-msg">That is correct!</p>
+    <div class="stars-earned" id="stars-earned"></div>
+    <button class="btn-next" id="btn-next">Next ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6 — LEVEL COMPLETE
+══════════════════════════════════════ -->
+<div class="screen" id="screen-level-complete">
+  <div class="complete-inner">
+    <div class="leo-big">🦁</div>
+    <div class="confetti-area" id="confetti-area"></div>
+    <h2 class="complete-title" id="complete-title">Level Complete!</h2>
+    <p class="complete-message" id="complete-message"></p>
+    <div class="complete-stars" id="complete-stars">⭐⭐⭐</div>
+    <div class="sticker-unlock" id="sticker-unlock" style="display:none;">
+      <p>New sticker unlocked!</p>
+      <div class="sticker-big" id="sticker-big"></div>
+      <p class="sticker-name" id="sticker-name"></p>
+    </div>
+    <div class="complete-coins" id="complete-coins-row">
+      <span class="coin-icon">🌟</span>+<span id="earned-coins">0</span> Stars earned!
+    </div>
+    <div class="complete-btns">
+      <button class="btn-play" id="btn-next-level">Next Level ▶</button>
+      <button class="btn-retry" id="btn-retry-level">Try Again ↺</button>
+      <button class="btn-outline" id="btn-world-map">World Map</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 7 — STICKER BOOK
+══════════════════════════════════════ -->
+<div class="screen" id="screen-stickers">
+  <div class="screen-header">
+    <button class="btn-nav-back" id="back-to-home-from-stickers">←</button>
+    <h2 class="screen-title">My Sticker Book 📚</h2>
+    <div class="header-coins"><span class="coin-icon">🌟</span><span id="sticker-coin-count">0</span></div>
+  </div>
+  <div class="sticker-grid" id="sticker-grid">
+    <!-- Stickers injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="../../../js/firebase-config.js"></script>
+<script src="./game.js"></script>
 </body>
 </html>
