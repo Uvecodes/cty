@@ -56,10 +56,10 @@ async function initializeCheckboxAndProgress() {
     const snap = await userRef.get();
 
     let userData = {};
-    let lastVisit = null;
+    let lastTaskDate = null;
     let completedCount = 0;
     let totalCount = 0;
-    
+
     // Individual task state tracking
     let verseCompleted = false;
     let moralCompleted = false;
@@ -68,7 +68,7 @@ async function initializeCheckboxAndProgress() {
 
     if (snap.exists) {
       userData = snap.data();
-      lastVisit = userData.lastVisit || null;
+      lastTaskDate = userData.lastTaskDate || null;
       completedCount = userData.completedCount || 0;
       totalCount = userData.totalCount || 0;
       
@@ -83,8 +83,8 @@ async function initializeCheckboxAndProgress() {
     const tz = (userData && userData.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone;
     const today = (typeof localDateInTZ === 'function') ? localDateInTZ(new Date(), tz) : new Date().toISOString().split('T')[0];
 
-    // If lastVisit is not today, attempt a transactional reset so we don't carry over yesterday's values
-    if (lastVisit !== today) {
+    // If lastTaskDate is not today, attempt a transactional reset so we don't carry over yesterday's values
+    if (lastTaskDate !== today) {
       // Reset local variables immediately for UI
       verseCompleted = false;
       moralCompleted = false;
@@ -97,15 +97,15 @@ async function initializeCheckboxAndProgress() {
         await db.runTransaction(async (tx) => {
           const doc = await tx.get(userRef);
           const serverData = doc.exists ? doc.data() : {};
-          const serverLastVisit = serverData.lastVisit || null;
+          const serverLastTaskDate = serverData.lastTaskDate || null;
 
           // If another client already reset for today, do nothing
-          if (serverLastVisit === today) {
+          if (serverLastTaskDate === today) {
             return;
           }
 
           tx.set(userRef, {
-            lastVisit: today,
+            lastTaskDate: today,
             completedCount: 0,
             verseCompleted: false,
             moralCompleted: false,
@@ -146,13 +146,13 @@ async function initializeCheckboxAndProgress() {
     if (checkbox1) {
       checkbox1.addEventListener("change", async function () {
         try {
-          const delta = checkbox1.checked ? 1 : -1;
           verseCompleted = checkbox1.checked;
+          completedCount = (verseCompleted ? 1 : 0) + (moralCompleted ? 1 : 0) + (reflectionCompleted ? 1 : 0) + (challengeCompleted ? 1 : 0);
 
           const payload = {
             verseCompleted: verseCompleted,
             lastVisit: today,
-            completedCount: firebase.firestore.FieldValue.increment(delta)
+            completedCount: completedCount
           };
 
           // Try update first (faster if doc exists), fallback to set with merge
@@ -162,9 +162,8 @@ async function initializeCheckboxAndProgress() {
             await userRef.set(payload, { merge: true });
           }
 
-          // Update local counter in memory (clamp at zero)
-          completedCount = Math.max(0, completedCount + delta);
           _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
+          try { localStorage.setItem('cty_progress_' + today, completedCount / totalDailyTasks * 100); } catch(_e) {}
 
           // Update dashboard progress if available
           if (window.updateDashboardProgress) {
@@ -180,13 +179,13 @@ async function initializeCheckboxAndProgress() {
     if (checkbox2) {
       checkbox2.addEventListener("change", async function () {
         try {
-          const delta = checkbox2.checked ? 1 : -1;
           moralCompleted = checkbox2.checked;
+          completedCount = (verseCompleted ? 1 : 0) + (moralCompleted ? 1 : 0) + (reflectionCompleted ? 1 : 0) + (challengeCompleted ? 1 : 0);
 
           const payload = {
             moralCompleted: moralCompleted,
             lastVisit: today,
-            completedCount: firebase.firestore.FieldValue.increment(delta)
+            completedCount: completedCount
           };
 
           try {
@@ -195,8 +194,8 @@ async function initializeCheckboxAndProgress() {
             await userRef.set(payload, { merge: true });
           }
 
-          completedCount = Math.max(0, completedCount + delta);
           _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
+          try { localStorage.setItem('cty_progress_' + today, completedCount / totalDailyTasks * 100); } catch(_e) {}
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
@@ -211,13 +210,13 @@ async function initializeCheckboxAndProgress() {
     if (checkbox3) {
       checkbox3.addEventListener("change", async function () {
         try {
-          const delta = checkbox3.checked ? 1 : -1;
           reflectionCompleted = checkbox3.checked;
+          completedCount = (verseCompleted ? 1 : 0) + (moralCompleted ? 1 : 0) + (reflectionCompleted ? 1 : 0) + (challengeCompleted ? 1 : 0);
 
           const payload = {
             reflectionCompleted: reflectionCompleted,
             lastVisit: today,
-            completedCount: firebase.firestore.FieldValue.increment(delta)
+            completedCount: completedCount
           };
 
           try {
@@ -226,8 +225,8 @@ async function initializeCheckboxAndProgress() {
             await userRef.set(payload, { merge: true });
           }
 
-          completedCount = Math.max(0, completedCount + delta);
           _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
+          try { localStorage.setItem('cty_progress_' + today, completedCount / totalDailyTasks * 100); } catch(_e) {}
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
@@ -242,13 +241,13 @@ async function initializeCheckboxAndProgress() {
     if (checkbox4) {
       checkbox4.addEventListener("change", async function () {
         try {
-          const delta = checkbox4.checked ? 1 : -1;
           challengeCompleted = checkbox4.checked;
+          completedCount = (verseCompleted ? 1 : 0) + (moralCompleted ? 1 : 0) + (reflectionCompleted ? 1 : 0) + (challengeCompleted ? 1 : 0);
 
           const payload = {
             challengeCompleted: challengeCompleted,
             lastVisit: today,
-            completedCount: firebase.firestore.FieldValue.increment(delta)
+            completedCount: completedCount
           };
 
           try {
@@ -257,8 +256,8 @@ async function initializeCheckboxAndProgress() {
             await userRef.set(payload, { merge: true });
           }
 
-          completedCount = Math.max(0, completedCount + delta);
           _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
+          try { localStorage.setItem('cty_progress_' + today, completedCount / totalDailyTasks * 100); } catch(_e) {}
 
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();
@@ -300,10 +299,14 @@ async function retryPendingDailyResets() {
   const db = window.db || firebase.firestore();
 
   try {
+    // Snapshot keys first — removing items during index-based iteration skips entries
+    const resetKeys = [];
     for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key || !key.startsWith('cty_daily_reset_')) continue;
+      const k = localStorage.key(i);
+      if (k && k.startsWith('cty_daily_reset_')) resetKeys.push(k);
+    }
 
+    for (const key of resetKeys) {
       try {
         const raw = localStorage.getItem(key);
         if (!raw) { localStorage.removeItem(key); continue; }
@@ -316,15 +319,15 @@ async function retryPendingDailyResets() {
           await db.runTransaction(async (tx) => {
             const doc = await tx.get(userRef);
             const serverData = doc.exists ? doc.data() : {};
-            const serverLastVisit = serverData.lastVisit || null;
+            const serverLastTaskDate = serverData.lastTaskDate || null;
 
-            if (serverLastVisit === payload.date) {
+            if (serverLastTaskDate === payload.date) {
               // already applied
               return;
             }
 
             tx.set(userRef, {
-              lastVisit: payload.date,
+              lastTaskDate: payload.date,
               completedCount: 0,
               verseCompleted: false,
               moralCompleted: false,
@@ -352,5 +355,5 @@ async function retryPendingDailyResets() {
 
 window.addEventListener('online', () => {
   console.log('Network online: attempting to apply pending daily resets');
-  retryPendingDailyResets().catch(e => console.error('retryPendingDailyResets failed:'));
+  retryPendingDailyResets().catch(_e => console.error('retryPendingDailyResets failed:'));
 });
