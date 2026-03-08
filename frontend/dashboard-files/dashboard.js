@@ -93,6 +93,9 @@
         return;
       }
 
+      // Wait for daily-reset.js to finish its reset check so we read fresh data
+      if (window.dailyResetReady) await window.dailyResetReady;
+
       // Get user document from Firestore
       const userDoc = await db.collection("users").doc(user.uid).get();
       

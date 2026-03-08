@@ -53,12 +53,13 @@ async function initializeCheckboxAndProgress() {
   const totalDailyTasks = 4; // Fixed total daily tasks
 
   try {
+    // Wait for daily-reset.js to finish its reset check before reading Firestore state
+    if (window.dailyResetReady) await window.dailyResetReady;
+
     const snap = await userRef.get();
 
     let userData = {};
-    let lastTaskDate = null;
     let completedCount = 0;
-    let totalCount = 0;
 
     // Individual task state tracking
     let verseCompleted = false;
@@ -68,10 +69,8 @@ async function initializeCheckboxAndProgress() {
 
     if (snap.exists) {
       userData = snap.data();
-      lastTaskDate = userData.lastTaskDate || null;
       completedCount = userData.completedCount || 0;
-      totalCount = userData.totalCount || 0;
-      
+
       // Load individual task states
       verseCompleted = userData.verseCompleted || false;
       moralCompleted = userData.moralCompleted || false;
@@ -83,64 +82,12 @@ async function initializeCheckboxAndProgress() {
     const tz = (userData && userData.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone;
     const today = (typeof localDateInTZ === 'function') ? localDateInTZ(new Date(), tz) : new Date().toISOString().split('T')[0];
 
-    // If lastTaskDate is not today, attempt a transactional reset so we don't carry over yesterday's values
-    if (lastTaskDate !== today) {
-      // Reset local variables immediately for UI
-      verseCompleted = false;
-      moralCompleted = false;
-      reflectionCompleted = false;
-      challengeCompleted = false;
-      completedCount = 0;
-
-      try {
-        // Run a transaction to avoid races with concurrent increments
-        await db.runTransaction(async (tx) => {
-          const doc = await tx.get(userRef);
-          const serverData = doc.exists ? doc.data() : {};
-          const serverLastTaskDate = serverData.lastTaskDate || null;
-
-          // If another client already reset for today, do nothing
-          if (serverLastTaskDate === today) {
-            return;
-          }
-
-          tx.set(userRef, {
-            lastTaskDate: today,
-            completedCount: 0,
-            verseCompleted: false,
-            moralCompleted: false,
-            reflectionCompleted: false,
-            challengeCompleted: false
-          }, { merge: true });
-        });
-
-        console.log('Daily progress reset on server (transaction) for');
-      } catch (resetErr) {
-        // If transaction failed (offline/permission), persist a pending reset and continue with local reset
-        console.warn('Failed transactional reset; saving pending reset and proceeding with local reset:');
-        try {
-          const key = `cty_daily_reset_${user.uid}_${today}`;
-          localStorage.setItem(key, JSON.stringify({ uid: user.uid, date: today, createdAt: new Date().toISOString() }));
-          console.log('Saved pending daily reset to localStorage:');
-        } catch (lsErr) {
-          console.warn('Failed to save pending daily reset to localStorage:');
-        }
-      }
-
-      // Update UI cleared state and clear yesterday's cache
-      if (checkbox1) checkbox1.checked = false;
-      if (checkbox2) checkbox2.checked = false;
-      if (checkbox3) checkbox3.checked = false;
-      if (checkbox4) checkbox4.checked = false;
-      _saveCbCache(user.uid, today, { verseCompleted: false, moralCompleted: false, reflectionCompleted: false, challengeCompleted: false });
-    } else {
-      // Restore today's completed state and refresh cache
-      if (checkbox1) checkbox1.checked = verseCompleted;
-      if (checkbox2) checkbox2.checked = moralCompleted;
-      if (checkbox3) checkbox3.checked = reflectionCompleted;
-      if (checkbox4) checkbox4.checked = challengeCompleted;
-      _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
-    }
+    // daily-reset.js has already handled the reset — just restore the current state
+    if (checkbox1) checkbox1.checked = verseCompleted;
+    if (checkbox2) checkbox2.checked = moralCompleted;
+    if (checkbox3) checkbox3.checked = reflectionCompleted;
+    if (checkbox4) checkbox4.checked = challengeCompleted;
+    _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
 
     // Checkbox 1 handler (Verse)
     if (checkbox1) {
@@ -290,70 +237,4 @@ if (window.firebaseReady) {
   window.addEventListener('firebase-ready', setupCheckboxAuthListener, { once: true });
 }
 
-// Retry pending daily resets stored in localStorage when online
-async function retryPendingDailyResets() {
-  if (typeof firebase === 'undefined' || !firebase.firestore) {
-    console.warn('retryPendingDailyResets');
-    return;
-  }
-  const db = window.db || firebase.firestore();
-
-  try {
-    // Snapshot keys first — removing items during index-based iteration skips entries
-    const resetKeys = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && k.startsWith('cty_daily_reset_')) resetKeys.push(k);
-    }
-
-    for (const key of resetKeys) {
-      try {
-        const raw = localStorage.getItem(key);
-        if (!raw) { localStorage.removeItem(key); continue; }
-        const payload = JSON.parse(raw);
-        if (!payload || !payload.uid || !payload.date) { localStorage.removeItem(key); continue; }
-
-        const userRef = db.collection('users').doc(payload.uid);
-
-        try {
-          await db.runTransaction(async (tx) => {
-            const doc = await tx.get(userRef);
-            const serverData = doc.exists ? doc.data() : {};
-            const serverLastTaskDate = serverData.lastTaskDate || null;
-
-            if (serverLastTaskDate === payload.date) {
-              // already applied
-              return;
-            }
-
-            tx.set(userRef, {
-              lastTaskDate: payload.date,
-              completedCount: 0,
-              verseCompleted: false,
-              moralCompleted: false,
-              reflectionCompleted: false,
-              challengeCompleted: false
-            }, { merge: true });
-          });
-
-          // success -> remove key
-          localStorage.removeItem(key);
-          console.log('retryPendingDailyResets: applied pending reset:');
-        } catch (txErr) {
-          console.warn('retryPendingDailyResets: transaction failed for');
-          // keep the key for future retries
-        }
-      } catch (parseErr) {
-        console.warn('retryPendingDailyResets: failed to parse pending reset');
-        localStorage.removeItem(key);
-      }
-    }
-  } catch (err) {
-    console.error('retryPendingDailyResets: unexpected error');
-  }
-}
-
-window.addEventListener('online', () => {
-  console.log('Network online: attempting to apply pending daily resets');
-  retryPendingDailyResets().catch(_e => console.error('retryPendingDailyResets failed:'));
-});
+// Retry pending resets and online recovery are handled by daily-reset.js
