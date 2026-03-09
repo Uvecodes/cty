@@ -28,40 +28,18 @@
 
   <!-- Navigation Bar -->
    <!-- Fixed Top Navbar -->
-  <nav  class="profile-navbar">
+  <nav class="profile-navbar">
     <div class="navbar-left">
       <div class="logo">
-        <!-- <img src="../assets/images/official-logo.svg" alt=""> -->
-         <!-- <div class="profile-avatar"> -->
-                    <img id="profileAvatar" src="../assets/images/official-logo.svg" alt="#">
-                    <!-- <input type="file" id="avatarUpload" accept="image/*" style="display: none;"> -->
-                    <!-- <button type="button" id="avatarUploadBtn" class="avatar-upload-btn">Change Photo</button> -->
-                <!-- </div> -->
+        <img id="navbarLogo" src="../assets/images/official-logo.svg" alt="CTY">
       </div>
     </div>
-
-     <div class="navbar-right">
+    <div class="navbar-right">
       <a href="./dashboard.html" class="btn btn-secondary" aria-label="Back to Dashboard">Back</a>
+      <a href="./profile.html" class="navbar-avatar-link" aria-label="My Profile">
+        <img id="profileAvatar" src="../assets/icons/person-cty.svg" alt="Profile" class="navbar-avatar">
+      </a>
     </div>
-
-     <!-- <div class="navbar-right">
-                <a href="./dashboard.html" class="btn btn-primary">BACK TO DASHBOARD</a>
-                
-            </div> -->
-    <!-- <div class="navbar-right">
-      <a href="#" class="btn btn-secondary" aria-label="logout" onClick="logout()">← Logout</a> -->
-        
-                <!-- tooltip was implemented here -->
-    <!-- <button id="installBtn"  class="btn-install">Install App
-        <span class="tooltip">Install for a better personalized experience</span>
-    </button> -->
-
-      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
-      <!-- we will implement 3d avatar later as a new feature to excite users-->
-      <!-- <div class="user-avatar"> -->
-        <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
-      <!-- </div> -->
-    <!--/div -->
   </nav>
     
 
@@ -142,6 +120,10 @@
                </label>
             </div>
           </div>
+
+          <div class="profile-logout-row">
+            <button type="button" class="logout-text-btn" onclick="confirmLogout()">Sign out</button>
+          </div>
         </div>
       </form>
     </div>
@@ -164,6 +146,17 @@
    
    <!-- <h1>COMING SOON</h1> -->
 
+  <!-- Logout Confirmation Modal -->
+  <div id="logoutModal" class="logout-modal-overlay" hidden>
+    <div class="logout-modal-card">
+      <p class="logout-modal-msg">Are you sure you want to sign out?</p>
+      <div class="logout-modal-actions">
+        <button type="button" class="logout-modal-cancel" onclick="document.getElementById('logoutModal').hidden=true">Cancel</button>
+        <button type="button" class="logout-modal-confirm" onclick="logout()">Sign out</button>
+      </div>
+    </div>
+  </div>
+
    <!-- scripts -->
    <!-- Cropper.js Library -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
@@ -178,12 +171,21 @@
    
    <!-- Firebase Configuration -->
    <script src="../js/firebase-config.js"></script>
-   
+
+   <!-- Auth (provides logout function) -->
+   <script src="../authentication/auth-v2.js"></script>
+
    <!-- Profile Script -->
    <script src="./profile.js"></script>
    
    <!-- Dark Mode Script -->
    <script src="../js/dark-mode.js"></script>
-  
+
+   <script>
+     function confirmLogout() {
+       document.getElementById('logoutModal').hidden = false;
+     }
+   </script>
+
 </body>
 </html> 

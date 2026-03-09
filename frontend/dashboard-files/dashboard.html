@@ -39,30 +39,22 @@
 </head>
 <body>
   <!-- Fixed Top Navbar -->
-  <nav  class="dashboard-navbar">
+  <nav class="dashboard-navbar">
     <div class="navbar-left">
       <div class="logo">
-        <!-- <img src="../assets/images/official-logo.svg" alt=""> -->
-         <!-- <div class="profile-avatar"> -->
-                    <img id="profileAvatar" src="../assets/images/official-logo.svg" alt="#">
-                    <!-- <input type="file" id="avatarUpload" accept="image/*" style="display: none;"> -->
-                    <!-- <button type="button" id="avatarUploadBtn" class="avatar-upload-btn">Change Photo</button> -->
-                <!-- </div> -->
+        <img id="navbarLogo" src="../assets/images/official-logo.svg" alt="CTY">
       </div>
     </div>
     <div class="navbar-right">
-      <a href="#" class="btn btn-secondary" aria-label="logout" onClick="logout()">← Logout</a>
-        
-                <!-- tooltip was implemented here -->
-    <button id="installBtn" class="btn-install" style="display: none;">Install App
-        <span class="tooltip">Install for a better personalized experience</span>
-    </button>
+      <a href="../support/support.html" class="nav-link">Support Us</a>
 
-      <!-- <button class="theme-toggle" aria-label="Toggle theme">🌓</button> -->
-      <!-- we will implement 3d avatar later as a new feature to excite users-->
-      <!-- <div class="user-avatar"> -->
-        <!-- <img src="assets/images/avatar-placeholder.png" alt="User Avatar"> -->
-      <!-- </div> -->
+      <button id="installBtn" class="btn-install" style="display: none;">Install App
+        <span class="tooltip">Install for a better personalized experience</span>
+      </button>
+
+      <a href="./profile.html" class="navbar-avatar-link" aria-label="My Profile">
+        <img id="profileAvatar" src="../assets/images/official-logo.svg" alt="Profile" class="navbar-avatar">
+      </a>
     </div>
   </nav>
 
@@ -137,27 +129,27 @@
         <div class="card-icon">
           <img src="../assets/icons/open-bible-cty.svg" alt="bible" width="70">
         </div>
-        <h3>Today's Verse</h3>
+        <h3>Today's Verse and Moral</h3>
         <p id="passage">"Loading..."</p>
         <a href="./todaysverse.html" class="card-action">Read More →</a>
       </div>
 
-      <div class="dashboard-card moral-card">
+      <!-- <div class="dashboard-card moral-card">
         <div class="card-icon">
           <img src="../assets/icons/very-bright-heart-cty.svg" alt="heart" width="70">
         </div>
         <h3>Moral of the Day</h3>
         <p id="moral">Loading...</p>
         <a href="./todaysverse.html" class="card-action">Learn More →</a>
-      </div>
+      </div> -->
 
-      <div class="dashboard-card leaderboard-card">
+       <div class="dashboard-card games-card">
         <div class="card-icon"> 
-          <img src="../assets/icons/trophy-cty.svg" alt="trophy" width="70">
+          <img src="../assets/icons/game-pad-cty.svg" alt="game-pad" width="70">
         </div>
-        <h3>Leaderboard</h3>
-        <p>You're in 3rd place this week!</p>
-        <a href="./leaderboard.html" class="card-action">View Rankings →</a>
+        <h3>Fun Games</h3>
+        <p>Enjoy Fun Games</p>
+        <a href="./games.html" class="card-action" >Play Game →</a>
       </div>
 
       <div class="dashboard-card profile-card">
@@ -169,13 +161,15 @@
         <a href="./profile.html" class="card-action" >Edit Profile →</a>
       </div>
 
-       <div class="dashboard-card games-card">
+     
+
+      <div class="dashboard-card leaderboard-card">
         <div class="card-icon"> 
-          <img src="../assets/icons/game-pad-cty.svg" alt="game-pad" width="70">
+          <img src="../assets/icons/trophy-cty.svg" alt="trophy" width="70">
         </div>
-        <h3>Fun Games</h3>
-        <p>Enjoy Fun Games</p>
-        <a href="./games.html" class="card-action" >Play Game →</a>
+        <h3>Leaderboard</h3>
+        <p>You're in 3rd place this week!</p>
+        <a href="./leaderboard.html" class="card-action">View Rankings →</a>
       </div>
     </section>
   </main>
@@ -308,7 +302,8 @@
   <script src="./migration-modal.js"></script>
   <script src="../js/pwa-install.js"></script>
   
- <script src="./checkbox.js"></script> 
+ <script src="./checkbox.js"></script>
+ <script src="../js/navbar-avatar.js"></script>
  <script src="../js/dark-mode.js"></script>
   
 </body>

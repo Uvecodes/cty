@@ -40,12 +40,9 @@
       <img id="navbarLogo" src="../assets/images/official-logo.svg" alt="Catch Them Young" class="logo">
     </div>
     <div class="navbar-right">
-      <!-- <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-      <div class="user-avatar">
-        <img src="../assets/icons/default-avatar.png" alt="User Avatar" id="user-avatar-img">
-      </div> -->
-      <a href="./dashboard.html">
-      <button class="btn btn-secondary" >Back</button>
+      <a href="./dashboard.html" class="btn btn-secondary">Back</a>
+      <a href="./profile.html" class="navbar-avatar-link" aria-label="My Profile">
+        <img id="profileAvatar" src="../assets/icons/person-cty.svg" alt="Profile" class="navbar-avatar">
       </a>
     </div>
   </nav>
@@ -106,6 +103,7 @@
 
   <!-- Scripts -->
   <script src="../js/firebase-config.js"></script>
+  <script src="../js/navbar-avatar.js"></script>
   <script src="../js/leaderboard.js"></script>
   <script src="../js/dark-mode.js"></script>
 </body>

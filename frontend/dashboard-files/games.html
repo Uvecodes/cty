@@ -213,7 +213,12 @@
     <img src="../assets/images/official-logo.svg" alt="CTY" onerror="this.style.display='none'">
     CTY Bible
   </a>
-  <a class="btn-back" href="./dashboard.html">← Dashboard</a>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a class="btn-back" href="./dashboard.html">← Dashboard</a>
+    <a href="./profile.html" class="navbar-avatar-link" aria-label="My Profile">
+      <img id="profileAvatar" src="../assets/icons/person-cty.svg" alt="Profile" class="navbar-avatar">
+    </a>
+  </div>
 </nav>
 
 <!-- Hero -->
@@ -298,5 +303,6 @@
 
 <!-- Scripts -->
 <script src="../js/firebase-config.js"></script>
+<script src="../js/navbar-avatar.js"></script>
 </body>
 </html>

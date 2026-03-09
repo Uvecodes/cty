@@ -291,11 +291,9 @@
     // Wait for content to be rendered by content.js
     const checkInterval = setInterval(() => {
       const passageElement = document.getElementById('passage');
-      const moralElement = document.getElementById('moral');
-      
-      if (passageElement && moralElement &&
-          !passageElement.textContent.includes('Loading') &&
-          !moralElement.textContent.includes('Loading')) {
+
+      if (passageElement &&
+          !passageElement.textContent.includes('Loading')) {
         
         // Content is loaded, apply previews
         clearInterval(checkInterval);

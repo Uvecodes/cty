@@ -6,6 +6,12 @@
   <title>Support Us | Catch Them Young</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="./support.css">
+  <link rel="stylesheet" href="../css/dark-mode.css">
+
+  <!-- Firebase v8 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,8 +38,8 @@
       </div>
       <button class="hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
       <div class="nav-links" id="nav-links">
-        <a href="../index.html">Home</a>
-        <a href="../about.html">About Us</a>
+        <a href="../index.html" id="nav-home">Home</a>
+        <a href="../about.html" id="nav-about">About Us</a>
         <!-- <a href="../shop/shop.html">Shop</a> -->
         <a href="./support.html" class="active">Support Us</a>
         <button id="installBtn" class="btn-install">
@@ -176,7 +182,30 @@
   <!-- Flutterwave Inline Checkout SDK -->
   <script src="https://checkout.flutterwave.com/v3.js"></script>
 
+  <script src="../js/firebase-config.js"></script>
   <script src="./support.js"></script>
   <script src="../js/pwa-install.js"></script>
+  <script src="../js/dark-mode.js"></script>
+
+  <script>
+    // Hide public nav links when user is authenticated
+    (function () {
+      function checkAuth() {
+        if (typeof firebase === 'undefined' || !firebase.auth) return;
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (!user) return;
+          var home = document.getElementById('nav-home');
+          var about = document.getElementById('nav-about');
+          if (home) home.style.display = 'none';
+          if (about) about.style.display = 'none';
+        });
+      }
+      if (window.firebaseReady) {
+        window.firebaseReady.then(checkAuth).catch(function () {});
+      } else {
+        window.addEventListener('firebase-ready', checkAuth, { once: true });
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -107,7 +107,7 @@ async function register(event) {
 
     // Sign in with custom token from backend
     const auth = firebase.auth();
-    await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     await auth.signInWithCustomToken(data.token);
 
     showToast('Registered and logged in!');
@@ -152,7 +152,7 @@ async function login(event) {
 
     // Sign in with custom token from back-end
     const auth = firebase.auth();
-    await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     await auth.signInWithCustomToken(data.token);
 
     showToast('Logged in!', 'success');

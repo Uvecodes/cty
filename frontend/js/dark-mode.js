@@ -6,14 +6,12 @@ const DarkMode = {
     this.setupThemeRadioButtons();
     this.setupToggleButton();
     this.detectSystemPreference();
-    // Load avatar only after Firebase is ready (auth.js or firebase-config.js)
-    if (window.firebaseReady) {
-      window.firebaseReady.then(() => this.loadUserAvatar());
-    } else if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length) {
-      this.loadUserAvatar();
-    } else {
-      window.addEventListener('firebase-ready', () => this.loadUserAvatar(), { once: true });
-    }
+  },
+
+  // Update PWA theme-color meta tag to match current mode
+  updateThemeColor(isDarkMode) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', isDarkMode ? '#1e1e1e' : '#4CAF50');
   },
 
   // Set theme (called by radio buttons or toggle)
@@ -22,6 +20,7 @@ const DarkMode = {
     localStorage.setItem('darkMode', isDarkMode);
     this.updateRadioButtons(isDarkMode);
     this.updateToggleButton(isDarkMode);
+    this.updateThemeColor(isDarkMode);
     console.log('Theme set to:', isDarkMode ? 'dark' : 'light');
   },
 
@@ -34,12 +33,13 @@ const DarkMode = {
   // Apply saved theme on page load
   applySavedTheme() {
     const savedTheme = localStorage.getItem('darkMode');
-    
+
     if (savedTheme !== null) {
       const isDarkMode = savedTheme === 'true';
       document.body.classList.toggle('dark-mode', isDarkMode);
       this.updateRadioButtons(isDarkMode);
       this.updateToggleButton(isDarkMode);
+      this.updateThemeColor(isDarkMode);
       console.log('Applied saved theme:', isDarkMode ? 'dark' : 'light');
     } else {
       console.log('No saved theme found, using system preference or default');
@@ -114,6 +114,7 @@ const DarkMode = {
       document.body.classList.toggle('dark-mode', mediaQuery.matches);
       this.updateRadioButtons(mediaQuery.matches);
       this.updateToggleButton(mediaQuery.matches);
+      this.updateThemeColor(mediaQuery.matches);
       console.log('Using system preference:', mediaQuery.matches ? 'dark' : 'light');
 
       // Listen for system preference changes
@@ -123,64 +124,13 @@ const DarkMode = {
           document.body.classList.toggle('dark-mode', e.matches);
           this.updateRadioButtons(e.matches);
           this.updateToggleButton(e.matches);
+          this.updateThemeColor(e.matches);
           console.log('System preference changed to:', e.matches ? 'dark' : 'light');
         }
       });
     }
   },
 
-  // Load user avatar and replace logo
-  loadUserAvatar() {
-    // Check if Firebase is available
-    if (typeof firebase === 'undefined') {
-      console.log('Firebase not available, skipping avatar load');
-      return;
-    }
-
-    // Wait for Firebase Auth to initialize
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if (!user) {
-        console.log('No user logged in, showing default logo');
-        return;
-      }
-
-      try {
-        // Get user data from Firestore
-        const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-
-        if (userData && userData.avatarUrl) {
-          console.log('User avatar found, updating logos');
-          this.updateNavbarLogo(userData.avatarUrl);
-        } else {
-          console.log('No avatar URL found for user');
-        }
-      } catch (error) {
-        console.error('Error loading user avatar:', error);
-      }
-    });
-  },
-
-  // Update navbar logo with user avatar
-  updateNavbarLogo(avatarUrl) {
-    // Look for logo images (different IDs on different pages)
-    const logoSelectors = ['#profileAvatar', '#navbarLogo'];
-    
-    logoSelectors.forEach(selector => {
-      const logoImg = document.querySelector(selector);
-      if (logoImg) {
-        logoImg.src = avatarUrl;
-        logoImg.style.width = '50px';
-        logoImg.style.height = '50px';
-        logoImg.style.borderRadius = '50%';
-        logoImg.style.objectFit = 'cover';
-        logoImg.style.border = '2px solid var(--color-green)';
-        logoImg.style.cursor = 'pointer';
-        logoImg.title = 'Your Profile';
-        console.log(`Updated logo: ${selector}`);
-      }
-    });
-  }
 };
 
 // Initialize dark mode when DOM is ready

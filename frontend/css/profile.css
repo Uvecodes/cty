@@ -270,6 +270,96 @@
   justify-content: center;
 }
 
+/* Logout text link */
+.profile-logout-row {
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem 0 0.4rem;
+  border-top: 1px solid var(--color-gray, #f5f6fa);
+  margin-top: 1.2rem;
+}
+
+.logout-text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #c0392b;
+  font-weight: 600;
+  text-decoration: underline;
+  font-family: inherit;
+}
+
+.logout-text-btn:hover {
+  color: #922b21;
+}
+
+/* Logout confirmation modal */
+.logout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.logout-modal-overlay[hidden] {
+  display: none;
+}
+
+.logout-modal-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 2rem 2rem 1.5rem;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.logout-modal-msg {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--color-dark, #22223b);
+}
+
+.logout-modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-modal-cancel {
+  background: var(--color-gray, #f5f6fa);
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.logout-modal-confirm {
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.logout-modal-confirm:hover {
+  background: #922b21;
+}
+
 .updatepasswordBtn, .savethemebtn { /*1*/
   padding: 1rem 2rem;
   border: none;

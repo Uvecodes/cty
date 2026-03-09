@@ -407,3 +407,130 @@ body {
 /* .dark-mode .spinner {
   border: 4px solid #4caf50;
 } */
+
+/* =============================================
+   Support page dark mode
+   ============================================= */
+.dark-mode .support-nav {
+  background: #1e1e1e !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .support-nav .nav-links a {
+  color: #e0e0e0 !important;
+}
+
+.dark-mode .support-nav .nav-links a:hover,
+.dark-mode .support-nav .nav-links a.active {
+  color: #4caf50 !important;
+}
+
+.dark-mode .hamburger {
+  color: #ffffff !important;
+}
+
+.dark-mode .support-hero-tagline {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .donate-card {
+  background: #1e1e1e !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+  border-color: #333 !important;
+}
+
+.dark-mode .donate-card h2 {
+  color: #ffffff !important;
+}
+
+.dark-mode .donate-card p {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .amount-btn,
+.dark-mode .currency-btn {
+  background: #333 !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+.dark-mode .amount-btn:hover,
+.dark-mode .currency-btn:hover:not(:disabled) {
+  border-color: #4caf50 !important;
+  color: #4caf50 !important;
+}
+
+.dark-mode .amount-btn.active,
+.dark-mode .currency-btn.active {
+  background: #4caf50 !important;
+  color: #ffffff !important;
+  border-color: #4caf50 !important;
+}
+
+.dark-mode .amount-custom,
+.dark-mode .donate-input {
+  background: #2a2a2a !important;
+  border-color: #444 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .amount-custom::placeholder,
+.dark-mode .donate-input::placeholder {
+  color: #888 !important;
+}
+
+.dark-mode .currency-label,
+.dark-mode .rate-display {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .section-heading {
+  color: #ffffff !important;
+}
+
+.dark-mode .number-card {
+  background: #1e1e1e !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-mode .number-value {
+  color: #4caf50 !important;
+}
+
+.dark-mode .number-label {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .activity-item {
+  color: #e0e0e0 !important;
+  border-bottom-color: #333 !important;
+}
+
+.dark-mode .activity-note {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .credits-tiers .tier {
+  background: #1e1e1e !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark-mode .tier-name {
+  color: #ffffff !important;
+}
+
+.dark-mode .tier-desc {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .credits-intro {
+  color: #b0b0b0 !important;
+}
+
+.dark-mode .support-footer-cta {
+  background: #1e1e1e !important;
+}
+
+.dark-mode .support-footer-cta p {
+  color: #b0b0b0 !important;
+}
