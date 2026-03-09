@@ -12,12 +12,14 @@ function initFirebaseFromAPI() {
     console.log('✅ Firebase already initialized');
     window.auth = firebase.auth();
     window.db = firebase.firestore();
-    window.dispatchEvent(new CustomEvent('firebase-ready'));
-    return Promise.resolve();
+    // Ensure LOCAL persistence is set (migrates any existing session) before signalling ready
+    return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+      window.dispatchEvent(new CustomEvent('firebase-ready'));
+    });
   }
 
   console.log('📡 Fetching Firebase config from:', `${window.API_BASE}/api/firebase-config`);
-  
+
   return fetch(`${window.API_BASE}/api/firebase-config`)
     .then((res) => {
       if (!res.ok) throw new Error(`Failed to fetch Firebase config: ${res.status}`);
@@ -28,8 +30,12 @@ function initFirebaseFromAPI() {
       firebase.initializeApp(config);
       window.auth = firebase.auth();
       window.db = firebase.firestore();
+      // Set LOCAL persistence before dispatching ready so all subsequent auth operations use it
+      return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    })
+    .then(() => {
       window.dispatchEvent(new CustomEvent('firebase-ready'));
-      console.log('✅ Firebase initialized - auth and db available globally');
+      console.log('✅ Firebase initialized with LOCAL persistence - auth and db available globally');
     })
     .catch((error) => {
       console.error('❌ Firebase initialization failed:', error);
