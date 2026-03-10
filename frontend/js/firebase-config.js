@@ -34,8 +34,34 @@ function initFirebaseFromAPI() {
       return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     })
     .then(() => {
+      // Check if Firebase already has an auth session restored from IndexedDB
+      return new Promise((resolve) => {
+        const unsub = firebase.auth().onAuthStateChanged((user) => {
+          unsub();
+          resolve(user);
+        });
+      });
+    })
+    .then(async (user) => {
+      // No active session — try silent re-auth via session cookie
+      if (!user) {
+        try {
+          const resp = await fetch(`${window.API_BASE}/api/auth/silent-refresh`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            await firebase.auth().signInWithCustomToken(data.token);
+            console.log('✅ Session silently restored via cookie');
+          }
+        } catch (_e) {
+          // No cookie or network error — user will be redirected to login as normal
+        }
+      }
       window.dispatchEvent(new CustomEvent('firebase-ready'));
-      console.log('✅ Firebase initialized with LOCAL persistence - auth and db available globally');
+      console.log('✅ Firebase ready');
     })
     .catch((error) => {
       console.error('❌ Firebase initialization failed:', error);

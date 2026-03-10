@@ -68,6 +68,15 @@ const versesLimiter = rateLimit({
   handler: jsonError('Too many verse requests. Please wait a moment.')
 });
 
+// POST /api/auth/silent-refresh — throttles automated session restore attempts
+const silentRefreshLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: jsonError('Too many session refresh attempts. Please log in again.')
+});
+
 module.exports = {
   loginLimiter,
   registerLimiter,
@@ -75,5 +84,6 @@ module.exports = {
   welcomeEmailLimiter,
   paymentVerifyLimiter,
   publicReadLimiter,
-  versesLimiter
+  versesLimiter,
+  silentRefreshLimiter
 };

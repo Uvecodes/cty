@@ -2,10 +2,47 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { auth, db, admin } = require('../config/firebase-admin');
 const { verifyToken } = require('../middleware/auth');
-const { loginLimiter, registerLimiter, forgotPasswordLimiter } = require('../middleware/rateLimits');
+const { loginLimiter, registerLimiter, forgotPasswordLimiter, silentRefreshLimiter } = require('../middleware/rateLimits');
 const axios = require('axios');
 const emailjs = require('@emailjs/nodejs');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
+
+// ---- Session cookie helpers ----
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
+const isProd = process.env.NODE_ENV === 'production';
+
+function signSessionToken(uid) {
+  if (!SESSION_SECRET) throw new Error('SESSION_SECRET not configured');
+  return jwt.sign({ uid }, SESSION_SECRET, { expiresIn: '30d' });
+}
+
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
+  path: '/api/auth'
+};
+
+function setSessionCookie(res, uid) {
+  const token = signSessionToken(uid);
+  res.cookie('cty_session', token, { ...COOKIE_OPTIONS, maxAge: COOKIE_MAX_AGE });
+}
+
+function clearSessionCookie(res) {
+  res.clearCookie('cty_session', COOKIE_OPTIONS);
+}
+
+// Rejects requests that don't include the CSRF sentinel header.
+// Cross-origin attackers cannot set custom headers (CORS blocks them),
+// so this prevents CSRF on cookie-using endpoints.
+function requireXhrHeader(req, res, next) {
+  if (req.headers['x-requested-with'] !== 'XMLHttpRequest') {
+    return res.status(403).json({ error: 'Forbidden', message: 'Missing required header' });
+  }
+  next();
+}
 
 // Helper function to handle validation errors
 const handleValidationErrors = (req, res, next) => {
@@ -81,6 +118,9 @@ router.post('/register', registerLimiter, [
         { displayName: name || 'there', email }
       ).catch((err) => console.error('Welcome email failed:', err.message));
     }
+
+    // Set long-lived session cookie for silent re-auth on mobile
+    if (SESSION_SECRET) setSessionCookie(res, userRecord.uid);
 
     res.status(201).json({
       success: true,
@@ -191,6 +231,9 @@ router.post('/login', loginLimiter, [
 
     console.log(`✅ User login: ${email} (${uid})`);
 
+    // Set long-lived session cookie for silent re-auth on mobile
+    if (SESSION_SECRET) setSessionCookie(res, uid);
+
     res.json({
       success: true,
       message: 'Login successful',
@@ -284,16 +327,58 @@ router.get('/verify', verifyToken, (req, res) => {
 
 /**
  * POST /api/auth/logout
- * Logout (mainly for server-side session cleanup if needed)
- * Note: Firebase Client SDK handles logout on frontend
+ * Clears the session cookie so silent re-auth no longer works after sign-out
  */
-router.post('/logout', verifyToken, (req, res) => {
-  // Firebase doesn't require server-side logout for ID tokens
-  //  note This endpoint is here for future use if needed
-  res.json({
-    success: true,
-    message: 'Logged out successfully'
-  });
+router.post('/logout', requireXhrHeader, (_req, res) => {
+  clearSessionCookie(res);
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
+/**
+ * POST /api/auth/silent-refresh
+ * Validates the session cookie and returns a fresh Firebase custom token.
+ * Called by the frontend when Firebase auth state is null after a cold start.
+ */
+router.post('/silent-refresh', silentRefreshLimiter, requireXhrHeader, async (req, res) => {
+  const sessionToken = req.cookies && req.cookies.cty_session;
+
+  if (!sessionToken) {
+    return res.status(401).json({ error: 'No session cookie' });
+  }
+
+  if (!SESSION_SECRET) {
+    console.error('SESSION_SECRET not configured — cannot validate session cookie');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(sessionToken, SESSION_SECRET);
+  } catch (_e) {
+    clearSessionCookie(res);
+    return res.status(401).json({ error: 'Invalid or expired session' });
+  }
+
+  const uid = payload.uid;
+  if (!uid) {
+    clearSessionCookie(res);
+    return res.status(401).json({ error: 'Invalid session payload' });
+  }
+
+  // Verify the Firebase user still exists and is not disabled
+  try {
+    await auth.getUser(uid);
+  } catch (_e) {
+    clearSessionCookie(res);
+    return res.status(401).json({ error: 'User account not found' });
+  }
+
+  // Issue a new custom token and re-issue a fresh session cookie (rolling 30d window)
+  const customToken = await auth.createCustomToken(uid);
+  setSessionCookie(res, uid);
+
+  console.log(`✅ Silent session refresh for uid: ${uid}`);
+  res.json({ success: true, token: customToken });
 });
 
 module.exports = router;

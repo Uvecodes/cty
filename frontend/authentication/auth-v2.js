@@ -205,6 +205,13 @@ async function forgotPassword() {
 // ===================================================
 async function logout() {
   try {
+    // Clear server-side session cookie (silent re-auth won't work after this)
+    fetch(`${window.API_BASE}/api/auth/logout`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    }).catch(() => {});
+
     await firebase.auth().signOut();
     showToast('Logged out!');
     window.location.href = '../index.html';
