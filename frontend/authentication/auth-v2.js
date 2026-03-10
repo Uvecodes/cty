@@ -98,6 +98,7 @@ async function register(event) {
   try {
     const response = await fetch(`${window.API_BASE}/api/auth/register`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, name, age: parseInt(age), denomination })
     });
@@ -140,9 +141,9 @@ async function login(event) {
     // console.log({apiBase: window.API_BASE});
     const response = await fetch(`${window.API_BASE}/api/auth/login`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
-      
     });
     console.log({ email: email, password: password });
     const data = await response.json();
