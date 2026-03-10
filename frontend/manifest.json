@@ -2,7 +2,7 @@
   "name": "Catch Them Young - Daily Morals & Bible Verses",
   "short_name": "CTY Bible",
   "description": "Daily Bible verses & morals by age group – even offline. Teaching children to love, learn, and grow in faith!",
-  "start_url": "/index.html",
+  "start_url": "/dashboard-files/dashboard.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
