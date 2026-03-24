@@ -18,7 +18,7 @@ const { welcomeEmailLimiter } = require('./middleware/rateLimits');
 // CORS Configuration
 // ===================================================
 const allowedOrigins = [
-  'https://tenderoots.com',
+  // 'https://tenderoots.com',
   process.env.FRONTEND_URL,
   'https://catch-them-young.netlify.app/',
   'http://127.0.0.1:5500',
