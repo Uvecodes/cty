@@ -7,6 +7,40 @@
   --max-width: 1200px;
 }
 
+/* ========================================
+   SPLASH SCREEN
+   ======================================== */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+
+#splash-screen.splash-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-width: 480px;
+  max-height: 100vh;
+}
+
+@media (max-width: 480px) {
+  #splash-video {
+    max-width: 100%;
+    object-fit: cover;
+  }
+}
+
 /* ---- Shared navbar avatar ---- */
 .nav-link {
   color: var(--color-green);
@@ -374,6 +408,19 @@ body {
     color: #66bb6a;
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 5px 15px rgba(102, 187, 106, 0.2);
+}
+
+/* Hamburger button — hidden on desktop */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #4a7c59;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    flex-shrink: 0;
 }
 
 /* Main Content */
@@ -1015,259 +1062,69 @@ body {
 }
 
 /* ========================================
-   NAVBAR RESPONSIVENESS FIXES
+   MOBILE NAVBAR (≤ 768px)
    ======================================== */
-
-/* Mobile Portrait (320px - 480px) */
-@media (max-width: 480px) {
-  .navbar {
-    padding: 0.75rem 1rem;
-  }
-  
-  .nav-content {
-    gap: 1rem;
-  }
-  
-  .logo {
-    height: 45px;
-    max-width: 150px;
-  }
-  
-  .nav-links {
-    display: none;
-  }
-  
-  .btn-install {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-    min-height: 36px;
-  }
-  
-  .tooltip {
-    font-size: 11px;
-    padding: 6px 10px;
-  }
-}
-
-/* Specific fix for 468px mobile devices */
-@media (max-width: 468px) {
-  .navbar {
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .nav-content {
-    gap: 0.5rem;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  }
-  
-  .logo {
-    height: 40px;
-    max-width: 100px;
-    flex-shrink: 0;
-  }
-  
-  .logo img {
-    max-height: 100%;
-    width: auto;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 0.5rem;
-    flex-shrink: 1;
-  }
-  
-  .nav-links a {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.5rem;
-    white-space: nowrap;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .btn-install {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.75rem;
-    min-height: 32px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  
-  .tooltip {
-    font-size: 9px;
-    padding: 3px 6px;
-    max-width: 150px;
-    white-space: normal;
-    text-align: center;
-  }
-  
-  .tooltip::after {
-    border-width: 3px;
-    margin-left: -3px;
-  }
-}
-
-/* Mobile Landscape (480px - 600px) */
-@media (min-width: 481px) and (max-width: 600px) {
-  .navbar {
-    padding: 0.75rem 1.25rem;
-  }
-  
-  .nav-content {
-    gap: 1.25rem;
-  }
-  
-  .logo {
-    height: 50px;
-    max-width: 170px;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .nav-links a {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
-  }
-  
-  .btn-install {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-    min-height: 40px;
-  }
-}
-
-/* Small Tablets (600px - 768px) */
-@media (min-width: 601px) and (max-width: 768px) {
-  .navbar {
-    padding: 0.875rem 1.5rem;
-  }
-  
-  .nav-content {
-    gap: 1.5rem;
-  }
-  
-  .logo {
-    height: 55px;
-    max-width: 180px;
-  }
-  
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .nav-links a {
-    font-size: 0.95rem;
-    padding: 0.6rem 0.8rem;
-  }
-  
-  .btn-install {
-    padding: 0.7rem 1.1rem;
-    font-size: 0.95rem;
-    min-height: 42px;
-  }
-}
-
-/* iPad and similar devices (412px - 768px) */
-@media (min-width: 412px) and (max-width: 768px) {
-  .navbar {
-    padding: 0.75rem 1rem;
-  }
-  
-  .nav-content {
-    max-width: 100%;
-    padding: 0 0.5rem;
-  }
-  
-  .logo {
-    height: 50px;
-  }
-  
-  .nav-links {
-    gap: 1.25rem;
-  }
-  
-  .nav-links a {
-    font-size: 0.9rem;
-  }
-  
-  .btn-install {
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
-  }
-}
-
-/* Portrait Tablets (768px - 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .navbar {
-    padding: 1rem 1.5rem;
-  }
-  
-  .nav-content {
-    max-width: 100%;
-  }
-  
-  .logo {
-    height: 58px;
-    max-width: 190px;
-  }
-  
-  .nav-links {
-    gap: 1.75rem;
-  }
-  
-  .nav-links a {
-    font-size: 1rem;
-    padding: 0.7rem 1rem;
-  }
-  
-  .btn-install {
-    font-size: 1rem;
-    padding: 0.75rem 1.25rem;
-    min-height: 44px;
-  }
-  
-}
-
-/* Mobile-specific navbar enhancements */
 @media (max-width: 768px) {
   .navbar {
+    padding: 0.75rem 1rem;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
-  
+
   .navbar.scrolled {
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   }
-  
-  .nav-links a {
-    transition: all 0.2s ease;
-    border-radius: 0.5rem;
+
+  .nav-content {
+    flex-wrap: wrap;
+    gap: 0;
+    max-width: 100%;
   }
-  
+
+  .logo {
+    height: 45px;
+    max-width: 150px;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.25rem;
+    padding: 0.75rem 0 0.5rem;
+    align-items: flex-start;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    transform: none;
+  }
+
   .nav-links a:hover {
     background: rgba(76, 175, 80, 0.1);
-    transform: translateY(-1px);
+    transform: none;
+    box-shadow: none;
   }
-  
+
   .btn-install {
-    transition: all 0.2s ease;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
   }
-  
-  .btn-install:hover {
-    transform: translateY(-1px);
-  }
-  
-  .btn-install:active {
-    transform: translateY(0);
-  }
-} 
+}
 
 
 

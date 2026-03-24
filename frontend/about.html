@@ -46,16 +46,15 @@
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">
-                <img src="./assets/images/official-logo.svg" alt="Catch Them Young">
+                <img src="./assets/images/official-logo.svg" alt="Tenderoots">
             </div>
-            <ul class="nav-links">
-                <li><a href="./index.html">Home</a></li>
-                <!-- <li><a href="#" class="active">About</a></li> -->
-                <!-- <li><a href="./shop/shop.html">Shop</a></li> -->
-                <li><a href="./support/support.html">Support Us</a></li>
-                <li><a href="./authentication/login.html">Login</a></li>
-                <li><a href="./authentication/signup.html">Sign Up</a></li>
-            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+            <div class="nav-links" id="nav-links">
+                <a href="./index.html">Home</a>
+                <a href="./support/support.html">Support Us</a>
+                <a href="./authentication/login.html">Login</a>
+                <a href="./authentication/signup.html">Sign Up</a>
+            </div>
         </div>
     </nav>
 
@@ -248,6 +247,7 @@
             <p>&copy; 2025 Catch Them Young. All rights reserved.</p>
         </div>
     </footer>
+    <script src="./js/navbar.js"></script>
 </body>
 </html>
 

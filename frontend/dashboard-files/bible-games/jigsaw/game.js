@@ -806,15 +806,27 @@ function jigsawEdge(ctx, x1, y1, x2, y2, type) {
 }
 
 // ══════════════════════════════════════
+// TRAY COUNT
+// ══════════════════════════════════════
+function updateTrayCount() {
+  const remaining = state.pieces.filter(p => !p.placed).length;
+  const label = document.querySelector('.tray-label');
+  if (!label) return;
+  label.innerHTML = `<span>Pieces</span><span class="tray-count">${remaining} left</span>`;
+}
+
+// ══════════════════════════════════════
 // TRAY
 // ══════════════════════════════════════
 function buildTray() {
   const tray = document.getElementById('tray-inner');
   tray.innerHTML = '';
+  updateTrayCount();
+  const g = state.currentLevel ? state.currentLevel.grid : 4;
   state.pieces.forEach(p => {
     const el = document.createElement('canvas');
     el.className = 'tray-piece';
-    const tSize = isMobile ? 80 : 80;
+    const tSize = isMobile ? (g >= 7 ? 68 : g >= 5 ? 76 : 84) : 80;
     el.width  = p.canvas.width;
     el.height = p.canvas.height;
     const tc = el.getContext('2d');
@@ -928,6 +940,7 @@ function snapPiece(p) {
   if (p.trayEl) { p.trayEl.remove(); p.trayEl = null; }
 
   updateProgress();
+  updateTrayCount();
   playSnapEffect(p);
 
   if (state.placedCount === state.pieces.length) {
@@ -1101,7 +1114,8 @@ function stopTimer() {
 function updateTimer() {
   const el = document.getElementById('hud-timer');
   el.textContent = formatTime(state.timeLeft);
-  el.classList.toggle('urgent', state.timeLeft <= 30 && state.timeLeft > 0);
+  el.classList.toggle('urgent',  state.timeLeft <= 30 && state.timeLeft > 0);
+  el.classList.toggle('warning', state.timeLeft <= 60 && state.timeLeft > 30);
 }
 
 function updateProgress() {
