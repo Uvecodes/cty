@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard-files/
+Disallow: /authentication/
+
+Sitemap: https://tenderoots.com/sitemap.xml
