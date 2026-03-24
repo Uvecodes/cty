@@ -1,0 +1,47 @@
+# =====================================================
+# CTY - Namecheap Shared Hosting Config
+# =====================================================
+
+# Force HTTPS + canonicalise to non-www
+RewriteEngine On
+
+# 1. HTTP → HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. www → non-www
+RewriteCond %{HTTP_HOST} ^www\.tenderoots\.com [NC]
+RewriteRule ^(.*)$ https://tenderoots.com/$1 [L,R=301]
+
+# =====================================================
+# Service Worker — must NOT be cached by the browser
+# =====================================================
+<Files "sw.js">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires "0"
+</Files>
+
+# =====================================================
+# Manifest — short cache so updates apply quickly
+# =====================================================
+<Files "manifest.json">
+  Header set Cache-Control "public, max-age=3600"
+</Files>
+
+# =====================================================
+# Static assets — long cache (versioned by SW_VERSION)
+# =====================================================
+<FilesMatch "\.(css|js|png|jpg|jpeg|svg|gif|ico|woff|woff2|ttf|mp4)$">
+  Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+
+# =====================================================
+# Correct MIME type for .json files
+# =====================================================
+AddType application/json .json
+
+# =====================================================
+# Custom 404 — send to offline page
+# =====================================================
+ErrorDocument 404 /offline.html

@@ -18,6 +18,7 @@ const { welcomeEmailLimiter } = require('./middleware/rateLimits');
 // CORS Configuration
 // ===================================================
 const allowedOrigins = [
+  'https://tenderoots.com',
   process.env.FRONTEND_URL,
   'http://127.0.0.1:5500',
   'http://127.0.0.1:5501',

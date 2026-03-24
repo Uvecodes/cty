@@ -8,32 +8,27 @@ if (self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.
   console.info = function() {};
 }
 
-const SW_VERSION = 'cty-v1.0.10'; // Update this version string with each release to force clients to update their service worker
+const SW_VERSION = 'cty-v1.0.11'; // Update this version string with each release to force clients to update their service worker
 const PRECACHE = `precache-${SW_VERSION}`;
 const RUNTIME = `runtime-${SW_VERSION}`;
 
 // Only include files that actually exist
 const PRECACHE_URLS = [
-  '/frontend/',  
-  '/frontend/index.html',
-  '/frontend/about.html',
-  '/frontend/dashboard-files/dashboard.html',
-  '/frontend/authentication/signup.html',
-  '/frontend/authentication/login.html',
-  '/frontend/css/style.css',
-  '/frontend/css/dashboard.css',
-  '/frontend/dashboard-files/content.js',
-  '/frontend/js/pwa-install.js',
-  '/frontend/offline.html',
-  '/frontend/dashboard-files/content-4-6.json',
-  '/frontend/dashboard-files/content-7-10.json',
-  '/frontend/dashboard-files/content-11-13.json',
-  '/frontend/dashboard-files/content-14-17.json',
-  '/frontend/manifest.json',
-  '/frontend/assets/icons/icon-192x192.png',
-  '/frontend/assets/icons/icon-512x512.png',
-  '/frontend/assets/images/official-logo.svg'
-  // Add other critical assets here
+  '/',
+  '/index.html',
+  '/about.html',
+  '/dashboard-files/dashboard.html',
+  '/authentication/signup.html',
+  '/authentication/login.html',
+  '/css/style.css',
+  '/css/dashboard.css',
+  '/dashboard-files/dashboard.js',
+  '/js/pwa-install.js',
+  '/offline.html',
+  '/manifest.json',
+  '/assets/icons/icon-192x192.png',
+  '/assets/icons/icon-512x512.png',
+  '/assets/images/official-logo.svg'
 ];
 
 // Install: pre-cache the app shell + critical assets
@@ -124,7 +119,7 @@ self.addEventListener('fetch', (event) => {
         
         // Fall back to offline page
         const cache = await caches.open(PRECACHE);
-        const offlinePage = await cache.match('/frontend/offline.html');
+        const offlinePage = await cache.match('/offline.html');
         return offlinePage || Response.error();
       }
     })());
