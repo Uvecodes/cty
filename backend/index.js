@@ -20,6 +20,7 @@ const { welcomeEmailLimiter } = require('./middleware/rateLimits');
 const allowedOrigins = [
   'https://tenderoots.com',
   process.env.FRONTEND_URL,
+  'https://catch-them-young.netlify.app/',
   'http://127.0.0.1:5500',
   'http://127.0.0.1:5501',
   'http://localhost:5500',
