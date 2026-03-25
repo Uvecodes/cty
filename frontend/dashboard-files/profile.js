@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeDeleteButton();
         initializeAvatarPreview();
         loadShopHistory();
+        initNotificationToggle();
     };
     if (window.firebaseReady) {
         window.firebaseReady.then(runAfterFirebase);
@@ -725,6 +726,71 @@ async function loadShopHistory() {
     } catch (err) {
         // Silently fail — shop history is non-critical
     }
+}
+
+// ─── Notification Toggle ──────────────────────────────────────────────────────
+function initNotificationToggle() {
+    const toggle = document.getElementById('notifToggle');
+    const status = document.getElementById('notifStatus');
+    const slider = document.getElementById('notifSlider');
+
+    if (!toggle || !status || !slider) return;
+
+    // Push not supported
+    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !window.PushNotifications) {
+        status.textContent = 'Not supported on this device';
+        toggle.disabled = true;
+        return;
+    }
+
+    function setToggleUI(checked) {
+        toggle.checked = checked;
+        slider.style.background = checked ? '#16a34a' : '#ccc';
+        slider.style.setProperty('--knob-x', checked ? '24px' : '2px');
+        // Knob via pseudo-element — override with a real element for simplicity
+        slider.innerHTML = `<span style="
+            position:absolute;height:22px;width:22px;left:${checked ? '26px' : '2px'};bottom:3px;
+            background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,0.3);
+        "></span>`;
+        status.textContent = checked ? 'On — you\'ll get reminders at 7 AM' : 'Off';
+    }
+
+    // Load current state
+    window.PushNotifications.isSubscribed().then((subscribed) => {
+        if (Notification.permission === 'denied') {
+            status.textContent = 'Blocked by browser — enable in browser settings';
+            toggle.disabled = true;
+            setToggleUI(false);
+            return;
+        }
+        setToggleUI(subscribed);
+    });
+
+    toggle.addEventListener('change', async function () {
+        toggle.disabled = true;
+        status.textContent = 'Updating…';
+        try {
+            if (toggle.checked) {
+                const ok = await window.PushNotifications.enable();
+                if (!ok) {
+                    status.textContent = 'Permission denied — enable in browser settings';
+                    setToggleUI(false);
+                } else {
+                    setToggleUI(true);
+                }
+            } else {
+                await window.PushNotifications.disable();
+                setToggleUI(false);
+            }
+        } catch (_err) {
+            status.textContent = 'Something went wrong. Try again.';
+            // Revert toggle to actual state
+            const current = await window.PushNotifications.isSubscribed();
+            setToggleUI(current);
+        } finally {
+            toggle.disabled = false;
+        }
+    });
 }
 
 // Export functions to global scope
