@@ -143,7 +143,7 @@ router.post('/send-daily', async (req, res) => {
     }
 
     const now = new Date();
-    const TARGET_HOUR = 7; // 7 AM in each user's local timezone
+    const TARGET_HOUR = 13; // 7 AM in each user's local timezone
 
     let sent = 0;
     let skipped = 0;

@@ -8,7 +8,7 @@ if (self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.
   console.info = function() {};
 }
 
-const SW_VERSION = 'cty-v1.0.12'; // Update this version string with each release to force clients to update their service worker
+const SW_VERSION = 'cty-v1.0.13'; // Update this version string with each release to force clients to update their service worker
 const PRECACHE = `precache-${SW_VERSION}`;
 const RUNTIME = `runtime-${SW_VERSION}`;
 
@@ -17,15 +17,24 @@ const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/about.html',
-  '/dashboard-files/dashboard.html',
+  '/offline.html',
+  '/manifest.json',
+
+  // Auth
   '/authentication/signup.html',
   '/authentication/login.html',
+
+  // Dashboard pages
+  '/dashboard-files/dashboard.html',
+  '/dashboard-files/profile.html',
+  '/dashboard-files/leaderboard.html',
+  '/dashboard-files/todaysverse.html',
+
+  // Core assets
   '/css/style.css',
   '/css/dashboard.css',
   '/dashboard-files/dashboard.js',
   '/js/pwa-install.js',
-  '/offline.html',
-  '/manifest.json',
   '/assets/icons/icon-192x192.png',
   '/assets/icons/icon-512x512.png',
   '/assets/images/official-logo.svg'
