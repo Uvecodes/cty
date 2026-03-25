@@ -3,7 +3,6 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const emailjs = require('@emailjs/nodejs');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -12,7 +11,7 @@ const authRoutes = require('./routes/auth');
 const versesRoutes = require('./routes/verses');
 const supportRoutes = require('./routes/support');
 const shopRoutes = require('./routes/shop');
-const { welcomeEmailLimiter } = require('./middleware/rateLimits');
+const pushRoutes = require('./routes/push');
 
 // ===================================================
 // CORS Configuration
@@ -92,19 +91,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/verses', versesRoutes);
 app.use('/api/support', supportRoutes);
 app.use('/api/shop', shopRoutes);
-
-// ===================================================
-// EmailJS Initialization
-// ===================================================
-if (!process.env.EMAILJS_PRIVATE_KEY || !process.env.EMAILJS_PUBLIC_KEY) {
-  console.warn('⚠️  WARNING: EmailJS credentials not found in .env file');
-} else {
-  emailjs.init({
-    privateKey: process.env.EMAILJS_PRIVATE_KEY,
-    publicKey: process.env.EMAILJS_PUBLIC_KEY
-  });
-  console.log('✅ EmailJS initialized successfully');
-}
+app.use('/api/push', pushRoutes);
 
 // ===================================================
 // Health Check
@@ -117,54 +104,10 @@ app.get('/health', (req, res) => {
       serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT_KEY ? 'configured' : 'missing',
       clientConfig: process.env.FIREBASE_API_KEY ? 'configured' : 'missing'
     },
-    emailjs: {
-      serviceId: process.env.EMAILJS_SERVICE_ID ? 'configured' : 'missing',
-      templateId: process.env.EMAILJS_TEMPLATE_ID ? 'configured' : 'missing',
-      privateKey: process.env.EMAILJS_PRIVATE_KEY ? 'configured' : 'missing',
-      publicKey: process.env.EMAILJS_PUBLIC_KEY ? 'configured' : 'missing'
+    resend: {
+      apiKey: process.env.RESEND_API_KEY ? 'configured' : 'missing'
     }
   });
-});
-
-// ===================================================
-// Send Welcome Email
-// ===================================================
-app.post('/send-welcome', welcomeEmailLimiter, async (req, res) => {
-  console.log('📧 Received welcome email request:', req.body);
-  const { email, displayName } = req.body;
-
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Valid email required' });
-  }
-
-  if (!process.env.EMAILJS_SERVICE_ID || !process.env.EMAILJS_TEMPLATE_ID) {
-    console.error('❌ EmailJS not configured - check .env file');
-    return res.status(500).json({ error: 'Email service not configured' });
-  }
-
-  try {
-    await emailjs.send(
-      process.env.EMAILJS_SERVICE_ID,
-      process.env.EMAILJS_TEMPLATE_ID,
-      {
-        displayName: displayName || 'there',
-        email: email
-      }
-    );
-
-    console.log('✅ Welcome email sent to', email);
-    res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('❌ Email error:', err);
-
-    let errorMessage = err.message || 'Failed to send email';
-    if (err.status === 403 && err.text && err.text.includes('non-browser')) {
-      errorMessage = 'Enable non-browser API calls in EmailJS dashboard';
-      console.error('⚠️  Go to https://dashboard.emailjs.com → Account → API Keys → Enable "Allow non-browser API calls"');
-    }
-
-    res.status(500).json({ error: 'Failed to send email', details: errorMessage });
-  }
 });
 
 // ===================================================
@@ -195,8 +138,10 @@ app.listen(PORT, () => {
   console.log(`   - FRONTEND_URL:              ${process.env.FRONTEND_URL || '❌ Not set'}`);
   console.log(`   - FIREBASE_SERVICE_ACCOUNT_KEY: ${process.env.FIREBASE_SERVICE_ACCOUNT_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`   - FIREBASE_CLIENT_CONFIG:   ${process.env.FIREBASE_API_KEY ? '✅ Set' : '❌ Missing'}`);
-  console.log(`   - EMAILJS:                  ${process.env.EMAILJS_PRIVATE_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`   - RESEND_API_KEY:           ${process.env.RESEND_API_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - VAPID_PUBLIC_KEY:         ${process.env.VAPID_PUBLIC_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - VAPID_PRIVATE_KEY:        ${process.env.VAPID_PRIVATE_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`   - CRON_SECRET:              ${process.env.CRON_SECRET ? '✅ Set' : '❌ Missing'}`);
   console.log(`\n📍 Allowed CORS origins:`);
   allowedOrigins.forEach(origin => console.log(`   - ${origin}`));
   console.log(`\n💡 Waiting for requests...\n`);

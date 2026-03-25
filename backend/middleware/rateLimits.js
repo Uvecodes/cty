@@ -68,6 +68,15 @@ const versesLimiter = rateLimit({
   handler: jsonError('Too many verse requests. Please wait a moment.')
 });
 
+// POST /api/push/subscribe — prevents subscription spam per IP
+const pushSubscribeLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: jsonError('Too many subscription requests. Please try again later.')
+});
+
 // POST /api/auth/silent-refresh — throttles automated session restore attempts
 const silentRefreshLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -85,5 +94,6 @@ module.exports = {
   paymentVerifyLimiter,
   publicReadLimiter,
   versesLimiter,
-  silentRefreshLimiter
+  silentRefreshLimiter,
+  pushSubscribeLimiter
 };

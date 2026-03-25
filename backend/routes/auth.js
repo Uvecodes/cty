@@ -4,8 +4,8 @@ const { auth, db, admin } = require('../config/firebase-admin');
 const { verifyToken } = require('../middleware/auth');
 const { loginLimiter, registerLimiter, forgotPasswordLimiter, silentRefreshLimiter } = require('../middleware/rateLimits');
 const axios = require('axios');
-const emailjs = require('@emailjs/nodejs');
 const jwt = require('jsonwebtoken');
+const { sendWelcomeEmail } = require('../utils/mailer');
 const router = express.Router();
 
 // ---- Session cookie helpers ----
@@ -71,7 +71,7 @@ router.post('/register', registerLimiter, [
   handleValidationErrors
 ], async (req, res) => {
   try {
-    const { email, password, name, age, denomination } = req.body;
+    const { email, password, name, age, denomination, tz } = req.body;
 
     // Check if user already exists
     try {
@@ -101,6 +101,7 @@ router.post('/register', registerLimiter, [
       age: parseInt(age),
       email,
       denomination,
+      tz: tz || 'UTC',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       contentState: {} // Initialize empty content state
     }, { merge: true });
@@ -111,13 +112,7 @@ router.post('/register', registerLimiter, [
     console.log(`✅ User registered: ${email} (${userRecord.uid})`);
 
     // Send welcome email server-side (non-blocking)
-    if (process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID) {
-      emailjs.send(
-        process.env.EMAILJS_SERVICE_ID,
-        process.env.EMAILJS_TEMPLATE_ID,
-        { displayName: name || 'there', email }
-      ).catch((err) => console.error('Welcome email failed:', err.message));
-    }
+    sendWelcomeEmail({ name, email });
 
     // Set long-lived session cookie for silent re-auth on mobile
     if (SESSION_SECRET) setSessionCookie(res, userRecord.uid);
