@@ -20,18 +20,6 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
-/** Returns the current hour (0–23) in a given IANA timezone */
-function localHourInTZ(date, tz) {
-  try {
-    return parseInt(
-      Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', hour12: false }).format(date),
-      10
-    );
-  } catch {
-    return date.getUTCHours();
-  }
-}
-
 /** Deterministically picks today's verse for a group using day-of-year % count */
 async function getDailyVerseForGroup(groupKey, dateISO) {
   const jsonPath = path.join(__dirname, '..', 'data', `content-${groupKey}.json`);
@@ -143,7 +131,6 @@ router.post('/send-daily', async (req, res) => {
     }
 
     const now = new Date();
-    const TARGET_HOUR = 13; // 7 AM in each user's local timezone
 
     let sent = 0;
     let skipped = 0;
@@ -153,13 +140,6 @@ router.post('/send-daily', async (req, res) => {
     await Promise.all(
       snapshot.docs.map(async (doc) => {
         const { uid, subscription, tz, ageGroup } = doc.data();
-
-        // Only send when it is exactly 7 AM in the user's timezone
-        const localHour = localHourInTZ(now, tz || 'UTC');
-        if (localHour !== TARGET_HOUR) {
-          skipped++;
-          return;
-        }
 
         try {
           const dateISO = localDateInTZ(now, tz || 'UTC');
