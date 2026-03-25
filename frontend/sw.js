@@ -8,7 +8,7 @@ if (self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.
   console.info = function() {};
 }
 
-const SW_VERSION = 'cty-v1.0.11'; // Update this version string with each release to force clients to update their service worker
+const SW_VERSION = 'cty-v1.0.12'; // Update this version string with each release to force clients to update their service worker
 const PRECACHE = `precache-${SW_VERSION}`;
 const RUNTIME = `runtime-${SW_VERSION}`;
 
@@ -179,4 +179,51 @@ self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+});
+
+// ── Push Notifications ────────────────────────────────────────────────────────
+
+self.addEventListener('push', (event) => {
+  let data = { title: 'Tenderoots 📖', body: 'Your daily verse is ready!' };
+
+  if (event.data) {
+    try {
+      data = JSON.parse(event.data.text());
+    } catch {
+      data.body = event.data.text();
+    }
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon || '/assets/icons/icon-192x192.png',
+      badge: data.badge || '/assets/icons/icon-192x192.png',
+      data: { url: data.url || '/dashboard-files/dashboard.html' },
+      vibrate: [200, 100, 200]
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const targetUrl = (event.notification.data && event.notification.data.url)
+    ? event.notification.data.url
+    : '/dashboard-files/dashboard.html';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      // Focus an existing tab if one is already open
+      for (const client of windowClients) {
+        if (client.url.includes('dashboard') && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise open a new tab
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
+  );
 });

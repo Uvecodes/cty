@@ -100,7 +100,10 @@ async function register(event) {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name, age: parseInt(age), denomination })
+      body: JSON.stringify({
+        email, password, name, age: parseInt(age), denomination,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+      })
     });
 
     const data = await response.json();
