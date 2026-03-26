@@ -1,5 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/tendwynw/public_html/
-    - /bin/cp -R frontend/* $DEPLOYPATH
+    - /bin/cp -R /home/tendwynw/repositories/cty/frontend/* /home/tendwynw/public_html/
