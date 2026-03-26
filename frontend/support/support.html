@@ -23,7 +23,9 @@
     <meta name="twitter:title" content="Support Us | Tenderoots">
     <meta name="twitter:description" content="Help Tenderoots bring daily Bible verses and moral lessons to more children around the world.">
     <meta name="twitter:image" content="https://tenderoots.com/assets/icons/icon-512x512.png">
-  <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="./support.css">
   <link rel="stylesheet" href="../css/dark-mode.css">
@@ -54,7 +56,7 @@
   <nav class="navbar support-nav">
     <div class="nav-content">
       <div class="logo">
-        <img src="../assets/images/official-logo.svg" alt="Catch Them Young">
+        <img src="../assets/images/tr-logo.svg" alt="Catch Them Young">
       </div>
       <button class="hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
       <div class="nav-links" id="nav-links">
@@ -62,6 +64,7 @@
         <a href="../about.html" id="nav-about">About Us</a>
         <!-- <a href="../shop/shop.html">Shop</a> -->
         <a href="./support.html" class="active">Support Us</a>
+        <a href="../dashboard-files/dashboard.html" id="nav-dashboard" style="display:none;">Back to Dashboard</a>
         <button id="installBtn" class="btn-install">
           Install App
           <span class="tooltip">Install for a better personalized experience</span>
@@ -218,6 +221,8 @@
           var about = document.getElementById('nav-about');
           if (home) home.style.display = 'none';
           if (about) about.style.display = 'none';
+          var dashboard = document.getElementById('nav-dashboard');
+          if (dashboard) dashboard.style.display = '';
         });
       }
       if (window.firebaseReady) {

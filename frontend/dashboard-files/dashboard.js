@@ -192,7 +192,6 @@
   // Function to fetch and display user data
   async function fetchAndDisplayUserData(user) {
     try {
-      console.log('Fetching user data for:', user.uid);
       
       // Update date display immediately
       const dateElement = document.getElementById("verse-date");
@@ -215,7 +214,6 @@
       
       if (userDoc.exists) {
         const userData = userDoc.data();
-        console.log('User data fetched:', userData);
         
         // Personalize greeting with user's name
         const greetingElement = document.getElementById("greeting-text");
@@ -426,7 +424,6 @@
     
     if (user) {
       // User is signed in, allow access to dashboard
-      console.log('User is authenticated:', user.email);
       
       // Fetch and display user data
       await fetchAndDisplayUserData(user);

@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Login | Tenderoots</title>
-  <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/dark-mode.css">
@@ -43,7 +45,7 @@
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">
-                <img src="../assets/images/official-logo.svg" alt="Tenderoots">
+                <img src="../assets/images/tr-logo.svg" alt="Tenderoots">
             </div>
             <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
             <div class="nav-links" id="nav-links">
@@ -76,8 +78,23 @@
         <span> | </span>
         <a href="./signup.html" class="sign-up">Sign up</a>
       </nav>
+
     </div>
   </section>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordPanel" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+    <div style="background:#1e2530;border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:32px 28px;width:100%;max-width:420px;margin:16px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+      <button id="cancelResetBtn" aria-label="Close" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#9ca3af;font-size:1.4rem;cursor:pointer;line-height:1;">&times;</button>
+      <h2 style="margin:0 0 6px;font-size:1.2rem;font-weight:700;color:#fff;">Reset Password</h2>
+      <p style="margin:0 0 20px;font-size:0.9rem;color:#9ca3af;">Enter your email and we'll send you a reset link.</p>
+      <div class="form-group" style="margin-bottom:18px;">
+        <label for="resetEmail">Email</label>
+        <input type="email" id="resetEmail" name="resetEmail" placeholder="your.email@example.com" autocomplete="email">
+      </div>
+      <button type="button" id="sendResetBtn" style="width:100%;">Send Reset Link</button>
+    </div>
+  </div>
 
   <!-- Toast Notification -->
   <div id="toast" class="toast hidden" role="alert" aria-live="polite"></div>

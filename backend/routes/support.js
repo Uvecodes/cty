@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const { db } = require('../config/firebase-admin');
-const { paymentVerifyLimiter, publicReadLimiter } = require('../middleware/rateLimits');
+const { paymentVerifyLimiter, publicReadLimiter, generalLimiter } = require('../middleware/rateLimits');
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ const router = express.Router();
 // GET /api/support/public-config
 // Serves Flutterwave public key to the frontend
 // =============================================
-router.get('/public-config', (req, res) => {
+router.get('/public-config', generalLimiter, (_req, res) => {
   const flwPublicKey = process.env.FLW_PUBLIC_KEY;
   if (!flwPublicKey) {
     console.error('❌ FLW_PUBLIC_KEY not set in .env');

@@ -25,8 +25,21 @@ router.post('/verify-order', paymentVerifyLimiter, async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields: transaction_id, product_id, amount, email' });
   }
 
-  if (typeof email === 'string' && email.length > 254) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (typeof email !== 'string' || email.length > 254 || !emailRegex.test(email)) {
     return res.status(400).json({ error: 'Invalid email' });
+  }
+
+  if (typeof product_id !== 'string' || product_id.trim().length === 0 || product_id.length > 100) {
+    return res.status(400).json({ error: 'Invalid product_id' });
+  }
+
+  if (quantity !== undefined && (!Number.isInteger(Number(quantity)) || Number(quantity) < 1 || Number(quantity) > 100)) {
+    return res.status(400).json({ error: 'quantity must be an integer between 1 and 100' });
+  }
+
+  if (size !== undefined && size !== null && (typeof size !== 'string' || size.length > 50)) {
+    return res.status(400).json({ error: 'Invalid size' });
   }
 
   if (product_name && typeof product_name === 'string' && product_name.length > 200) {
@@ -73,12 +86,7 @@ router.post('/verify-order', paymentVerifyLimiter, async (req, res) => {
 
     // Allow up to 1% tolerance for rounding
     if (chargedCurrency !== (currency || 'USD') || charged < amount * 0.99) {
-      return res.status(400).json({
-        error: 'Amount or currency mismatch',
-        charged,
-        expected: amount,
-        currency: chargedCurrency
-      });
+      return res.status(400).json({ error: 'Payment verification failed' });
     }
 
     // Build and save order record
@@ -113,13 +121,13 @@ router.post('/verify-order', paymentVerifyLimiter, async (req, res) => {
       });
     }
 
-    console.log(`✅ Shop order recorded: ${product_name} ×${quantity || 1} for ${email}`);
+    console.log(`✅ Shop order recorded: orderId=${orderRef.id}`);
 
     res.json({ success: true, orderId: orderRef.id });
 
   } catch (err) {
     console.error('❌ Shop verify-order error:', err.message);
-    res.status(500).json({ error: 'Order verification failed', message: err.message });
+    res.status(500).json({ error: 'Order verification failed' });
   }
 });
 

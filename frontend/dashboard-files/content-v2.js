@@ -320,7 +320,6 @@ async function ensureGroupState(uid, userDoc, groupKey, N) {
       return newState;
     });
 
-    console.log(`Initialized content state for user ${uid} group ${groupKey} (transaction):`, resultState);
     return resultState;
 
   } catch (txError) {
@@ -407,7 +406,6 @@ async function persistServed(uid, groupKey, todayISO, index) {
       [`contentState.${groupKey}.lastServedIndex`]: index
     }, { merge: true });
     
-    console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayISO}, index=${index}`);
   } catch (error) {
     console.error(`Failed to persist served content to Firestore for user ${uid} group ${groupKey}:`, error);
     return false;
@@ -417,7 +415,6 @@ async function persistServed(uid, groupKey, todayISO, index) {
   try {
     const localStorageKey = `cty_${groupKey}_${todayISO}`;
     localStorage.setItem(localStorageKey, String(index));
-    console.log(`Persisted served content to localStorage: ${localStorageKey} = ${index}`);
   } catch (storageError) {
     console.warn(`Failed to persist served content to localStorage for user ${uid} group ${groupKey}:`, storageError);
     // Continue execution even if localStorage fails
@@ -518,7 +515,6 @@ async function scheduleRePrompt(uid, todayISO, days = 7) {
       migrationSkipUntil: skipUntilFormatted
     }, { merge: true });
     
-    console.log(`Scheduled migration re-prompt for user ${uid} until ${skipUntilFormatted} (${days} days from today)`);
     return true;
     
   } catch (error) {
@@ -581,7 +577,6 @@ async function submitMigration(uid, userDoc, month, day, tz) {
     // Update user document with migration data
     await db.collection('users').doc(uid).set(migrationData, { merge: true });
     
-    console.log(`Migration submitted for user ${uid}:`, migrationData);
     
     // Return merged shape for test assertions
     return {
@@ -609,7 +604,6 @@ async function renderTodayContent() {
     }
     
     const uid = user.uid;
-    console.log(`renderTodayContent: Starting for user ${uid}`);
     
     // Read user document from Firestore
     let userDoc;
@@ -620,7 +614,6 @@ async function renderTodayContent() {
         return;
       }
       userDoc = userSnapshot.data();
-      console.log(`renderTodayContent: Retrieved user document for ${uid}`);
     } catch (error) {
       console.error(`renderTodayContent: Failed to read user document for ${uid}:`, error);
       return;
@@ -630,12 +623,10 @@ async function renderTodayContent() {
     let tz = userDoc.tz;
     if (!tz) {
       tz = getUserTZ(userDoc);
-      console.log(`renderTodayContent: Setting timezone for user ${uid}: ${tz}`);
       
       try {
         await db.collection('users').doc(uid).set({ tz }, { merge: true });
         userDoc.tz = tz; // Update local copy
-        console.log(`renderTodayContent: Timezone updated for user ${uid}`);
       } catch (error) {
         console.warn(`renderTodayContent: Failed to update timezone for user ${uid}:`, error);
         // Continue with current timezone
@@ -644,22 +635,18 @@ async function renderTodayContent() {
     
     // Calculate today's date in user's timezone
     const todayISO = localDateInTZ(new Date(), tz);
-    console.log(`renderTodayContent: Today's date for user ${uid}: ${todayISO} (tz: ${tz})`);
     
     // Check if migration should be shown
     if (shouldShowMigration(userDoc, todayISO)) {
-      console.log(`renderTodayContent: Migration needed for user ${uid}, opening modal`);
       
       // Open migration modal
       openMigrationModal(
         // onSave callback
         async (month, day) => {
-          console.log(`renderTodayContent: Migration save callback for user ${uid}: month=${month}, day=${day}`);
           try {
             const updatedUserDoc = await submitMigration(uid, userDoc, month, day, tz);
             if (updatedUserDoc) {
               userDoc = updatedUserDoc; // Update local copy
-              console.log(`renderTodayContent: Migration completed for user ${uid}, proceeding with content`);
               // Continue with content rendering
               await renderContentAfterMigration(uid, userDoc, tz, todayISO);
             } else {
@@ -671,10 +658,8 @@ async function renderTodayContent() {
         },
         // onSkip callback
         async () => {
-          console.log(`renderTodayContent: Migration skip callback for user ${uid}`);
           try {
             await scheduleRePrompt(uid, todayISO, 7);
-            console.log(`renderTodayContent: Migration skip scheduled for user ${uid}, proceeding with legacy age path`);
             // Continue with content rendering using legacy age
             await renderContentAfterMigration(uid, userDoc, tz, todayISO);
           } catch (error) {
@@ -696,7 +681,6 @@ async function renderTodayContent() {
 
 async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
   try {
-    console.log(`renderContentAfterMigration: Starting for user ${uid}`);
     
     // Ensure DOM is ready before trying to render
     if (document.readyState === 'loading') {
@@ -713,7 +697,6 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
     // Call backend API to get today's verse
     // The backend handles: age calculation, group determination, verse index calculation, blocklist, persistence
     try {
-      console.log(`renderContentAfterMigration: Fetching verse from ${API_BASE}/api/verses/today`);
       
       const response = await fetch(`${window.API_BASE}/api/verses/today`, {
         method: 'GET',
@@ -729,12 +712,9 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
       }
       
       const result = await response.json();
-      console.log(`renderContentAfterMigration: API response received:`, result);
       
       if (result.success && result.verse) {
-        console.log(`renderContentAfterMigration: Received verse from backend for user ${uid}:`, result.verse);
         renderItemToDOM(result.verse);
-        console.log(`renderContentAfterMigration: Content rendered successfully for user ${uid}`);
       } else {
         console.warn(`renderContentAfterMigration: No verse data in response for user ${uid}. Response:`, result);
       }
@@ -756,7 +736,6 @@ function setupContentAuthListener() {
   if (typeof firebase === 'undefined' || !firebase.auth) return;
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log('renderTodayContent: User authenticated: ' + user.uid + ', rendering content');
       renderTodayContent();
     } else {
       console.log('renderTodayContent: User signed out, no content to render');
@@ -849,7 +828,6 @@ async function retryPendingInitializations() {
 
           // If transaction succeeded, remove local fallback
           localStorage.removeItem(key);
-          console.log(`retryPendingInitializations: Successfully wrote pending init for ${uid} / ${groupKey} and removed ${key}`);
         } catch (txErr) {
           console.warn(`retryPendingInitializations: Transaction failed for ${key}:`, txErr);
           // leave the local key for future retries

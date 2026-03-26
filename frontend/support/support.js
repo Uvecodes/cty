@@ -142,8 +142,24 @@
       activity.forEach(item => {
         const li = document.createElement('li');
         li.className = 'activity-item';
-        const typeLabel = item.type === 'monthly' ? ' · <strong>monthly</strong>' : '';
-        li.innerHTML = `<span class="activity-dot"></span> ${item.display}${typeLabel} · ${item.relativeTime}`;
+
+        const dot = document.createElement('span');
+        dot.className = 'activity-dot';
+        li.appendChild(dot);
+
+        const text = document.createElement('span');
+        text.textContent = ` ${item.display}`;
+        li.appendChild(text);
+
+        if (item.type === 'monthly') {
+          const badge = document.createElement('strong');
+          badge.textContent = ' · monthly';
+          li.appendChild(badge);
+        }
+
+        const meta = document.createElement('span');
+        meta.textContent = ` · ${item.relativeTime}`;
+        li.appendChild(meta);
         list.appendChild(li);
       });
 

@@ -334,6 +334,16 @@
   .dashboard-navbar {
     padding: 0.8rem 1rem;
   }
+
+  .dashboard-navbar .btn-secondary {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .navbar-right {
+    gap: 0.5rem;
+    max-width: none;
+  }
   
   .navbar-left .app-logo {
     font-size: 1.2rem;

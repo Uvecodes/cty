@@ -111,11 +111,13 @@
   }
 
   function waitForAuth(cb) {
-    if (typeof firebase !== 'undefined' && firebase.auth) {
+    if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && firebase.auth) {
       const unsub = firebase.auth().onAuthStateChanged((user) => {
         unsub();
         if (user) cb();
       });
+    } else if (window.firebaseReady) {
+      window.firebaseReady.then(() => waitForAuth(cb)).catch(() => {});
     } else {
       window.addEventListener('firebase-ready', () => waitForAuth(cb), { once: true });
     }

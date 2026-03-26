@@ -242,20 +242,24 @@
       ? `<span class="product-type-badge virtual-badge">Virtual</span>`
       : `<span class="product-type-badge physical-badge">Merchandise</span>`;
 
+    // Use innerHTML only for trusted structural/static parts; textContent for product data
     card.innerHTML = `
       ${typeBadge}
       <div class="product-image">
-        <span class="product-emoji">${product.emoji}</span>
+        <span class="product-emoji"></span>
       </div>
       <div class="product-info">
-        <h3 class="product-name">${product.name}</h3>
-        <p class="product-description">${product.description}</p>
+        <h3 class="product-name"></h3>
+        <p class="product-description"></p>
         <div class="product-footer">
           ${priceHTML}
           ${btnHTML}
         </div>
       </div>
     `;
+    card.querySelector('.product-emoji').textContent = product.emoji;
+    card.querySelector('.product-name').textContent = product.name;
+    card.querySelector('.product-description').textContent = product.description;
 
     // Wire up buttons
     if (isVirtual && !isOwned && currentUser) {

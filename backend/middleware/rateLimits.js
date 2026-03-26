@@ -86,6 +86,15 @@ const silentRefreshLimiter = rateLimit({
   handler: jsonError('Too many session refresh attempts. Please log in again.')
 });
 
+// GET /api/push/vapid-public-key, GET /api/support/public-config — lightweight public endpoints
+const generalLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: jsonError('Too many requests. Please slow down.')
+});
+
 module.exports = {
   loginLimiter,
   registerLimiter,
@@ -95,5 +104,6 @@ module.exports = {
   publicReadLimiter,
   versesLimiter,
   silentRefreshLimiter,
-  pushSubscribeLimiter
+  pushSubscribeLimiter,
+  generalLimiter
 };

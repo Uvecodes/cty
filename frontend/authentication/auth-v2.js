@@ -148,9 +148,7 @@ async function login(event) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    console.log({ email: email, password: password });
     const data = await response.json();
-    console.log({ data: data});
 
     if (!response.ok) throw new Error(data.message || data.error || 'Login failed');
 
@@ -172,9 +170,7 @@ async function login(event) {
 // ===================================================
 // Forgot Password Function
 // ===================================================
-async function forgotPassword() {
-  const email = prompt('Please enter your email address to reset your password:');
-
+async function forgotPassword(email) {
   if (!email) {
     showToast('Email is required');
     return;
@@ -185,6 +181,9 @@ async function forgotPassword() {
     showToast('Please enter a valid email address');
     return;
   }
+
+  const sendBtn = document.getElementById('sendResetBtn');
+  if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
 
   try {
     const response = await fetch(`${window.API_BASE}/api/auth/forgot-password`, {
@@ -197,9 +196,14 @@ async function forgotPassword() {
     if (!response.ok) throw new Error(data.message || data.error || 'Password reset failed');
 
     showToast(data.message || 'Password reset email sent!');
+    // Hide the panel after success
+    const panel = document.getElementById('forgotPasswordPanel');
+    if (panel) panel.style.display = 'none';
   } catch (error) {
     console.error('Password reset error:', error);
     showToast(error.message || 'An error occurred. Please try again.', 'error');
+  } finally {
+    if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Send Reset Link'; }
   }
 }
 
@@ -256,11 +260,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (loginForm) loginForm.addEventListener('submit', login);
 
   const forgotPasswordLink = document.getElementById('forgotPassword');
+  const resetModal = document.getElementById('forgotPasswordPanel');
+
+  function openResetModal() {
+    if (resetModal) {
+      resetModal.style.display = 'flex';
+      const input = document.getElementById('resetEmail');
+      if (input) { input.value = ''; input.focus(); }
+    }
+  }
+  function closeResetModal() {
+    if (resetModal) resetModal.style.display = 'none';
+  }
+
   if (forgotPasswordLink) {
-    forgotPasswordLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      forgotPassword();
+    forgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); openResetModal(); });
+  }
+
+  // Close on backdrop click
+  if (resetModal) {
+    resetModal.addEventListener('click', (e) => { if (e.target === resetModal) closeResetModal(); });
+  }
+
+  const sendResetBtn = document.getElementById('sendResetBtn');
+  if (sendResetBtn) {
+    sendResetBtn.addEventListener('click', () => {
+      const email = (document.getElementById('resetEmail') || {}).value || '';
+      forgotPassword(email.trim());
     });
+  }
+
+  const cancelResetBtn = document.getElementById('cancelResetBtn');
+  if (cancelResetBtn) {
+    cancelResetBtn.addEventListener('click', closeResetModal);
   }
 
   // Wait for Firebase to be ready before setting up the auth state monitor

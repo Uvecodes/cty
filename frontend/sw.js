@@ -8,7 +8,7 @@ if (self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.
   console.info = function() {};
 }
 
-const SW_VERSION = 'cty-v1.0.13'; // Update this version string with each release to force clients to update their service worker
+const SW_VERSION = 'cty-v1.0.14'; // Update this version string with each release to force clients to update their service worker
 const PRECACHE = `precache-${SW_VERSION}`;
 const RUNTIME = `runtime-${SW_VERSION}`;
 
@@ -207,7 +207,7 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(data.title, {
       body: data.body,
       icon: data.icon || '/assets/icons/icon-192x192.png',
-      badge: data.badge || '/assets/icons/icon-192x192.png',
+      badge: data.badge || '/assets/icons/monochrome.png',
       data: { url: data.url || '/dashboard-files/dashboard.html' },
       vibrate: [200, 100, 200]
     })
@@ -217,9 +217,20 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  const targetUrl = (event.notification.data && event.notification.data.url)
+  const rawUrl = (event.notification.data && event.notification.data.url)
     ? event.notification.data.url
     : '/dashboard-files/dashboard.html';
+
+  // Only allow same-origin URLs — prevents open redirect via malicious push payload
+  let targetUrl;
+  try {
+    const parsed = new URL(rawUrl, self.location.origin);
+    targetUrl = parsed.origin === self.location.origin
+      ? parsed.href
+      : '/dashboard-files/dashboard.html';
+  } catch (_) {
+    targetUrl = '/dashboard-files/dashboard.html';
+  }
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {

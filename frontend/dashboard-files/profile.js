@@ -1,8 +1,8 @@
 // console.log() redec;laration to avoid errors in some environments
-console.log = function() {};
-console.warn = function() {};
-console.error = function() {};
-console.info = function() {};
+// console.log = function() {};
+// console.warn = function() {};
+// console.error = function() {};
+// console.info = function() {};
 
 
 // Avatar upload logic for profile page
@@ -94,15 +94,24 @@ function initializeAvatarPreview() {
 
 // Show avatar in preview mode
 function showAvatarPreview(avatarUrl) {
-    console.log('Opening avatar preview...');
-    
     // Create preview modal
     const modal = document.createElement('div');
     modal.className = 'avatar-preview-modal';
-    modal.innerHTML = `
-        <button class="preview-close-btn" onclick="closeAvatarPreview()">&times;</button>
-        <img src="${avatarUrl}" alt="Avatar Preview">
-    `;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'preview-close-btn';
+    closeBtn.textContent = '\u00D7';
+    closeBtn.addEventListener('click', closeAvatarPreview);
+
+    const img = document.createElement('img');
+    img.alt = 'Avatar Preview';
+    // Only allow http/https/data:image URLs — blocks javascript: and other schemes
+    if (/^(https?:|data:image\/)/.test(avatarUrl)) {
+        img.src = avatarUrl;
+    }
+
+    modal.appendChild(closeBtn);
+    modal.appendChild(img);
     
     // Close on background click
     modal.addEventListener('click', function(e) {
@@ -353,7 +362,6 @@ async function uploadCroppedAvatar() {
             throw new Error('User not authenticated. Please log in.');
         }
         
-        console.log('User authenticated:', user.uid);
         
         // Get cropped canvas
         const canvas = cropperInstance.getCroppedCanvas({
@@ -573,16 +581,13 @@ async function loadExistingAvatar() {
                 return;
             }
             
-            console.log('User logged in:', user.uid);
             
             try {
                 const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
                 const userData = userDoc.data();
                 
-                console.log('User data:', userData);
                 
                 if (userData && userData.avatarUrl) {
-                    console.log('Avatar URL found:', userData.avatarUrl);
                     updateAvatarDisplay(userData.avatarUrl);
                 } else {
                     console.log('No avatar URL found for user');
@@ -697,7 +702,14 @@ async function loadShopHistory() {
         section.style.display = '';
 
         if (shopHistory.length === 0) {
-            list.innerHTML = '<p class="shop-history-empty">No orders yet. <a href="../shop/shop.html">Visit the shop!</a></p>';
+            const emptyP = document.createElement('p');
+            emptyP.className = 'shop-history-empty';
+            emptyP.textContent = 'No orders yet. ';
+            const shopLink = document.createElement('a');
+            shopLink.href = '../shop/shop.html';
+            shopLink.textContent = 'Visit the shop!';
+            emptyP.appendChild(shopLink);
+            list.appendChild(emptyP);
             return;
         }
 
@@ -714,13 +726,27 @@ async function loadShopHistory() {
 
             const item = document.createElement('div');
             item.className = 'shop-history-item';
-            item.innerHTML = `
-                <div class="shi-left">
-                    <span class="shi-name">${order.product_name}${qtyLabel}${sizeLabel}</span>
-                    <span class="shi-date">${date}</span>
-                </div>
-                <span class="shi-amount">$${Number(order.amount).toFixed(2)}</span>
-            `;
+
+            const left = document.createElement('div');
+            left.className = 'shi-left';
+
+            const name = document.createElement('span');
+            name.className = 'shi-name';
+            name.textContent = `${order.product_name || ''}${qtyLabel}${sizeLabel}`;
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'shi-date';
+            dateSpan.textContent = date;
+
+            left.appendChild(name);
+            left.appendChild(dateSpan);
+
+            const amount = document.createElement('span');
+            amount.className = 'shi-amount';
+            amount.textContent = `$${Number(order.amount).toFixed(2)}`;
+
+            item.appendChild(left);
+            item.appendChild(amount);
             list.appendChild(item);
         });
     } catch (err) {
@@ -736,56 +762,130 @@ function initNotificationToggle() {
 
     if (!toggle || !status || !slider) return;
 
-    // Push not supported
-    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !window.PushNotifications) {
+    // Push not supported in this browser
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
         status.textContent = 'Not supported on this device';
-        toggle.disabled = true;
+        slider.style.opacity = '0.5';
+        slider.style.cursor = 'not-allowed';
         return;
     }
+
+    // Create knob element once
+    const knob = document.createElement('span');
+    knob.style.cssText = 'position:absolute;height:22px;width:22px;left:2px;bottom:3px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.3);';
+    slider.appendChild(knob);
 
     function setToggleUI(checked) {
         toggle.checked = checked;
         slider.style.background = checked ? '#16a34a' : '#ccc';
-        slider.style.setProperty('--knob-x', checked ? '24px' : '2px');
-        // Knob via pseudo-element — override with a real element for simplicity
-        slider.innerHTML = `<span style="
-            position:absolute;height:22px;width:22px;left:${checked ? '26px' : '2px'};bottom:3px;
-            background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,0.3);
-        "></span>`;
-        status.textContent = checked ? 'On — you\'ll get reminders at 7 AM' : 'Off';
+        knob.style.left = checked ? '26px' : '2px';
+        status.textContent = checked ? 'On — daily reminders enabled' : 'Off';
     }
 
-    // Load current state
-    window.PushNotifications.isSubscribed().then((subscribed) => {
-        if (Notification.permission === 'denied') {
-            status.textContent = 'Blocked by browser — enable in browser settings';
-            toggle.disabled = true;
-            setToggleUI(false);
-            return;
-        }
-        setToggleUI(subscribed);
-    });
+    function swReady(ms) {
+        return Promise.race([
+            navigator.serviceWorker.ready,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Service worker not ready')), ms))
+        ]);
+    }
 
-    toggle.addEventListener('change', async function () {
-        toggle.disabled = true;
-        status.textContent = 'Updating…';
+    async function getSubscribed() {
+        if (Notification.permission !== 'granted') return false;
         try {
-            if (toggle.checked) {
-                const ok = await window.PushNotifications.enable();
-                if (!ok) {
-                    status.textContent = 'Permission denied — enable in browser settings';
+            const reg = await swReady(3000);
+            const sub = await reg.pushManager.getSubscription();
+            return !!sub;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = atob(base64);
+        return new Uint8Array([...rawData].map((c) => c.charCodeAt(0)));
+    }
+
+    // Load initial state
+    if (Notification.permission === 'denied') {
+        status.textContent = 'Blocked — enable in browser settings';
+        slider.style.opacity = '0.5';
+        slider.style.cursor = 'not-allowed';
+        setToggleUI(false);
+    } else {
+        getSubscribed().then(setToggleUI);
+    }
+
+    slider.addEventListener('click', async function () {
+        if (toggle.disabled) return;
+        const wantOn = !toggle.checked;
+        setToggleUI(wantOn);
+        status.textContent = 'Updating…';
+        toggle.disabled = true;
+
+        try {
+            if (wantOn) {
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') {
+                    status.textContent = permission === 'denied'
+                        ? 'Blocked — enable in browser settings'
+                        : 'Permission not granted';
                     setToggleUI(false);
-                } else {
-                    setToggleUI(true);
+                    return;
                 }
+
+                const vapidRes = await fetch(`${window.API_BASE}/api/push/vapid-public-key`);
+                const { publicKey } = await vapidRes.json();
+                const reg = await swReady(5000);
+                const pushSub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(publicKey)
+                });
+
+                const user = firebase.auth().currentUser;
+                const token = user ? await user.getIdToken() : null;
+                if (!token) throw new Error('Not authenticated');
+
+                const res = await fetch(`${window.API_BASE}/api/push/subscribe`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ subscription: pushSub.toJSON() })
+                });
+                if (!res.ok) throw new Error('Failed to save subscription');
+
+                localStorage.setItem('cty_push_subscribed', '1');
+                setToggleUI(true);
             } else {
-                await window.PushNotifications.disable();
+                const reg = await swReady(5000);
+                const sub = await reg.pushManager.getSubscription();
+                if (sub) await sub.unsubscribe();
+
+                const user = firebase.auth().currentUser;
+                const token = user ? await user.getIdToken() : null;
+                if (token) {
+                    await fetch(`${window.API_BASE}/api/push/unsubscribe`, {
+                        method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).catch(() => {});
+                }
+
+                localStorage.removeItem('cty_push_subscribed');
                 setToggleUI(false);
             }
-        } catch (_err) {
+        } catch (err) {
+            console.error('Notification toggle error:', err);
             status.textContent = 'Something went wrong. Try again.';
-            // Revert toggle to actual state
-            const current = await window.PushNotifications.isSubscribed();
+            const current = await getSubscribed();
             setToggleUI(current);
         } finally {
             toggle.disabled = false;

@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs').promises;
 const { db, admin } = require('../config/firebase-admin');
 const { verifyToken } = require('../middleware/auth');
-const { pushSubscribeLimiter } = require('../middleware/rateLimits');
+const { pushSubscribeLimiter, generalLimiter } = require('../middleware/rateLimits');
 const { ageToGroupKey, localDateInTZ } = require('../utils/verse-helpers');
 
 const router = express.Router();
@@ -42,7 +42,7 @@ function firstNWords(text, n) {
  * Returns the VAPID public key so the frontend can create a push subscription.
  * Public — no auth required.
  */
-router.get('/vapid-public-key', (_req, res) => {
+router.get('/vapid-public-key', generalLimiter, (_req, res) => {
   if (!process.env.VAPID_PUBLIC_KEY) {
     return res.status(500).json({ error: 'Push notifications not configured' });
   }
@@ -150,7 +150,7 @@ router.post('/send-daily', async (req, res) => {
             title: 'Your daily verse is here! 📖',
             body: `"${snippet}…" — ${verse.ref}`,
             icon: '/assets/icons/icon-192x192.png',
-            badge: '/assets/icons/icon-192x192.png',
+            badge: '/assets/icons/monochrome.png',
             url: '/dashboard-files/dashboard.html'
           });
 

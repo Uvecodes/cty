@@ -5,7 +5,7 @@ const { verifyToken } = require('../middleware/auth');
 const { loginLimiter, registerLimiter, forgotPasswordLimiter, silentRefreshLimiter } = require('../middleware/rateLimits');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { sendWelcomeEmail } = require('../utils/mailer');
+const { sendWelcomeEmail, sendPasswordResetEmail } = require('../utils/mailer');
 const router = express.Router();
 
 // ---- Session cookie helpers ----
@@ -64,10 +64,14 @@ const VALID_DENOMINATIONS = ['catholic', 'anglican', 'pentecostal', 'lutheran', 
  */
 router.post('/register', registerLimiter, [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
   body('name').trim().notEmpty().isLength({ max: 100 }).withMessage('Name is required'),
   body('age').isInt({ min: 4, max: 17 }).withMessage('Age must be between 4 and 17'),
   body('denomination').isIn(VALID_DENOMINATIONS).withMessage('Invalid denomination'),
+  body('tz').optional().custom((val) => {
+    try { Intl.DateTimeFormat(undefined, { timeZone: val }); return true; }
+    catch { throw new Error('Invalid timezone'); }
+  }),
   handleValidationErrors
 ], async (req, res) => {
   try {
@@ -109,7 +113,7 @@ router.post('/register', registerLimiter, [
     // Generate custom token for the user
     const customToken = await auth.createCustomToken(userRecord.uid);
 
-    console.log(`✅ User registered: ${email} (${userRecord.uid})`);
+    console.log(`✅ User registered: uid=${userRecord.uid}`);
 
     // Send welcome email server-side (non-blocking)
     sendWelcomeEmail({ name, email });
@@ -133,7 +137,7 @@ router.post('/register', registerLimiter, [
     } else if (error.code === 'auth/invalid-email') {
       message = 'Please enter a valid email address.';
     } else if (error.code === 'auth/weak-password') {
-      message = 'Password must be at least 6 characters.';
+      message = 'Password must be at least 8 characters.';
     }
 
     res.status(400).json({
@@ -224,7 +228,7 @@ router.post('/login', loginLimiter, [
     const userDoc = await db.collection('users').doc(uid).get();
     const userData = userDoc.exists ? userDoc.data() : {};
 
-    console.log(`✅ User login: ${email} (${uid})`);
+    console.log(`✅ User login: uid=${uid}`);
 
     // Set long-lived session cookie for silent re-auth on mobile
     if (SESSION_SECRET) setSessionCookie(res, uid);
@@ -277,27 +281,27 @@ router.post('/forgot-password', forgotPasswordLimiter, [
     }
 
     // Generate password reset link
-    const resetLink = await auth.generatePasswordResetLink(email, {
-      url: process.env.PASSWORD_RESET_REDIRECT_URL
-        || `${process.env.FRONTEND_URL || 'http://localhost:5500/frontend'}/authentication/login.html`,
-      handleCodeInApp: false
+    // continueUrl must be an authorized domain in Firebase — only set it when explicitly configured
+    const resetActionSettings = process.env.PASSWORD_RESET_REDIRECT_URL
+      ? { url: process.env.PASSWORD_RESET_REDIRECT_URL, handleCodeInApp: false }
+      : undefined;
+    const resetLink = await auth.generatePasswordResetLink(email, resetActionSettings);
+
+    // Send branded password reset email via Resend
+    await sendPasswordResetEmail({
+      name: userRecord.displayName || '',
+      email,
+      resetLink,
     });
 
-    // TODO: Send email with reset link using your email service
-    // For now, we'll just return success
-    // You can integrate with your existing email service here
-    
-    console.log(`✅ Password reset link generated for: ${email}`);
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`Reset link: ${resetLink}`);
-    }
+    console.log(`✅ Password reset email sent`);
 
     res.json({
       success: true,
       message: 'If an account exists with this email, a password reset link has been sent.'
     });
   } catch (error) {
-    console.error('Password reset error:', error);
+    console.error('Password reset error:', error.code || error.message);
     res.status(500).json({
       error: 'Password reset failed',
       message: 'An error occurred. Please try again.'

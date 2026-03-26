@@ -3,6 +3,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -27,6 +28,11 @@ const allowedOrigins = [
   'http://localhost:3000',
 ].filter(Boolean);
 
+// Trust Render's reverse proxy so req.ip reflects the real client IP
+// Without this, all requests appear to come from the same internal proxy IP,
+// which breaks per-IP rate limiting (all users share one counter).
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
@@ -40,18 +46,22 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Cron-Secret']
 }));
 
 app.options('*', cors());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
 // ===================================================
 // Request Logging
 // ===================================================
 app.use((req, res, next) => {
-  console.log(`📨 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`📨 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+  }
   next();
 });
 
@@ -96,18 +106,8 @@ app.use('/api/push', pushRoutes);
 // ===================================================
 // Health Check
 // ===================================================
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    message: 'Backend is running',
-    firebase: {
-      serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT_KEY ? 'configured' : 'missing',
-      clientConfig: process.env.FIREBASE_API_KEY ? 'configured' : 'missing'
-    },
-    resend: {
-      apiKey: process.env.RESEND_API_KEY ? 'configured' : 'missing'
-    }
-  });
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
 });
 
 // ===================================================

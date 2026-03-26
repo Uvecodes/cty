@@ -42,23 +42,9 @@ async function verifyToken(req, res, next) {
     console.error('Token verification error:', error.message);
     
     // Handle specific error types
-    if (error.code === 'auth/id-token-expired') {
-      return res.status(401).json({ 
-        error: 'Unauthorized', 
-        message: 'Token has expired. Please login again.' 
-      });
-    }
-    
-    if (error.code === 'auth/id-token-revoked') {
-      return res.status(401).json({ 
-        error: 'Unauthorized', 
-        message: 'Token has been revoked.' 
-      });
-    }
-
-    return res.status(401).json({ 
-      error: 'Unauthorized', 
-      message: 'Invalid token' 
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Authentication failed'
     });
   }
 }
