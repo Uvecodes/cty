@@ -8,7 +8,7 @@ if (self.location.hostname !== 'localhost' && self.location.hostname !== '127.0.
   console.info = function() {};
 }
 
-const SW_VERSION = 'cty-v1.0.15'; // Update this version string with each release to force clients to update their service worker
+const SW_VERSION = 'cty-v1.0.17'; // Update this version string with each release to force clients to update their service worker
 const PRECACHE = `precache-${SW_VERSION}`;
 const RUNTIME = `runtime-${SW_VERSION}`;
 
@@ -193,19 +193,27 @@ self.addEventListener('message', (event) => {
 // ── Push Notifications ────────────────────────────────────────────────────────
 
 self.addEventListener('push', (event) => {
-  let data = { title: 'Tenderoots 📖', body: 'Your daily verse is ready!' };
+  let data = {};
 
   if (event.data) {
     try {
       data = JSON.parse(event.data.text());
     } catch {
-      data.body = event.data.text();
+      data = { body: event.data.text() };
     }
   }
 
+  // Silent push: midday verse-read-check from sync-read-state cron
+  if (data.type === 'verse-read-check') {
+    event.waitUntil(handleVerseReadSync(data));
+    return;
+  }
+
+  // Regular visible notification
+  const title = data.title || 'Tenderoots 📖';
   event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
+    self.registration.showNotification(title, {
+      body: data.body || 'Your daily verse is ready!',
       icon: data.icon || '/assets/icons/icon-192x192.png',
       badge: data.badge || '/assets/icons/monochrome.png',
       data: { url: data.url || '/dashboard-files/dashboard.html' },
@@ -213,6 +221,61 @@ self.addEventListener('push', (event) => {
     })
   );
 });
+
+/**
+ * Handles the silent noon verse-read-check push.
+ * 1. Reads verse-read state from Cache API (written by checkbox.js).
+ * 2. Reports state back to /api/push/report-read so send-afternoon has fresh data.
+ * 3. Shows a silent fallback notification only if no window is open
+ *    (browsers require showNotification when no clients are active).
+ */
+async function handleVerseReadSync(data) {
+  const { uid, date } = data;
+
+  // Read verse-read state from Cache API (shared between window and SW)
+  let isRead = false;
+  try {
+    const cache = await caches.open('cty-read-state');
+    const resp = await cache.match('/verse-read-state');
+    if (resp) {
+      const state = await resp.json();
+      isRead = !!(state && state.date === date && state.read === true);
+    }
+  } catch (_) {}
+
+  // Get API base URL from config cache (written by firebase-config.js on page load)
+  let apiBase = 'https://cty-7cyi.onrender.com';
+  try {
+    const configCache = await caches.open('cty-config');
+    const configResp = await configCache.match('/api-base');
+    if (configResp) {
+      const config = await configResp.json();
+      if (config && typeof config.url === 'string') apiBase = config.url;
+    }
+  } catch (_) {}
+
+  // Report read state back to server
+  try {
+    await fetch(`${apiBase}/api/push/report-read`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uid, date, read: isRead, token: data.token || '' })
+    });
+  } catch (_) {}
+
+  // Browsers require at least one showNotification call when no window is open.
+  // Show a silent, non-intrusive notification as a fallback.
+  const windowClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+  if (windowClients.length === 0) {
+    await self.registration.showNotification('Tenderoots', {
+      body: 'Syncing your progress...',
+      silent: true,
+      badge: '/assets/icons/monochrome.png',
+      tag: 'cty-sync',       // replaces any previous sync notification
+      renotify: false
+    });
+  }
+}
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();

@@ -5,6 +5,17 @@ window.API_BASE = window.location.hostname === '127.0.0.1' || window.location.ho
   ? 'http://localhost:3001'
   : 'https://cty-7cyi.onrender.com';
 
+// Store API_BASE in Cache API so the service worker can read it
+// for authenticated background fetch calls (e.g. report-read endpoint)
+if ('caches' in window) {
+  caches.open('cty-config').then(function (cache) {
+    cache.put('/api-base', new Response(
+      JSON.stringify({ url: window.API_BASE }),
+      { headers: { 'Content-Type': 'application/json' } }
+    ));
+  }).catch(function () {});
+}
+
 console.log('🔥 firebase-config.js loading... API_BASE:', window.API_BASE);
 
 function initFirebaseFromAPI() {

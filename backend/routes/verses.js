@@ -121,9 +121,9 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
         });
         
         state = resultState;
-        console.log(`Initialized content state for user ${uid} group ${groupKey}`);
+        console.log(`Initialized content state for group ${groupKey}`);
       } catch (txError) {
-        console.error(`Transaction failed while initializing content state for ${uid} group ${groupKey}:`, txError);
+        console.error(`Transaction failed while initializing content state for group ${groupKey}:`, txError);
         // Use local state as fallback
         state = newState;
       }
@@ -133,7 +133,7 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
     if (state.lastServedDate === todayISO && state.lastServedIndex >= 0) {
       const selectedItem = items[state.lastServedIndex];
       if (selectedItem) {
-        console.log(`Returning already served verse for user ${uid} on ${todayISO}`);
+        console.log(`Returning already served verse on ${todayISO}`);
         return res.json({
           success: true,
           verse: selectedItem,
@@ -152,7 +152,7 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
     if (userData.blockedRefs && Array.isArray(userData.blockedRefs) && userData.blockedRefs.length > 0) {
       finalIndex = applyBlocklist(rawIndex, items, userData.blockedRefs);
       if (finalIndex !== rawIndex) {
-        console.log(`Index adjusted from ${rawIndex} to ${finalIndex} due to blocklist for user ${uid}`);
+        console.log(`Index adjusted from ${rawIndex} to ${finalIndex} due to blocklist`);
       }
     }
     
@@ -163,9 +163,9 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
         [`contentState.${groupKey}.lastServedIndex`]: finalIndex
       }, { merge: true });
       
-      console.log(`Persisted served content for user ${uid} group ${groupKey}: date=${todayISO}, index=${finalIndex}`);
+      console.log(`Persisted served content for group ${groupKey}: date=${todayISO}, index=${finalIndex}`);
     } catch (error) {
-      console.error(`Failed to persist served content to Firestore for user ${uid} group ${groupKey}:`, error);
+      console.error(`Failed to persist served content for group ${groupKey}:`, error);
       // Continue anyway to return verse
     }
     
@@ -178,7 +178,7 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
       });
     }
     
-    console.log(`Returning verse for user ${uid} on ${todayISO}: index=${finalIndex}, group=${groupKey}`);
+    console.log(`Returning verse on ${todayISO}: index=${finalIndex}, group=${groupKey}`);
     
     res.json({
       success: true,

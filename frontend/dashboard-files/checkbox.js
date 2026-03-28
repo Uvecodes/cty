@@ -112,6 +112,20 @@ async function initializeCheckboxAndProgress() {
           _saveCbCache(user.uid, today, { verseCompleted, moralCompleted, reflectionCompleted, challengeCompleted });
           try { localStorage.setItem('cty_progress_' + today, completedCount / totalDailyTasks * 100); } catch(_e) {}
 
+          // Write verse-read state for service worker (headless noon sync)
+          // Cache API: readable by SW background push handler
+          try {
+            if ('caches' in window) {
+              const cache = await caches.open('cty-read-state');
+              await cache.put('/verse-read-state', new Response(
+                JSON.stringify({ date: today, read: verseCompleted }),
+                { headers: { 'Content-Type': 'application/json' } }
+              ));
+            }
+          } catch (_e) {}
+          // localStorage: fallback readable by window context
+          try { localStorage.setItem('verseRead_' + today, verseCompleted ? 'true' : 'false'); } catch (_e) {}
+
           // Update dashboard progress if available
           if (window.updateDashboardProgress) {
             await window.updateDashboardProgress();

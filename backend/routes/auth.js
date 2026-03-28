@@ -113,7 +113,7 @@ router.post('/register', registerLimiter, [
     // Generate custom token for the user
     const customToken = await auth.createCustomToken(userRecord.uid);
 
-    console.log(`✅ User registered: uid=${userRecord.uid}`);
+    console.log('✅ User registered');
 
     // Send welcome email server-side (non-blocking)
     sendWelcomeEmail({ name, email });
@@ -228,7 +228,7 @@ router.post('/login', loginLimiter, [
     const userDoc = await db.collection('users').doc(uid).get();
     const userData = userDoc.exists ? userDoc.data() : {};
 
-    console.log(`✅ User login: uid=${uid}`);
+    console.log('✅ User login');
 
     // Set long-lived session cookie for silent re-auth on mobile
     if (SESSION_SECRET) setSessionCookie(res, uid);
@@ -376,7 +376,7 @@ router.post('/silent-refresh', silentRefreshLimiter, requireXhrHeader, async (re
   const customToken = await auth.createCustomToken(uid);
   setSessionCookie(res, uid);
 
-  console.log(`✅ Silent session refresh for uid: ${uid}`);
+  console.log('✅ Silent session refresh');
   res.json({ success: true, token: customToken });
 });
 

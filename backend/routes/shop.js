@@ -78,7 +78,7 @@ router.post('/verify-order', paymentVerifyLimiter, async (req, res) => {
     const flwData = flwRes.data;
 
     if (flwData.status !== 'success' || flwData.data.status !== 'successful') {
-      return res.status(400).json({ error: 'Payment verification failed', details: flwData.message });
+      return res.status(400).json({ error: 'Payment verification failed' });
     }
 
     const charged = flwData.data.amount;

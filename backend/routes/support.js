@@ -86,7 +86,8 @@ router.post('/verify-payment', paymentVerifyLimiter, async (req, res) => {
     };
 
     if (opted_in_name && opted_in_name.trim()) {
-      donationData.opted_in_name = opted_in_name.trim();
+      // Strip HTML tags before storing — prevents XSS if name is rendered in credits/activity
+      donationData.opted_in_name = opted_in_name.trim().replace(/<[^>]*>/g, '').slice(0, 100);
     }
 
     await db.collection('donations').add(donationData);

@@ -34,8 +34,6 @@ function initializeFirebaseAdmin() {
       });
       
       console.log('✅ Firebase Admin initialized from environment variable');
-      console.log(`   Project ID: ${serviceAccount.project_id}`);
-      console.log(`   Client Email: ${serviceAccount.client_email}`);
     }
     // Option 2: Service account file path
     else if (process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {

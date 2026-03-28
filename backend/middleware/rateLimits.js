@@ -60,12 +60,32 @@ const publicReadLimiter = rateLimit({
 });
 
 // GET /api/verses/today — limits authenticated Firestore churn
+// 30 requests per 15 minutes: generous for real use (1-3 loads/day), tight against scraping
 const versesLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 20,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30,
   standardHeaders: true,
   legacyHeaders: false,
   handler: jsonError('Too many verse requests. Please wait a moment.')
+});
+
+// POST /api/push/report-read — background sync from service worker (fires once per user at noon)
+const reportReadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: jsonError('Too many sync requests.')
+});
+
+// POST /api/push/send-daily|sync-read-state|send-afternoon — cron-only endpoints
+// Tightly capped: only cron-job.org should ever call these (max 1/hr each in practice)
+const cronLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: jsonError('Too many cron requests.')
 });
 
 // POST /api/push/subscribe — prevents subscription spam per IP
@@ -105,5 +125,7 @@ module.exports = {
   versesLimiter,
   silentRefreshLimiter,
   pushSubscribeLimiter,
-  generalLimiter
+  generalLimiter,
+  reportReadLimiter,
+  cronLimiter
 };
