@@ -30,7 +30,6 @@ console.info = function() {};
                 this.currentAgeInput = document.getElementById('currentAge');
                 this.saveButton = document.getElementById('saveButton');
                 this.skipButton = document.getElementById('skipButton');
-                this.closeButton = document.getElementById('closeButton');
                 this.testButton = document.getElementById('testModalButton');
                 
                 this.onSaveCallback = null;
@@ -42,21 +41,8 @@ console.info = function() {};
             }
             
             initializeEventListeners() {
-                this.closeButton.addEventListener('click', () => this.close());
-                this.skipButton.addEventListener('click', () => this.handleSkip());
+                this.skipButton?.addEventListener('click', () => this.handleSkip());
                 this.saveButton.addEventListener('click', () => this.handleSave());
-                
-                this.modal.addEventListener('click', (e) => {
-                    if (e.target === this.modal) {
-                        this.close();
-                    }
-                });
-                
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && this.isOpen()) {
-                        this.close();
-                    }
-                });
                 
                 this.birthMonthSelect.addEventListener('change', () => this.validateForm());
                 this.birthDaySelect.addEventListener('change', () => this.validateForm());
@@ -77,7 +63,7 @@ console.info = function() {};
             }
             
             setupDemo() {
-                this.currentAgeInput.value = '10';
+                if (this.currentAgeInput) this.currentAgeInput.value = '10';
             }
             
             async checkUserBirthDate(userId) {
@@ -110,6 +96,15 @@ console.info = function() {};
                         console.log('Birth date saved to Firestore:', { month, day });
                     } catch (error) {
                         console.error('Error saving to Firestore:', error);
+                    }
+
+                    // Request notification permission here — backed by the "Save & Continue"
+                    // button gesture, so browsers won't block or quiet the prompt.
+                    if (window.PushNotifications && Notification.permission !== 'denied') {
+                        const alreadySubscribed = await window.PushNotifications.isSubscribed().catch(() => false);
+                        if (!alreadySubscribed) {
+                            window.PushNotifications.enable().catch(() => {});
+                        }
                     }
                 };
                 
@@ -159,7 +154,7 @@ console.info = function() {};
             
             resetForm() {
                 this.form.reset();
-                this.currentAgeInput.value = '10';
+                if (this.currentAgeInput) this.currentAgeInput.value = '10';
                 this.saveButton.disabled = true;
             }
             
