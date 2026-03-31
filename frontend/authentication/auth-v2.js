@@ -75,24 +75,39 @@ async function register(event) {
   }
 
   const name = document.getElementById('fullName').value.trim();
-  const age = document.getElementById('age').value;
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('confirm-password').value;
   const denomination = document.getElementById('denomination').value;
+  const isAdult = document.getElementById('isAdult')?.checked || false;
+  const age = isAdult ? null : document.getElementById('age').value;
 
   // Validation
-  if (!name || !age || !email || !password || !confirmPassword || !denomination) {
+  if (!name || !email || !password || !confirmPassword || !denomination) {
     showToast('Please fill all fields.');
+    return;
+  }
+  if (!isAdult && !age) {
+    showToast('Please enter your age or confirm you are 18 or older.');
     return;
   }
   if (password !== confirmPassword) {
     showToast('Passwords do not match.');
     return;
   }
-  if (age < 4 || age > 17) {
+  if (!isAdult && (age < 4 || age > 17)) {
     showToast('Age must be between 4 and 17.');
     return;
+  }
+
+  const payload = {
+    email, password, name, denomination,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+  };
+  if (isAdult) {
+    payload.isAdult = true;
+  } else {
+    payload.age = parseInt(age);
   }
 
   try {
@@ -100,14 +115,14 @@ async function register(event) {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email, password, name, age: parseInt(age), denomination,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || data.error || 'Registration failed');
+    if (!response.ok) {
+      const msg = data.errors?.[0]?.msg || data.message || data.error || 'Registration failed';
+      throw new Error(msg);
+    }
 
     // Sign in with custom token from backend
     const auth = firebase.auth();
@@ -255,6 +270,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   // regardless of whether Firebase finishes initialising in time.
   const signupForm = document.getElementById('signupForm');
   if (signupForm) signupForm.addEventListener('submit', register);
+
+  // Toggle age field visibility based on adult checkbox
+  const isAdultCheckbox = document.getElementById('isAdult');
+  const ageGroup = document.getElementById('ageGroup');
+  const ageInput = document.getElementById('age');
+  if (isAdultCheckbox && ageGroup && ageInput) {
+    isAdultCheckbox.addEventListener('change', () => {
+      if (isAdultCheckbox.checked) {
+        ageGroup.style.display = 'none';
+        ageInput.required = false;
+        ageInput.value = '';
+      } else {
+        ageGroup.style.display = '';
+        ageInput.required = true;
+      }
+    });
+  }
 
   const loginForm = document.getElementById('loginForm');
   if (loginForm) loginForm.addEventListener('submit', login);

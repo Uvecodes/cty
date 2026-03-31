@@ -168,6 +168,8 @@ function ageToGroupKey(age) {
     return "11-13";
   } else if (age >= 14 && age <= 17) {
     return "14-17";
+  } else if (age >= 18) {
+    return "adult";
   } else {
     return null;
   }

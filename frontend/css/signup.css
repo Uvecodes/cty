@@ -89,6 +89,23 @@
   outline: none;
   box-shadow: 0 0 0 2px #eafbe7;
 }
+#signup-page .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  cursor: pointer;
+}
+#signup-page .checkbox-label input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-green);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 #signup-page button[type="submit"] {
   margin-top: 0.5rem;
   padding: 0.9em 0;

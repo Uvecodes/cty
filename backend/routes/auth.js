@@ -66,7 +66,8 @@ router.post('/register', registerLimiter, [
   body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
   body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
   body('name').trim().notEmpty().isLength({ max: 100 }).withMessage('Name is required'),
-  body('age').isInt({ min: 4, max: 17 }).withMessage('Age must be between 4 and 17'),
+  body('isAdult').optional().toBoolean(),
+  body('age').optional().isInt({ min: 4, max: 17 }).withMessage('Age must be between 4 and 17'),
   body('denomination').isIn(VALID_DENOMINATIONS).withMessage('Invalid denomination'),
   body('tz').optional().custom((val) => {
     try { Intl.DateTimeFormat(undefined, { timeZone: val }); return true; }
@@ -75,7 +76,15 @@ router.post('/register', registerLimiter, [
   handleValidationErrors
 ], async (req, res) => {
   try {
-    const { email, password, name, age, denomination, tz } = req.body;
+    const { email, password, name, age, denomination, tz, isAdult } = req.body;
+
+    // If not adult, age must be present and valid
+    if (!isAdult) {
+      const parsedAge = parseInt(age);
+      if (isNaN(parsedAge) || parsedAge < 4 || parsedAge > 17) {
+        return res.status(400).json({ error: 'Validation failed', message: 'Age must be between 4 and 17' });
+      }
+    }
 
     // Check if user already exists
     try {
@@ -100,15 +109,21 @@ router.post('/register', registerLimiter, [
     });
 
     // Save additional user data to Firestore
-    await db.collection('users').doc(userRecord.uid).set({
+    const userData = {
       name,
-      age: parseInt(age),
       email,
       denomination,
       tz: tz || 'UTC',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      contentState: {} // Initialize empty content state
-    }, { merge: true });
+      contentState: {}
+    };
+    if (isAdult) {
+      userData.isAdult = true;
+      userData.age = 18;
+    } else {
+      userData.age = parseInt(age);
+    }
+    await db.collection('users').doc(userRecord.uid).set(userData, { merge: true });
 
     // Generate custom token for the user
     const customToken = await auth.createCustomToken(userRecord.uid);

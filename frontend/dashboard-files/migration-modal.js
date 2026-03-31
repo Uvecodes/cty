@@ -71,6 +71,8 @@ console.info = function() {};
                     const userDoc = await this.db.collection('users').doc(userId).get();
                     if (userDoc.exists) {
                         const data = userDoc.data();
+                        // Adults don't need birth date — skip modal for them
+                        if (data.isAdult === true || Number(data.age) >= 18) return true;
                         return !!(data.birthMonth && data.birthDay);
                     }
                     return false;
