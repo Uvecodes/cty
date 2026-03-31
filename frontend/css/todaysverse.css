@@ -65,6 +65,15 @@
   font-weight: 600;
 }
 
+.adult-verse-line {
+  display: block;
+  margin-bottom: 0.9rem;
+  line-height: 1.7;
+}
+.adult-verse-line:last-child {
+  margin-bottom: 0;
+}
+
 .verse-reference {
   font-size: 1.1rem;
   color: #666;

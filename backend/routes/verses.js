@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+const https = require('https');
 const { verifyToken } = require('../middleware/auth');
 const { versesLimiter } = require('../middleware/rateLimits');
 const { auth, db, admin } = require('../config/firebase-admin');
@@ -16,6 +17,96 @@ const {
 } = require('../utils/verse-helpers');
 
 const router = express.Router();
+
+// ── Adult verse helpers ───────────────────────────────────────────────────────
+
+let adultRefs = null;
+async function getAdultRefs() {
+  if (adultRefs) return adultRefs;
+  const jsonPath = path.join(__dirname, '..', 'data', 'adult-verses.json');
+  const raw = await fs.readFile(jsonPath, 'utf8');
+  adultRefs = JSON.parse(raw);
+  return adultRefs;
+}
+
+const BIBLE_API_TIMEOUT_MS = 5000;
+const BIBLE_API_MAX_BYTES = 102400; // 100 KB — a 7-verse passage is well under 5 KB
+
+function fetchBibleApiVerse(ref) {
+  return new Promise((resolve, reject) => {
+    const encoded = encodeURIComponent(ref);
+    const url = `https://bible-api.com/${encoded}?translation=kjv`;
+    const req = https.get(url, (res) => {
+      let data = '';
+      let bytesReceived = 0;
+
+      res.on('data', chunk => {
+        bytesReceived += chunk.length;
+        if (bytesReceived > BIBLE_API_MAX_BYTES) {
+          req.destroy();
+          reject(new Error('Bible API response exceeded size limit'));
+          return;
+        }
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try { resolve(JSON.parse(data)); }
+        catch (e) { reject(new Error('Failed to parse Bible API response')); }
+      });
+    });
+
+    req.setTimeout(BIBLE_API_TIMEOUT_MS, () => {
+      req.destroy();
+      reject(new Error('Bible API request timed out'));
+    });
+
+    req.on('error', reject);
+  });
+}
+
+async function getAdultVerse(todayISO) {
+  // Check Firestore cache first
+  const cacheRef = db.collection('dailyVerses').doc(todayISO);
+  const cached = await cacheRef.get();
+  if (cached.exists) return cached.data();
+
+  // Pick today's reference deterministically
+  const refs = await getAdultRefs();
+  const dayNum = daysBetween('2025-01-01', todayISO);
+  const ref = refs[((dayNum % refs.length) + refs.length) % refs.length];
+
+  // Fetch from bible-api.com
+  const apiData = await fetchBibleApiVerse(ref);
+  if (!apiData || !apiData.text) throw new Error('Bible API returned no text');
+
+  // Format each verse as "verseNumber. text" on its own line
+  let passage;
+  if (Array.isArray(apiData.verses) && apiData.verses.length > 0) {
+    passage = apiData.verses
+      .map(v => `${v.verse}. ${v.text.trim().replace(/\n/g, ' ')}`)
+      .join('\n');
+  } else {
+    passage = apiData.text.trim().replace(/\n+/g, ' ');
+  }
+
+  const verse = {
+    ref: apiData.reference || ref,
+    passage,
+    translation: (apiData.translation_name || 'KJV').toUpperCase(),
+    topic: '',
+    moral: '',
+    reflectionQ: '',
+    challenge: ''
+  };
+
+  // Cache in Firestore (no await — non-blocking)
+  cacheRef.set({ ...verse, cachedAt: admin.firestore.FieldValue.serverTimestamp() }).catch(() => {});
+
+  return verse;
+}
+
+// ── Children's verse handler ──────────────────────────────────────────────────
 
 /**
  * GET /api/verses/today
@@ -56,9 +147,30 @@ router.get('/today', versesLimiter, verifyToken, async (req, res) => {
     if (!groupKey) {
       return res.status(400).json({
         error: 'Invalid age',
-        message: `Age ${age} is outside valid range (4-17)`
+        message: `Age ${age} is outside valid range`
       });
     }
+
+    // ── Adult branch ─────────────────────────────────────────────────────────
+    if (groupKey === 'adult') {
+      // Write-back: if this user was registered as a child and has now turned 18,
+      // persist isAdult:true so the frontend reads it consistently going forward.
+      if (!userData.isAdult) {
+        db.collection('users').doc(uid).set({ isAdult: true }, { merge: true }).catch(() => {});
+      }
+
+      try {
+        const verse = await getAdultVerse(todayISO);
+        return res.json({ success: true, verse, groupKey: 'adult' });
+      } catch (err) {
+        console.error('Adult verse fetch failed:', err.message);
+        return res.status(503).json({
+          error: 'Verse unavailable',
+          message: 'Could not fetch today\'s verse. Please try again later.'
+        });
+      }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
     
     // Load JSON file for the age group
     const jsonPath = path.join(__dirname, '..', 'data', `content-${groupKey}.json`);

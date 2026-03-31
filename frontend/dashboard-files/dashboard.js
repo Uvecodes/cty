@@ -105,7 +105,7 @@
         // Calculate progress based on completed tasks
         // Using the correct field name from checkbox.js
         const completedTasks = userData.completedCount || 0;
-        const totalTasks = 4;
+        const totalTasks = (userData.isAdult === true || Number(userData.age) >= 18) ? 1 : 4;
         const progressPercentage = Math.min((completedTasks / totalTasks) * 100, 100);
         
         // Update progress bar width

@@ -50,8 +50,6 @@ async function initializeCheckboxAndProgress() {
   const db = firebase.firestore();
   const userRef = db.collection("users").doc(user.uid);
 
-  const totalDailyTasks = 4; // Fixed total daily tasks
-
   try {
     // Wait for daily-reset.js to finish its reset check before reading Firestore state
     if (window.dailyResetReady) await window.dailyResetReady;
@@ -77,6 +75,9 @@ async function initializeCheckboxAndProgress() {
       reflectionCompleted = userData.reflectionCompleted || false;
       challengeCompleted = userData.challengeCompleted || false;
     }
+
+    const isAdult = userData.isAdult === true || Number(userData.age) >= 18;
+    const totalDailyTasks = isAdult ? 1 : 4;
 
     // Determine today's date in user's timezone (prefer stored tz)
     const tz = (userData && userData.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone;

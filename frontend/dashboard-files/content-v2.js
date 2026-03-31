@@ -176,6 +176,8 @@ function ageToGroupKey(age) {
     return "11-13";
   } else if (age >= 14 && age <= 17) {
     return "14-17";
+  } else if (age >= 18) {
+    return "adult";
   } else {
     return null;
   }
@@ -423,6 +425,15 @@ async function persistServed(uid, groupKey, todayISO, index) {
   return true;
 }
 
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function renderItemToDOM(item) {
   if (!item) {
     console.warn('renderItemToDOM: No item provided');
@@ -636,8 +647,11 @@ async function renderTodayContent() {
     // Calculate today's date in user's timezone
     const todayISO = localDateInTZ(new Date(), tz);
     
+    // Adults skip the migration modal entirely (no birth date needed)
+    const isAdult = userDoc.isAdult === true || Number(userDoc.age) >= 18;
+
     // Check if migration should be shown
-    if (shouldShowMigration(userDoc, todayISO)) {
+    if (!isAdult && shouldShowMigration(userDoc, todayISO)) {
       
       // Open migration modal
       openMigrationModal(
@@ -715,6 +729,21 @@ async function renderContentAfterMigration(uid, userDoc, tz, todayISO) {
       
       if (result.success && result.verse) {
         renderItemToDOM(result.verse);
+        if (result.groupKey === 'adult') {
+          // Render multi-line passage (each verse on its own line)
+          const passageEl = document.getElementById('passage');
+          if (passageEl && result.verse.passage && result.verse.passage.includes('\n')) {
+            passageEl.innerHTML = result.verse.passage
+              .split('\n')
+              .filter(Boolean)
+              .map(line => `<span class="adult-verse-line">${escapeHtml(line)}</span>`)
+              .join('');
+          }
+          ['moral-section', 'reflection-section', 'challenge-section'].forEach(cls => {
+            const el = document.querySelector('.' + cls);
+            if (el) el.style.display = 'none';
+          });
+        }
       } else {
         console.warn(`renderContentAfterMigration: No verse data in response for user ${uid}. Response:`, result);
       }
