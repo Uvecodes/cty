@@ -66,7 +66,7 @@
         </p>
       </header>
 
-      <form id="signupForm" autocomplete="on" method="post">
+      <form id="signupForm" autocomplete="on" method="post" novalidate>
         <div class="form-group">
           <label for="fullName">Full Name</label>
           <input type="text" id="fullName" name="fullname" required autocomplete="name"/>
@@ -74,7 +74,7 @@
 
         <div class="form-group" id="ageGroup">
           <label for="age">Age</label>
-          <input type="number" id="age" name="age" min="4" max="17" required/>
+          <input type="number" id="age" name="age" min="4" max="17"/>
         </div>
 
         <div class="form-group">
