@@ -93,9 +93,15 @@
   async function autoSubscribe() {
     if (!window.location.pathname.includes('dashboard')) return;
 
-    // Already subscribed — sync localStorage
+    // Already subscribed — sync localStorage and re-save to server so Firestore
+    // stays in sync even if the record was cleaned up by a previous broadcast.
     if (await window.PushNotifications.isSubscribed()) {
       localStorage.setItem(SUBSCRIBED_KEY, '1');
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) await saveSubscriptionToServer(sub.toJSON());
+      } catch (_err) { /* silently ignore — subscription will retry next visit */ }
       return;
     }
 
