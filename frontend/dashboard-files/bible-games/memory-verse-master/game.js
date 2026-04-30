@@ -417,9 +417,9 @@ function startQuizTimer() {
     document.getElementById('hud-timer').textContent = state.quizTimeLeft;
 
     const arc = document.getElementById('timer-arc');
-    if (state.quizTimeLeft <= 5) arc.className = 'timer-arc urgent';
-    else if (state.quizTimeLeft <= 15) arc.className = 'timer-arc warn';
-    else arc.className = 'timer-arc';
+    arc.classList.remove('urgent', 'warn');
+    if (state.quizTimeLeft <= 5) arc.classList.add('urgent');
+    else if (state.quizTimeLeft <= 15) arc.classList.add('warn');
 
     if (state.quizTimeLeft <= 0) {
       stopQuizTimer();

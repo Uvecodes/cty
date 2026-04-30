@@ -338,7 +338,7 @@ body {
 /* ══════════════════════════════════════
    GAME SCREEN
 ══════════════════════════════════════ */
-#screen-game { background: var(--dark2); position: relative; }
+#screen-game { background: var(--dark2); }
 
 /* ── HUD ── */
 .game-hud {
