@@ -16,7 +16,7 @@ if ('caches' in window) {
   }).catch(function () {});
 }
 
-console.log('🔥 firebase-config.js loading... API_BASE:', window.API_BASE);
+console.log('🔥 firebase-config.js loading... API_BASE:');
 
 function initFirebaseFromAPI() {
   if (firebase.apps.length) {
@@ -29,7 +29,7 @@ function initFirebaseFromAPI() {
     });
   }
 
-  console.log('📡 Fetching Firebase config from:', `${window.API_BASE}/api/firebase-config`);
+  console.log('📡 Fetching Firebase config from:');
 
   return fetch(`${window.API_BASE}/api/firebase-config`)
     .then((res) => {
